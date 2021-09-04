@@ -1,7 +1,25 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { auth, githubProvider, googleProvider } from "./firebase"
+import { login, logout } from "./features/users/userSlice"
+import { useDispatch } from "react-redux"
 
 const App = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const unSub = auth.onAuthStateChanged(authUser => {
+      if(authUser) {
+        dispatch(login({
+          uid: authUser.uid,
+          displayName: authUser.displayName,
+          photoUrl: authUser.photoURL,
+        }))
+      } else {
+        dispatch(logout())
+      }
+    })
+    return () => unSub()
+  }, [dispatch])
+  
   const signInGithub = async () => {
     auth.signInWithPopup(githubProvider)
       .then(result => {
