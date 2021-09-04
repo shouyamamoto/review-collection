@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
-import { auth, githubProvider, googleProvider } from "./firebase"
-import { login, logout } from "./features/users/userSlice"
-import { useDispatch } from "react-redux"
+import { auth } from "./firebase"
+import { login, logout, selectUser } from "./features/users/userSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { Home } from "./Home"
+import { Auth } from "./Auth"
 
-const App = () => {
+const App: React.VFC = () => {
   const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+
   useEffect(() => {
     const unSub = auth.onAuthStateChanged(authUser => {
       if(authUser) {
@@ -19,36 +23,14 @@ const App = () => {
     })
     return () => unSub()
   }, [dispatch])
-  
-  const signInGithub = async () => {
-    auth.signInWithPopup(githubProvider)
-      .then(result => {
-        console.log(result.user)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-  const signInGoogle = async () => {
-    auth.signInWithPopup(googleProvider)
-      .then(result => {
-        console.log(result.user)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-  const signOut = () => {
-    auth.signOut()
-    console.log("signOut")
-  }
 
   return (
-    <div>
-      <button onClick={signInGithub}>Githubでログインする</button>
-      <button onClick={signInGoogle}>Googleでログインする</button>
-      <button onClick={signOut}>ログアウト</button>
-    </div>
+    <>
+    { user.uid 
+      ? <Home />
+      : <Auth />
+    }
+    </>
   )
 }
 
