@@ -3,7 +3,6 @@ import { auth } from "./firebase"
 import { login, logout } from "./features/users/userSlice"
 import { useDispatch } from "react-redux"
 import { Home } from "./Home"
-import { Auth } from "./Auth"
 import { Profile } from "./Profile"
 import { Header } from "./Header"
 import { BrowserRouter, Route } from "react-router-dom"
@@ -40,9 +39,6 @@ const App: React.VFC = () => {
         <Header />
         <Route exact path="/">
           <Home />
-        </Route>
-        <Route exact path="/login">
-          <Auth />
         </Route>
         <Route exact path="/:userId">
           <Profile />
