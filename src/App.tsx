@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
 import { auth } from "./firebase"
-import { login, logout, selectUser } from "./features/users/userSlice"
-import { useDispatch, useSelector } from "react-redux"
+import { login, logout } from "./features/users/userSlice"
+import { useDispatch } from "react-redux"
 import { Home } from "./Home"
 import { Auth } from "./Auth"
+import { Header } from "./Header"
+import { BrowserRouter, Route } from "react-router-dom"
+import { Reset } from 'styled-reset'
 
 const App: React.VFC = () => {
   const dispatch = useDispatch()
-  const user = useSelector(selectUser)
 
   useEffect(() => {
     const unSub = auth.onAuthStateChanged(authUser => {
@@ -26,10 +28,16 @@ const App: React.VFC = () => {
 
   return (
     <>
-    { user.uid 
-      ? <Home />
-      : <Auth />
-    }
+      <Reset />
+      <BrowserRouter>
+        <Header />
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/login">
+          <Auth />
+        </Route>
+      </BrowserRouter>
     </>
   )
 }
