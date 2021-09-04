@@ -4,9 +4,16 @@ import { login, logout } from "./features/users/userSlice"
 import { useDispatch } from "react-redux"
 import { Home } from "./Home"
 import { Auth } from "./Auth"
+import { Profile } from "./Profile"
 import { Header } from "./Header"
 import { BrowserRouter, Route } from "react-router-dom"
-import { Reset } from 'styled-reset'
+import reset from "styled-reset"
+import { createGlobalStyle } from "styled-components"
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  line-height: 1.6;
+`
 
 const App: React.VFC = () => {
   const dispatch = useDispatch()
@@ -28,7 +35,7 @@ const App: React.VFC = () => {
 
   return (
     <>
-      <Reset />
+      <GlobalStyle />
       <BrowserRouter>
         <Header />
         <Route exact path="/">
@@ -36,6 +43,9 @@ const App: React.VFC = () => {
         </Route>
         <Route exact path="/login">
           <Auth />
+        </Route>
+        <Route exact path="/:userId">
+          <Profile />
         </Route>
       </BrowserRouter>
     </>

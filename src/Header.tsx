@@ -5,7 +5,7 @@ import { auth } from "./firebase"
 import { Link } from "react-router-dom"
 import logo from "./images/logo.png"
 import styled from "styled-components"
-import { FiLogOut } from "react-icons/fi"
+import { FiLogOut, FiUserCheck } from "react-icons/fi"
 import { COLOR } from "./Themes/Color"
 
 export const Header = () => {
@@ -14,6 +14,7 @@ export const Header = () => {
 
   const signOut = () => {
     auth.signOut()
+    window.location.href = "/"
   }
   
   const onClickMenuHandler = () => setIsOpenMenu(!isOpenMenu)
@@ -30,7 +31,8 @@ export const Header = () => {
             <StyledPostBtn>Add Post</StyledPostBtn>
             { isOpenMenu && 
               <StyledMenu>
-                <StyledMenuItem onClick={signOut}>{`@ ${user.displayName}`}</StyledMenuItem>
+                <StyledMenuItem><StyledProfileLink to={`/${user.uid}`}>{`@ ${user.displayName}`}</StyledProfileLink></StyledMenuItem>
+                <StyledMenuItem><StyledProfileLink to={`/${user.uid}/edit`}><StyledUserEditIcon />プロフィール編集</StyledProfileLink></StyledMenuItem>
                 <StyledMenuItem onClick={signOut}><StyledLogoutIcon />ログアウト</StyledMenuItem>
               </StyledMenu>
             }
@@ -80,8 +82,11 @@ const StyledMenuItem = styled.li`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 14px 10px 14px 20px;
   font-size: 13px;
+
+  &:last-child {
+    padding: 14px 10px 14px 20px;
+  }
   
   &:hover {
     cursor: pointer;
@@ -90,6 +95,9 @@ const StyledMenuItem = styled.li`
 `
 
 const StyledLogoutIcon = styled(FiLogOut)`
+  padding-right: 10px;
+`
+const StyledUserEditIcon = styled(FiUserCheck)`
   padding-right: 10px;
 `
 
@@ -113,8 +121,8 @@ const StyledPostBtn = styled.button`
 `
 
 const StyledLink = styled(Link)`
-  display: inline-block;
-  color: #ffffff;
+  display: block;
+  color: ${COLOR.WHITE};
   text-decoration: none;
   padding: 14px 32px;
   font-weight: bold;
@@ -122,4 +130,11 @@ const StyledLink = styled(Link)`
   &:hover {
     cursor: pointer;
   }
+`
+const StyledProfileLink = styled(Link)`
+  display: block;
+  width: 100%;
+  padding: 14px 10px 14px 20px;
+  color: ${COLOR.BLACK};
+  text-decoration: none;
 `
