@@ -6,6 +6,7 @@ import { Home } from "./Home"
 import { Auth } from "./Auth"
 import { Header } from "./Header"
 import { BrowserRouter, Route } from "react-router-dom"
+import { Reset } from 'styled-reset'
 
 const App: React.VFC = () => {
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ const App: React.VFC = () => {
 
   return (
     <>
+      <Reset />
       <BrowserRouter>
         <Header />
         <Route exact path="/">
