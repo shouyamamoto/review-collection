@@ -131,18 +131,6 @@ const StyledPostBtn = styled.button`
   }
 `
 
-const StyledLink = styled(Link)`
-  display: block;
-  color: ${COLOR.WHITE};
-  text-decoration: none;
-  padding: 14px 32px;
-  font-weight: bold;
-
-  &:hover {
-    cursor: pointer;
-  }
-`
-
 const StyledProfileLink = styled(Link)`
   display: block;
   width: 100%;

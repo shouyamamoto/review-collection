@@ -8,6 +8,8 @@ import { Header } from "./Header"
 import { BrowserRouter, Route } from "react-router-dom"
 import reset from "styled-reset"
 import { createGlobalStyle } from "styled-components"
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -44,6 +46,7 @@ const App: React.VFC = () => {
           <Profile />
         </Route>
       </BrowserRouter>
+      <ToastContainer autoClose={2000}/>
     </>
   )
 }
