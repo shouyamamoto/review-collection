@@ -14,8 +14,8 @@ export const Header = () => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const user = useSelector(selectUser)
 
-  const signOut = () => {
-    auth.signOut()
+  const signOut = async () => {
+    await auth.signOut()
     window.location.href = "/"
   }
   

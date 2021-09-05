@@ -19,15 +19,21 @@ export const Auth = ({ onClickModalHandler }: any) => {
     <Modal>
       <ModalMask onClick={onClickModalHandler} />
       <ModalInner>
-        <h2>ログイン画面</h2>
+        <StyledModalTitle>- Login -</StyledModalTitle>
         <LoginList>
-          <LoginItem><StyledButton onClick={() => signIn(githubProvider)}><FaGithub /> Githubでログインする</StyledButton></LoginItem>
-          <LoginItem><StyledButton onClick={() => signIn(googleProvider)}><FaGoogle /> Googleでログインする</StyledButton></LoginItem>
+          <LoginItem><StyledButton onClick={() => signIn(githubProvider)}><StyledFaGithub /> Githubでログインする</StyledButton></LoginItem>
+          <LoginItem><StyledButton onClick={() => signIn(googleProvider)}><StyledFaGoogle /> Googleでログインする</StyledButton></LoginItem>
         </LoginList>
       </ModalInner>
     </Modal>
   )
 }
+
+const StyledModalTitle = styled.h2`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 60px;
+`
 
 const Modal = styled.div`
   position: fixed;
@@ -53,12 +59,13 @@ const ModalInner = styled.div`
   width: 400px;
   height: 400px;
   border-radius: 10px;
-`
-
-const LoginList = styled.ul`
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
 `
+
+const LoginList = styled.ul``
 
 const LoginItem = styled.li`
   padding: 10px;
@@ -66,13 +73,25 @@ const LoginItem = styled.li`
 
 const StyledButton = styled.button`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 10px 20px;
   border: none;
-  width: 220px;
+  width: 30vw;
+  height: 60px;
+  font-size: 18px;
+  transition: background-color 0.3s, color 0.3s;
 
   &:hover {
     cursor: pointer;
+    background-color: ${COLOR.PRIMARY};
+    color: ${COLOR.WHITE};
   }
+`
+
+const StyledFaGithub = styled(FaGithub)`
+  margin-right: 10px;
+`
+const StyledFaGoogle = styled(FaGoogle)`
+  margin-right: 10px;
 `
