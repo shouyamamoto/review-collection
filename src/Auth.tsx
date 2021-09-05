@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import { auth, githubProvider, googleProvider } from "./firebase"
 import { FaGithub, FaGoogle } from "react-icons/fa"
 import styled from "styled-components"
