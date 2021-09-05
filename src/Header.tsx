@@ -1,23 +1,26 @@
 import { useState } from "react"
 import { selectUser } from "./features/users/userSlice"
 import { useSelector } from "react-redux"
-import { auth } from "./firebase"
 import { Link } from "react-router-dom"
 import logo from "./images/logo.png"
 import styled from "styled-components"
 import { FiLogOut, FiUserCheck } from "react-icons/fi"
 import { COLOR } from "./Themes/Color"
+import { auth } from "./firebase"
+import { Auth } from "./Auth"
 
 export const Header = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
   const user = useSelector(selectUser)
 
-  const signOut = () => {
-    auth.signOut()
+  const signOut = async () => {
+    await auth.signOut()
     window.location.href = "/"
   }
   
   const onClickMenuHandler = () => setIsOpenMenu(!isOpenMenu)
+  const onClickModalHandler = () => setIsOpenModal(!isOpenModal)
 
   return (
     <>
@@ -31,16 +34,17 @@ export const Header = () => {
             <StyledPostBtn>Add Post</StyledPostBtn>
             { isOpenMenu && 
               <StyledMenu>
-                <StyledMenuItem><StyledProfileLink to={`/${user.uid}`}>{`@ ${user.displayName}`}</StyledProfileLink></StyledMenuItem>
+                <StyledMenuItem onClick={onClickMenuHandler}><StyledProfileLink to={`/${user.uid}`}>{`@ ${user.displayName}`}</StyledProfileLink></StyledMenuItem>
                 <StyledMenuItem><StyledProfileLink to={`/${user.uid}/edit`}><StyledUserEditIcon />プロフィール編集</StyledProfileLink></StyledMenuItem>
                 <StyledMenuItem onClick={signOut}><StyledLogoutIcon />ログアウト</StyledMenuItem>
               </StyledMenu>
             }
           </StyledIconArea>
-        : <StyledLoginBtn><StyledLink to="login">login</StyledLink></StyledLoginBtn>
+        : <StyledLoginBtn onClick={onClickModalHandler}>Login</StyledLoginBtn>
         }
         </StyledHeaderInner>
       </header>
+      {isOpenModal && <Auth onClickModalHandler={onClickModalHandler} />}
     </>
   )
 }
@@ -105,6 +109,13 @@ const StyledLoginBtn = styled.button`
   background-color: ${COLOR.PRIMARY};
   border-radius: .45rem;
   border: none;
+  color: ${COLOR.WHITE};
+  padding: 14px 32px;
+  font-weight: bold; 
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const StyledPostBtn = styled.button`
@@ -131,6 +142,7 @@ const StyledLink = styled(Link)`
     cursor: pointer;
   }
 `
+
 const StyledProfileLink = styled(Link)`
   display: block;
   width: 100%;
