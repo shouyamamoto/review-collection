@@ -1,11 +1,21 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { selectUser, updateUserName } from "./features/users/userSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { auth } from "./firebase"
 import styled from "styled-components"
 import { COLOR } from "./Themes/Color"
 
-export const RegisterPopup = () => {
+type NoteProps = {
+  isValid: boolean;
+}
+
+const userNameValid = {
+  maxLength: 15,
+  minLength: 2,
+  errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
+}
+
+export const RegisterPopup = memo(() => {
   const [inputUsername, setInputUsername] = useState("")
   const [isOpenModal, setIsOpenModal] = useState(false)
   const user = useSelector(selectUser)
@@ -25,6 +35,14 @@ export const RegisterPopup = () => {
     }))
   }
 
+  const isUserNameValid = () => {
+    return inputUsername.length <= userNameValid.maxLength && inputUsername.length >= userNameValid.minLength
+  }
+
+  const handleOnChange = (e: any) => {
+    return setInputUsername(e.target.value)
+  }
+
   return (
     <StyledModal>
       <StyledModalMask />
@@ -38,18 +56,19 @@ export const RegisterPopup = () => {
                 id="userName" 
                 placeholder={user.displayName}
                 value={inputUsername}
-                onChange={e => setInputUsername(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e) }
                 autoFocus
+                autoComplete="off"
               />
-              <StyledUsernameNote>※ユーザ名は1文字以上入力してください。</StyledUsernameNote>
+              <StyledUsernameNote isValid={!isUserNameValid()}>{userNameValid.errorMessage}</StyledUsernameNote>
             </StyledInputArea>
-            <StyledRegisterButton type="submit" onClick={() => setIsOpenModal(!isOpenModal)} disabled={!inputUsername} >登録する</StyledRegisterButton>
+            <StyledRegisterButton type="submit" onClick={() => setIsOpenModal(!isOpenModal)} disabled={!isUserNameValid()}>登録する</StyledRegisterButton>
           </StyledForm>
         </StyledModalInner>
       }
     </StyledModal>
   )
-}
+})
 
 const StyledModal = styled.div`
   position: fixed;
@@ -90,7 +109,7 @@ const StyledModalTitle = styled.p`
 
 const StyledRegisterButton = styled.button`
   font-weight: bold;
-  background-color: ${COLOR.PRIMARY};
+  background-color: ${props => props.disabled ? COLOR.BACKGROUND : COLOR.PRIMARY};
   color: ${COLOR.WHITE};
   border: none;
   padding: 14px 40px;
@@ -98,15 +117,19 @@ const StyledRegisterButton = styled.button`
   width: 100%;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
   }
 `
 
-const StyledUsernameNote = styled.p`
+const StyledUsernameNote = styled.p<NoteProps>`
   font-size: 14px;
-  color: ${COLOR.DANGER};
+  color: ${props => props?.isValid? "red" : "green"};
   margin-top: 10px;
 `
+
+StyledUsernameNote.defaultProps = {
+  isValid: false,
+}
 
 const StyledLabel = styled.label`
   font-size: 14px;
