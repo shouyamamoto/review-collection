@@ -1,8 +1,9 @@
+import { memo } from "react"
 import { selectUser } from "./features/users/userSlice"
 import { useSelector } from "react-redux"
 import { RegisterPopup } from "./RegisterPopup"
 
-export const Home = () => {
+export const Home = memo(() => {
   const user = useSelector(selectUser)
 
   return (
@@ -12,4 +13,4 @@ export const Home = () => {
       {user.displayName === null && <RegisterPopup />}
     </div>
   )
-}
+})
