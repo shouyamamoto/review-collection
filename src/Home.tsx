@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { selectUser } from "./features/users/userSlice"
 import { useSelector } from "react-redux"
 import { RegisterPopup } from "./RegisterPopup"
@@ -9,7 +8,8 @@ export const Home = () => {
   return (
     <div>
       Home
-      { !user.displayName && <RegisterPopup /> }
+      {/* 表示したいのは、ログイン後にuser.displayNameがnullの場合。 */}
+      {user.displayName === null && <RegisterPopup />}
     </div>
   )
 }

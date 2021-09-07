@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 const GlobalStyle = createGlobalStyle`
   ${reset}
   line-height: 1.6;
+  letter-spacing: 0.07em;
 `
 
 const App: React.VFC = () => {
