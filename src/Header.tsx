@@ -2,7 +2,7 @@ import { useState } from "react"
 import { selectUser } from "./features/users/userSlice"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import logo from "./images/logo.png"
+import logo from "./images/header-logo.svg"
 import styled from "styled-components"
 import { FiLogOut, FiUserCheck } from "react-icons/fi"
 import { COLOR } from "./Themes/Color"
@@ -26,7 +26,7 @@ export const Header = () => {
     <>
       <header>
         <StyledHeaderInner>
-          <Link to="/"><img src={logo} alt="Review-collection" width="80" height="80"/></Link>
+          <Link to="/"><img src={logo} alt="Review-collection" width="240"/></Link>
         { user.uid 
         ? 
           <StyledIconArea>
@@ -40,11 +40,11 @@ export const Header = () => {
               </StyledMenu>
             }
           </StyledIconArea>
-        : <StyledLoginBtn onClick={onClickModalHandler}>Login</StyledLoginBtn>
+        : <StyledLoginBtn onClick={onClickModalHandler}>Sign In</StyledLoginBtn>
         }
         </StyledHeaderInner>
       </header>
-      {isOpenModal && <Auth onClickModalHandler={onClickModalHandler} />}
+      {isOpenModal && <Auth modalHandler={onClickModalHandler} />}
     </>
   )
 }
@@ -53,7 +53,7 @@ const StyledHeaderInner = styled.div`
   width: 90%;
   margin: 0 auto;
   max-width: 900px;
-  padding: 10px 0;
+  padding: 24px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

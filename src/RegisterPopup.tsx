@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { auth } from "./firebase"
 import styled from "styled-components"
 import { COLOR } from "./Themes/Color"
+import Logo from "./images/header-logo.svg"
+import { toast } from "react-toastify"
 
 type NoteProps = {
   isValid: boolean;
@@ -24,9 +26,12 @@ export const RegisterPopup = memo(() => {
   const updateDisplayName = async () => {
     const currentUser = await auth.currentUser
 
-    await currentUser?.updateProfile({
+    currentUser?.updateProfile({
       displayName: inputUsername
-    }).catch(err => {
+    }).then(() => {
+      toast.success(`WellCome ${currentUser.displayName}`, {position: toast.POSITION.BOTTOM_RIGHT })
+    })
+    .catch(err => {
       console.error(err)
     })
 
@@ -49,9 +54,9 @@ export const RegisterPopup = memo(() => {
       { user.uid &&  
         <StyledModalInner>
           <StyledForm onSubmit={updateDisplayName}>
-            <StyledModalTitle>Who is?</StyledModalTitle>
+            <StyledLogo src={Logo} alt="" width="320" />
             <StyledInputArea>
-              <StyledLabel htmlFor="userName">ユーザー名</StyledLabel>
+              <StyledLabel htmlFor="userName">サービス内で使う名前を教えてください</StyledLabel>
               <StyledInput
                 id="userName" 
                 placeholder={user.displayName}
@@ -69,6 +74,14 @@ export const RegisterPopup = memo(() => {
     </StyledModal>
   )
 })
+
+const StyledLogo = styled.img`
+  text-align: center;
+  width: 80%;
+  max-width: 320px;
+  margin: 40px auto;
+  display: block;
+`
 
 const StyledModal = styled.div`
   position: fixed;
@@ -100,13 +113,6 @@ const StyledModalInner = styled.div`
   flex-direction: column;
 `
 
-const StyledModalTitle = styled.p`
-  font-weight: bold;
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 40px;
-`
-
 const StyledRegisterButton = styled.button`
   font-weight: bold;
   background-color: ${props => props.disabled ? COLOR.BACKGROUND : COLOR.PRIMARY};
@@ -127,14 +133,10 @@ const StyledUsernameNote = styled.p<NoteProps>`
   margin-top: 10px;
 `
 
-StyledUsernameNote.defaultProps = {
-  isValid: false,
-}
-
 const StyledLabel = styled.label`
-  font-size: 14px;
+  font-size: 16px;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 `
 
 const StyledInput = styled.input`
@@ -158,5 +160,5 @@ const StyledForm = styled.form`
 `
 
 const StyledInputArea = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 `
