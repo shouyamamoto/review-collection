@@ -1,13 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
-import { toast } from "react-toastify"
 
 const initialState = {
   user: {
     uid: "",
     displayName: "",
     photoUrl: "",
-    intro: "",
   }
 }
 
@@ -17,10 +15,9 @@ const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.user = action.payload
-      toast.success("login!", {position: toast.POSITION.BOTTOM_RIGHT })
     },
     logout: (state) => {
-      state.user = {uid: "", displayName: "", photoUrl: "", intro: ""}
+      state.user = {uid: "", displayName: "", photoUrl: ""}
     },
     updateUserName: (state, action) => {
       state.user.displayName = action.payload.displayName

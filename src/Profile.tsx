@@ -17,7 +17,8 @@ export const Profile = () => {
       <StyledIcon src={user.photoUrl} alt="" width="120" height="120"/>
       <div>
         <StyledName>{user.displayName}</StyledName>
-        <StyledIntro>{user.intro ? user.intro : "私はこんなものです。私はこんなものです。私はこんなものです。私はこんなものです。"}</StyledIntro>
+        <StyledIntro>私はこんなものです。私はこんなものです。私はこんなものです。私はこんなものです。</StyledIntro>
+        {/* <StyledIntro>{user.intro ? user.intro : "私はこんなものです。私はこんなものです。私はこんなものです。私はこんなものです。"}</StyledIntro> */}
         <StyledLinkLists>
           <StyledLinkItems><IconContext.Provider value={{ color: '#ccc', size: '24px' }}><AiFillGithub /></IconContext.Provider></StyledLinkItems>
           <StyledLinkItems><IconContext.Provider value={{ color: '#ccc', size: '24px' }}><FaTwitter /></IconContext.Provider></StyledLinkItems>
