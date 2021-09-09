@@ -1,11 +1,12 @@
 import { useState, memo } from 'react'
-import { selectUser, updateUserName } from "./features/users/userSlice"
+import { selectUser, updateUserName } from "../../features/users/userSlice"
 import { useDispatch, useSelector } from "react-redux"
-import { auth } from "./firebase"
+import { auth } from "../../firebase"
 import styled from "styled-components"
-import { COLOR } from "./Themes/Color"
-import Logo from "./images/header-logo.svg"
+import { COLOR } from "../../Themes/Color"
+import Logo from "../../images/header-logo.svg"
 import { toast } from "react-toastify"
+import { InputName } from "../molecules/InputName"
 
 type NoteProps = {
   isValid: boolean;
@@ -17,7 +18,7 @@ const userNameValid = {
   errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
 }
 
-export const RegisterPopup = memo(() => {
+export const UserNameRegister = memo(() => {
   const [inputUsername, setInputUsername] = useState("")
   const [isOpenModal, setIsOpenModal] = useState(false)
   const user = useSelector(selectUser)
@@ -45,33 +46,27 @@ export const RegisterPopup = memo(() => {
   }
 
   const handleOnChange = (e: any) => {
-    return setInputUsername(e.target.value)
+    setInputUsername(e.target.value)
   }
 
   return (
+    <>
+    { user.uid &&  
     <StyledModal>
       <StyledModalMask />
-      { user.uid &&  
         <StyledModalInner>
           <StyledForm onSubmit={updateDisplayName}>
             <StyledLogo src={Logo} alt="" width="320" />
             <StyledInputArea>
-              <StyledLabel htmlFor="userName">サービス内で使う名前を教えてください</StyledLabel>
-              <StyledInput
-                id="userName" 
-                placeholder={user.displayName}
-                value={inputUsername}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e) }
-                autoFocus
-                autoComplete="off"
-              />
+              <InputName inputUsername={inputUsername} handleChange={handleOnChange}/>
               <StyledUsernameNote isValid={!isUserNameValid()}>{userNameValid.errorMessage}</StyledUsernameNote>
             </StyledInputArea>
             <StyledRegisterButton type="submit" onClick={() => setIsOpenModal(!isOpenModal)} disabled={!isUserNameValid()}>登録する</StyledRegisterButton>
           </StyledForm>
         </StyledModalInner>
-      }
     </StyledModal>
+    }
+    </>
   )
 })
 
@@ -131,28 +126,6 @@ const StyledUsernameNote = styled.p<NoteProps>`
   font-size: 14px;
   color: ${props => props?.isValid? "red" : "green"};
   margin-top: 10px;
-`
-
-const StyledLabel = styled.label`
-  font-size: 16px;
-  display: block;
-  margin-bottom: 14px;
-`
-
-const StyledInput = styled.input`
-  border-radius: 4px;
-  border: 1px solid rgba(0,0,0, 24%);
-  padding: 14px 20px;
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  outline: none;
-  box-sizing: border-box;
-  caret-color: ${COLOR.PRIMARY};
-
-  &:focus {
-    border: 1px solid ${COLOR.PRIMARY};
-  }
 `
 
 const StyledForm = styled.form`

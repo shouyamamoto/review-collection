@@ -1,11 +1,11 @@
 import React from 'react'
-import { selectUser } from "./features/users/userSlice"
+import { selectUser } from "../../features/users/userSlice"
 import { useSelector } from "react-redux"
 import { IconContext } from 'react-icons'
 import { AiFillGithub, AiOutlineLink } from "react-icons/ai"
 import { FaTwitter } from "react-icons/fa"
 import styled from "styled-components"
-import { COLOR } from "./Themes/Color"
+import { COLOR } from "../../Themes/Color"
 
 export const Profile = () => {
   const user = useSelector(selectUser)
