@@ -1,19 +1,25 @@
-// import React from 'react'
+import { VFC } from 'react'
 import { useHistory } from "react-router-dom"
-import { auth, githubProvider, googleProvider } from "./firebase"
+import { auth, githubProvider, googleProvider } from "../../firebase"
 import { FaGithub, FaGoogle } from "react-icons/fa"
 import styled from "styled-components"
-import { COLOR } from "./Themes/Color"
-import LoginImg from "./images/header-logo.svg"
+import { COLOR } from "../../Themes/Color"
+import LoginImg from "../../images/logo.svg"
 import { toast } from "react-toastify"
+import { SignInButton } from "../atom/button/SignInButton"
+import { DEVICE } from "../../Themes/Device"
 
-export const Auth = ({ modalHandler }: any) => {
+type Props = {
+  modalHandler: () => void;
+}
+
+export const Auth:VFC<Props> = ({ modalHandler }) => {
   const history = useHistory()
 
-  const signIn = (provider: any) => {
+  const signIn = (provider: any):void => {
     auth.signInWithPopup(provider)
       .then(() => {
-        modalHandler(false)
+        modalHandler()
         history.push(`/`)
         toast.success("login!", {position: toast.POSITION.BOTTOM_RIGHT })
       })
@@ -28,21 +34,18 @@ export const Auth = ({ modalHandler }: any) => {
       <ModalInner>
         <img src={LoginImg} alt="" width="240" />
         <StyledModalTitle>レビューはきっと宝になる。</StyledModalTitle>
-        <LoginList>
-          <LoginItem><StyledButton onClick={() => signIn(githubProvider)}><StyledFaGithub />Sign in with Github</StyledButton></LoginItem>
-          <LoginItem><StyledButton onClick={() => signIn(googleProvider)}><StyledFaGoogle />Sign in with Google</StyledButton></LoginItem>
-        </LoginList>
+        <ul>
+          <LoginItem>
+            <SignInButton onClick={() => signIn(githubProvider)} icon={<StyledFaGithub />}>Sign in with Github</SignInButton>
+          </LoginItem>
+          <LoginItem>
+            <SignInButton onClick={() => signIn(googleProvider)} icon={<StyledFaGoogle />}>Sign in with Google</SignInButton>
+          </LoginItem>
+        </ul>
       </ModalInner>
     </Modal>
   )
 }
-
-const StyledModalTitle = styled.h2`
-  font-size: 20px;
-  font-weight: bold;
-  color: ${COLOR.PRIMARY};
-  margin: 32px 0;
-`
 
 const Modal = styled.div`
   position: fixed;
@@ -63,42 +66,33 @@ const ModalInner = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 40px 100px;
   background-color: ${COLOR.WHITE}; 
-  width: 400px;
-  height: 320px;
+  width: 90vw;
+  max-width: 600px;
+  height: 400px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   box-shadow: 0 2.5rem 2rem -2rem hsl(200 50% 20% / 40%);
+
+
+  @media ${DEVICE.tabletL} {
+    width: 70vw;
+  }
 `
 
-const LoginList = styled.ul``
+const StyledModalTitle = styled.h2`
+  font-size: 20px;
+  font-weight: bold;
+  color: ${COLOR.PRIMARY};
+  margin: 32px 0;
+`
 
 const LoginItem = styled.li`
   &:not(:last-child) {
     padding-bottom: 20px;
-  }
-`
-
-const StyledButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 14px 60px;
-  border: none;
-  width: 100%;
-  font-size: 18px;
-  transition: background-color 0.3s, color 0.3s;
-  border-radius: 10px;
-  background-color: ${COLOR.BACKGROUND};
-
-  &:hover {
-    cursor: pointer;
-    background-color: ${COLOR.PRIMARY};
-    color: ${COLOR.WHITE};
   }
 `
 

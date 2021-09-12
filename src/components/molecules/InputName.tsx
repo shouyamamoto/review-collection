@@ -4,7 +4,7 @@ import { index as Input } from "../atom/input/index"
 
 type Props = {
   inputUsername: string;
-  handleChange: (e: any) => void;
+  handleChange: (value: string) => void;
 }
 
 export const InputName:VFC<Props> = ({ inputUsername, handleChange }) => {

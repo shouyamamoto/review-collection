@@ -1,16 +1,18 @@
+import { VFC } from "react"
 import { useState, memo } from 'react'
 import { selectUser, updateUserName } from "../../features/users/userSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { auth } from "../../firebase"
 import styled from "styled-components"
-import { COLOR } from "../../Themes/Color"
-import Logo from "../../images/header-logo.svg"
 import { toast } from "react-toastify"
-import { InputName } from "../molecules/InputName"
 
-type NoteProps = {
-  isValid: boolean;
-}
+import { RegisterButton } from "../atom/button/RegisterButton"
+import { ErrorMsg } from "../atom/text/ErrorMsg"
+import { InputName } from "../molecules/InputName"
+import { COLOR } from "../../Themes/Color"
+
+import Logo from "../../images/logo.svg"
+import { DEVICE } from '../../Themes/Device'
 
 const userNameValid = {
   maxLength: 15,
@@ -18,7 +20,7 @@ const userNameValid = {
   errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
 }
 
-export const UserNameRegister = memo(() => {
+export const UserNameRegister:VFC = memo(() => {
   const [inputUsername, setInputUsername] = useState("")
   const [isOpenModal, setIsOpenModal] = useState(false)
   const user = useSelector(selectUser)
@@ -45,8 +47,8 @@ export const UserNameRegister = memo(() => {
     return inputUsername.length <= userNameValid.maxLength && inputUsername.length >= userNameValid.minLength
   }
 
-  const handleOnChange = (e: any) => {
-    setInputUsername(e.target.value)
+  const handleOnChange = (value: string) => {
+    setInputUsername(value)
   }
 
   return (
@@ -56,12 +58,19 @@ export const UserNameRegister = memo(() => {
       <StyledModalMask />
         <StyledModalInner>
           <StyledForm onSubmit={updateDisplayName}>
-            <StyledLogo src={Logo} alt="" width="320" />
+            <StyledLogo src={Logo} alt="" />
             <StyledInputArea>
               <InputName inputUsername={inputUsername} handleChange={handleOnChange}/>
-              <StyledUsernameNote isValid={!isUserNameValid()}>{userNameValid.errorMessage}</StyledUsernameNote>
+              <ErrorMsg isUserNameValid={isUserNameValid}>{userNameValid.errorMessage}</ErrorMsg>
             </StyledInputArea>
-            <StyledRegisterButton type="submit" onClick={() => setIsOpenModal(!isOpenModal)} disabled={!isUserNameValid()}>登録する</StyledRegisterButton>
+            <RegisterButton 
+              type="submit" 
+              onClick={() => setIsOpenModal(!isOpenModal)} 
+              isUserNameValid={isUserNameValid} 
+              isOpenModal={isOpenModal}
+            >
+              登録する
+            </RegisterButton>
           </StyledForm>
         </StyledModalInner>
     </StyledModal>
@@ -69,14 +78,6 @@ export const UserNameRegister = memo(() => {
     </>
   )
 })
-
-const StyledLogo = styled.img`
-  text-align: center;
-  width: 80%;
-  max-width: 320px;
-  margin: 40px auto;
-  display: block;
-`
 
 const StyledModal = styled.div`
   position: fixed;
@@ -97,35 +98,19 @@ const StyledModalInner = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 40px 100px;
   background-color: ${COLOR.WHITE}; 
-  width: 500px;
+  width: 90vw;
+  max-width: 600px;
   height: 400px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`
 
-const StyledRegisterButton = styled.button`
-  font-weight: bold;
-  background-color: ${props => props.disabled ? COLOR.BACKGROUND : COLOR.PRIMARY};
-  color: ${COLOR.WHITE};
-  border: none;
-  padding: 14px 40px;
-  border-radius: 10px;
-  width: 100%;
-
-  &:hover {
-    cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
+  @media ${DEVICE.tabletL} {
+    width: 70vw;
   }
-`
-
-const StyledUsernameNote = styled.p<NoteProps>`
-  font-size: 14px;
-  color: ${props => props?.isValid? "red" : "green"};
-  margin-top: 10px;
 `
 
 const StyledForm = styled.form`
@@ -134,4 +119,12 @@ const StyledForm = styled.form`
 
 const StyledInputArea = styled.div`
   margin-bottom: 32px;
+`
+
+const StyledLogo = styled.img`
+  text-align: center;
+  width: 80%;
+  max-width: 320px;
+  margin: 0 auto 40px;
+  display: block;
 `

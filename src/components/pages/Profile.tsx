@@ -1,43 +1,41 @@
-import React from 'react'
+import { VFC } from "react"
 import { selectUser } from "../../features/users/userSlice"
 import { useSelector } from "react-redux"
-import { IconContext } from 'react-icons'
-import { AiFillGithub, AiOutlineLink } from "react-icons/ai"
-import { FaTwitter } from "react-icons/fa"
 import styled from "styled-components"
 import { COLOR } from "../../Themes/Color"
+import { index as Icon } from "../atom/icon/index"
+import { SocialIcons } from "../molecules/SocialIcons"
+import { DEVICE } from "../../Themes/Device"
 
-export const Profile = () => {
+export const Profile: VFC = () => {
   const user = useSelector(selectUser)
 
   return (
     <>
     <StyledProfile>
       <StyledProfileInner>
-      <StyledIcon src={user.photoUrl} alt="" width="120" height="120"/>
-      <div>
+      <Icon src={user.photoUrl} width="120" height="120" />
+      <StyledProfileDesc>
         <StyledName>{user.displayName}</StyledName>
         <StyledIntro>私はこんなものです。私はこんなものです。私はこんなものです。私はこんなものです。</StyledIntro>
-        {/* <StyledIntro>{user.intro ? user.intro : "私はこんなものです。私はこんなものです。私はこんなものです。私はこんなものです。"}</StyledIntro> */}
-        <StyledLinkLists>
-          <StyledLinkItems><IconContext.Provider value={{ color: '#ccc', size: '24px' }}><AiFillGithub /></IconContext.Provider></StyledLinkItems>
-          <StyledLinkItems><IconContext.Provider value={{ color: '#ccc', size: '24px' }}><FaTwitter /></IconContext.Provider></StyledLinkItems>
-          <StyledLinkItems><IconContext.Provider value={{ color: '#ccc', size: '24px' }}><AiOutlineLink /></IconContext.Provider></StyledLinkItems>
-        </StyledLinkLists>
-      </div>
+        {/* <StyledIntro>{user.comment ? user.comment : "私はこんなものです。私はこんなものです。私はこんなものです。私はこんなものです。"}</StyledIntro> */}
+        <SocialIcons />
+      </StyledProfileDesc>
       </StyledProfileInner>
     </StyledProfile>
 
     <StyledPosts>
-
     </StyledPosts>
     </>
   )
 }
 
-const StyledIcon = styled.img`
-  border-radius: 50%;
-  margin-right: 40px;
+const StyledProfileDesc = styled.div`
+  margin: 14px 0;
+  @media ${DEVICE.tabletL} {
+    width: 75%;
+    max-width: 900px;
+  }
 `
 
 const StyledProfile = styled.div`
@@ -47,31 +45,42 @@ const StyledProfile = styled.div`
 
 const StyledProfileInner = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   width: 90%;
-  max-width: 900px;
   margin: 0 auto;
-  height: 280px;
+  height: 320px;
+  justify-content: center;
+
+  @media ${DEVICE.tabletL} {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 280px;
+    max-width: 800px;
+    width: 80%;
+  }
+  @media ${DEVICE.laptop} {
+    justify-content: space-around;
+  }
 `
 
 const StyledIntro = styled.p`
-  max-width: 600px;
-  line-height: 1.6;
+  font-size: 14px;
   margin-bottom: 14px;
+
+  @media ${DEVICE.laptop} {
+    font-size: 16px;
+  }
 `
 
 const StyledName = styled.h1`
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
-`
 
-const StyledLinkLists = styled.ul`
-  display: flex;
-`
-
-const StyledLinkItems = styled.li`
-  margin-right: 10px;
+  @media ${DEVICE.laptop} {
+    font-size: 24px;
+  }
 `
 
 const StyledPosts = styled.div`

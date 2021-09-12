@@ -4,17 +4,29 @@ import { login, logout } from "./features/users/userSlice"
 import { useDispatch } from "react-redux"
 import { Home } from "./components/pages/Home"
 import { Profile } from "./components/pages/Profile"
-import { Header } from "./Header"
+import { Header } from "./components/organisms/Header"
 import { BrowserRouter, Route } from "react-router-dom"
-import reset from "styled-reset"
+// import reset from "styled-reset"
 import { createGlobalStyle } from "styled-components"
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 
 const GlobalStyle = createGlobalStyle`
-  ${reset}
+* {
   line-height: 1.6;
   letter-spacing: 0.07em;
+  padding: 0;
+  margin: 0;
+} 
+ul,li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
 `
 
 const App: React.VFC = () => {

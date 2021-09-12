@@ -4,7 +4,7 @@ import { COLOR } from "../../../Themes/Color"
 
 type Props = {
   inputUsername: string;
-  handleChange: (e: any) => void;
+  handleChange: (e: string) => void;
 }
 
 export const index:VFC<Props> = ({ inputUsername, handleChange }) => {
@@ -12,7 +12,7 @@ export const index:VFC<Props> = ({ inputUsername, handleChange }) => {
     <StyledInput
       type="text"
       value={inputUsername}
-      onChange={(e) => handleChange(e)}
+      onChange={(e) => handleChange(e.target.value)}
       autoFocus
       autoComplete="off"
     />
