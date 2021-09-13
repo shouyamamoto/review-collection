@@ -6,7 +6,6 @@ const initialState = {
     uid: "",
     displayName: "",
     photoUrl: "",
-    comment: "",
   }
 }
 
@@ -18,7 +17,7 @@ const userSlice = createSlice({
       state.user = action.payload
     },
     logout: (state) => {
-      state.user = {uid: "", displayName: "", photoUrl: "", comment: ""}
+      state.user = {uid: "", displayName: "", photoUrl: ""}
     },
     updateUserName: (state, action) => {
       state.user.displayName = action.payload.displayName
