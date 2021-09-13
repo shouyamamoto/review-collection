@@ -1,15 +1,14 @@
-import { useEffect } from 'react'
-import { auth } from "./firebase"
-import { login, logout } from "./features/users/userSlice"
-import { useDispatch } from "react-redux"
-import { Home } from "./components/pages/Home"
-import { Profile } from "./components/pages/Profile"
-import { Header } from "./components/organisms/Header"
-import { BrowserRouter, Route } from "react-router-dom"
-// import reset from "styled-reset"
-import { createGlobalStyle } from "styled-components"
+import { useEffect } from "react";
+import { auth } from "./firebase";
+import { login, logout } from "./features/users/userSlice";
+import { useDispatch } from "react-redux";
+import { Home } from "./components/pages/Home";
+import { Profile } from "./components/pages/Profile";
+import { Header } from "./components/organisms/Header";
+import { BrowserRouter, Route } from "react-router-dom";
+import { createGlobalStyle } from "styled-components";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.min.css';
+import "react-toastify/dist/ReactToastify.min.css";
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -27,25 +26,27 @@ a {
   text-decoration: none;
   color: black;
 }
-`
+`;
 
 const App: React.VFC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const unSub = auth.onAuthStateChanged(authUser => {
-      if(authUser) {
-        dispatch(login({
-          uid: authUser.uid,
-          displayName: authUser.displayName,
-          photoUrl: authUser.photoURL,
-        }))
+    const unSub = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        dispatch(
+          login({
+            uid: authUser.uid,
+            displayName: authUser.displayName,
+            photoUrl: authUser.photoURL,
+          })
+        );
       } else {
-        dispatch(logout())
+        dispatch(logout());
       }
-    })
-    return () => unSub()
-  }, [dispatch])
+    });
+    return () => unSub();
+  }, [dispatch]);
 
   return (
     <>
@@ -59,9 +60,9 @@ const App: React.VFC = () => {
           <Profile />
         </Route>
       </BrowserRouter>
-      <ToastContainer autoClose={2000}/>
+      <ToastContainer autoClose={2000} />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
