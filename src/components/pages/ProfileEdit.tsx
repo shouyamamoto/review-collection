@@ -65,7 +65,6 @@ export const ProfileEdit: VFC = () => {
     setBlogUrl(e.target.value);
   };
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // !は、nullまたはundefinedではないことを伝えるもの(TypeScript)
     if (e.target.files![0]) {
       setAvatar(e.target.files![0]);
       e.target.value = "";
