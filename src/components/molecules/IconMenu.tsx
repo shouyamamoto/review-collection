@@ -1,10 +1,10 @@
-import { VFC } from 'react'
-import { Link } from "react-router-dom"
+import { VFC } from "react";
+import { Link } from "react-router-dom";
 import MediaQuery from "react-responsive";
-import { FiLogOut, FiUserCheck } from "react-icons/fi"
-import styled from "styled-components"
-import { COLOR } from "../../Themes/Color"
-import { DEVICE } from "../../Themes/Device"
+import { FiLogOut, FiUserCheck } from "react-icons/fi";
+import styled from "styled-components";
+import { COLOR } from "../../Themes/Color";
+import { DEVICE } from "../../Themes/Device";
 
 type Props = {
   user: {
@@ -13,20 +13,37 @@ type Props = {
   };
   onClickMenuHandler: () => void;
   signOut: () => void;
-}
+};
 
-export const IconMenu:VFC<Props> = ({ user, onClickMenuHandler, signOut }) => {
+export const IconMenu: VFC<Props> = ({ user, onClickMenuHandler, signOut }) => {
   return (
     <StyledMenu>
-      <StyledMenuItem onClick={onClickMenuHandler}><StyledProfileLink to={`/${user.uid}`}>{`@ ${user.displayName}`}</StyledProfileLink></StyledMenuItem>
+      <StyledMenuItem onClick={onClickMenuHandler}>
+        <StyledProfileLink
+          to={`/${user.uid}`}
+        >{`@ ${user.displayName}`}</StyledProfileLink>
+      </StyledMenuItem>
       <MediaQuery query="(max-width: 767px)">
-        <StyledMenuItem><StyledProfileLink to={`/${user.uid}/edit`}><StyledUserEditIcon />記事を投稿する</StyledProfileLink></StyledMenuItem>
+        <StyledMenuItem>
+          <StyledProfileLink to={`/${user.uid}`}>
+            <StyledUserEditIcon />
+            記事を投稿する
+          </StyledProfileLink>
+        </StyledMenuItem>
       </MediaQuery>
-      <StyledMenuItem><StyledProfileLink to={`/${user.uid}/edit`}><StyledUserEditIcon />プロフィール編集</StyledProfileLink></StyledMenuItem>
-      <StyledMenuItem onClick={signOut}><StyledLogoutIcon />ログアウト</StyledMenuItem>
+      <StyledMenuItem onClick={onClickMenuHandler}>
+        <StyledProfileLink to={`/${user.uid}/profile/settings`}>
+          <StyledUserEditIcon />
+          プロフィール編集
+        </StyledProfileLink>
+      </StyledMenuItem>
+      <StyledMenuItem onClick={signOut}>
+        <StyledLogoutIcon />
+        ログアウト
+      </StyledMenuItem>
     </StyledMenu>
-  )
-}
+  );
+};
 
 const StyledMenu = styled.ul`
   position: absolute;
@@ -41,7 +58,7 @@ const StyledMenu = styled.ul`
     right: 140px;
     width: 240px;
   }
-`
+`;
 
 const StyledMenuItem = styled.li`
   display: flex;
@@ -49,7 +66,7 @@ const StyledMenuItem = styled.li`
   align-items: center;
   font-size: 14px;
 
-  &:first-child { 
+  &:first-child {
     border-bottom: 1px solid #04253f40;
   }
 
@@ -57,19 +74,19 @@ const StyledMenuItem = styled.li`
     padding: 14px 10px 14px 20px;
     border-top: 1px solid #04253f40;
   }
-  
+
   &:hover {
     cursor: pointer;
     background-color: #f1f5f9;
   }
-`
+`;
 
 const StyledLogoutIcon = styled(FiLogOut)`
   padding-right: 10px;
-`
+`;
 const StyledUserEditIcon = styled(FiUserCheck)`
   padding-right: 10px;
-`
+`;
 
 const StyledProfileLink = styled(Link)`
   display: block;
@@ -77,4 +94,4 @@ const StyledProfileLink = styled(Link)`
   padding: 14px 10px 14px 20px;
   color: ${COLOR.BLACK};
   text-decoration: none;
-`
+`;

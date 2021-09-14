@@ -4,6 +4,7 @@ import { login, logout } from "./features/users/userSlice";
 import { useDispatch } from "react-redux";
 import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile";
+import { ProfileEdit } from "./components/pages/ProfileEdit";
 import { Header } from "./components/organisms/Header";
 import { BrowserRouter, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
@@ -58,6 +59,9 @@ const App: React.VFC = () => {
         </Route>
         <Route exact path="/:userId">
           <Profile />
+        </Route>
+        <Route exact path="/:userId/profile/settings">
+          <ProfileEdit />
         </Route>
       </BrowserRouter>
       <ToastContainer autoClose={2000} />

@@ -1,27 +1,29 @@
-import { VFC } from 'react'
-import styled from "styled-components"
-import { COLOR } from "../../../Themes/Color"
+import { VFC } from "react";
+import styled from "styled-components";
+import { COLOR } from "../../../Themes/Color";
 
 type Props = {
+  placeholder?: string;
   inputUsername: string;
-  handleChange: (e: string) => void;
-}
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-export const index:VFC<Props> = ({ inputUsername, handleChange }) => {
+export const index: VFC<Props> = ({ placeholder, inputUsername, onChange }) => {
   return (
     <StyledInput
       type="text"
       value={inputUsername}
-      onChange={(e) => handleChange(e.target.value)}
+      onChange={(e) => onChange(e)}
       autoFocus
       autoComplete="off"
+      placeholder={placeholder}
     />
-  )
-}
+  );
+};
 
 const StyledInput = styled.input`
   border-radius: 4px;
-  border: 1px solid rgba(0,0,0, 24%);
+  border: 1px solid rgba(0, 0, 0, 24%);
   padding: 14px 20px;
   display: block;
   width: 100%;
@@ -33,4 +35,4 @@ const StyledInput = styled.input`
   &:focus {
     border: 1px solid ${COLOR.PRIMARY};
   }
-`
+`;
