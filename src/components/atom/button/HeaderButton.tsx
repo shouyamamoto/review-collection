@@ -1,10 +1,10 @@
-import { VFC } from "react";
+import React, { VFC } from "react";
 import styled from "styled-components";
 import { COLOR } from "../../../Themes/Color";
 import { StyledButton } from "./index";
 
 type Props = {
-  children: string;
+  children: React.ReactNode;
   onClick?: () => void;
 };
 

@@ -11,14 +11,14 @@ type Props = {
     uid: string;
     displayName: string;
   };
-  onClickMenuHandler: () => void;
+  onClick: () => void;
   signOut: () => void;
 };
 
-export const IconMenu: VFC<Props> = ({ user, onClickMenuHandler, signOut }) => {
+export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
   return (
     <StyledMenu>
-      <StyledMenuItem onClick={onClickMenuHandler}>
+      <StyledMenuItem onClick={onClick}>
         <StyledProfileLink
           to={`/${user.uid}`}
         >{`@ ${user.displayName}`}</StyledProfileLink>
@@ -31,7 +31,7 @@ export const IconMenu: VFC<Props> = ({ user, onClickMenuHandler, signOut }) => {
           </StyledProfileLink>
         </StyledMenuItem>
       </MediaQuery>
-      <StyledMenuItem onClick={onClickMenuHandler}>
+      <StyledMenuItem onClick={onClick}>
         <StyledProfileLink to={`/${user.uid}/profile/settings`}>
           <StyledUserEditIcon />
           プロフィール編集

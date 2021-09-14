@@ -9,12 +9,13 @@ import { toast } from "react-toastify";
 import { SignInButton } from "../atom/button/SignInButton";
 import { DEVICE } from "../../Themes/Device";
 import { db } from "../../firebase";
+import firebase from "firebase/app";
 
 type Props = {
   modalHandler: () => void;
 };
 
-const findUserId = async (user: any, userId: any) => {
+const findUserId = async (user: firebase.User | null, userId: string) => {
   await db
     .collection("users")
     .where("uid", "==", `${user?.uid}`)
@@ -28,7 +29,7 @@ const findUserId = async (user: any, userId: any) => {
     });
 };
 
-const createUserCollection = async (user: any) =>
+const createUserCollection = async (user: firebase.User | null) =>
   await db.collection("users").add({
     uid: user!.uid,
     username: user!.displayName,
@@ -44,13 +45,32 @@ const createUserCollection = async (user: any) =>
 export const Auth: VFC<Props> = ({ modalHandler }) => {
   const history = useHistory();
 
-  const signIn = (provider: any) => {
+  const signInWithGithub = () => {
     auth
-      .signInWithPopup(provider)
+      .signInWithPopup(githubProvider)
       .then(async ({ user }) => {
         modalHandler();
         // もしログインしたユーザのidをもつコレクションが存在すればusersコレクションに追加しない
-        let userId;
+        let userId = "";
+        findUserId(user, userId);
+        if (!userId) {
+          createUserCollection(user);
+        }
+        history.push(`/`);
+        toast.success("Sign In!", { position: toast.POSITION.BOTTOM_RIGHT });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const signInWithGoogle = () => {
+    auth
+      .signInWithPopup(googleProvider)
+      .then(async ({ user }) => {
+        modalHandler();
+        // もしログインしたユーザのidをもつコレクションが存在すればusersコレクションに追加しない
+        let userId = "";
         findUserId(user, userId);
         if (!userId) {
           createUserCollection(user);
@@ -71,18 +91,14 @@ export const Auth: VFC<Props> = ({ modalHandler }) => {
         <StyledModalTitle>レビューはきっと宝になる。</StyledModalTitle>
         <ul>
           <LoginItem>
-            <SignInButton
-              onClick={() => signIn(githubProvider)}
-              icon={<StyledFaGithub />}
-            >
+            <SignInButton onClick={signInWithGithub}>
+              <StyledFaGithub />
               Sign in with Github
             </SignInButton>
           </LoginItem>
           <LoginItem>
-            <SignInButton
-              onClick={() => signIn(googleProvider)}
-              icon={<StyledFaGoogle />}
-            >
+            <SignInButton onClick={signInWithGoogle}>
+              <StyledFaGoogle />
               Sign in with Google
             </SignInButton>
           </LoginItem>
