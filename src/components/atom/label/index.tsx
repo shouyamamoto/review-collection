@@ -11,9 +11,10 @@ export const index: VFC<Props> = ({ children }) => {
 };
 
 const StyledLabel = styled.label`
-  font-size: 14px;
+  font-size: 12px;
   display: inline-block;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
+  font-weight: bold;
 
   @media ${DEVICE.mobileL} {
     font-size: 16px;

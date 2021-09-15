@@ -2,7 +2,7 @@ import { VFC } from "react";
 import { useState, memo } from "react";
 import { selectUser, updateUserName } from "../../features/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 
@@ -26,14 +26,24 @@ export const UserNameRegister: VFC = memo(() => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  const updateDisplayName = async () => {
-    const currentUser = await auth.currentUser;
+  const updateDisplayName = () => {
+    const currentUser = auth.currentUser;
 
     currentUser
       ?.updateProfile({
         displayName: inputUsername,
       })
       .then(() => {
+        db.collection("users")
+          .where("uid", "==", `${user.uid}`)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              db.collection("users").doc(doc.id).update({
+                username: inputUsername,
+              });
+            });
+          });
         toast.success(`WellCome ${currentUser.displayName}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
         });

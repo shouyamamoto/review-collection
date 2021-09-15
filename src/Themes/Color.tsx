@@ -5,7 +5,8 @@ export const COLOR = {
   BACKGROUND: "#f3f4f4",
   WHITE: "#ffffff",
   BLACK: "#000000",
+  GRAY: "#93a5b1",
   DANGER: "#DA5040",
   GRADATION: "linear-gradient(to right, #25bcbf, #3177b3)",
-  TRANSPARENT: "transparent"
-}
+  TRANSPARENT: "transparent",
+};
