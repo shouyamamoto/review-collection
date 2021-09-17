@@ -9,7 +9,7 @@ import { DEVICE } from "../../Themes/Device";
 type Props = {
   user: {
     uid: string;
-    displayName: string;
+    username: string;
   };
   onClick: () => void;
   signOut: () => void;
@@ -21,7 +21,7 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
       <StyledMenuItem onClick={onClick}>
         <StyledProfileLink
           to={`/${user.uid}`}
-        >{`@ ${user.displayName}`}</StyledProfileLink>
+        >{`@ ${user.username}`}</StyledProfileLink>
       </StyledMenuItem>
       <MediaQuery query="(max-width: 767px)">
         <StyledMenuItem>

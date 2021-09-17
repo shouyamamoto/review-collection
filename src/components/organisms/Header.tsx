@@ -8,7 +8,7 @@ import { auth } from "../../firebase";
 import { Auth } from "./Auth";
 import logo from "../../images/logo.svg";
 
-import { HeaderButton } from "../atom/button/HeaderButton";
+import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { IconWithPostButton } from "../molecules/IconWithPostButton";
 
 import { DEVICE } from "../../Themes/Device";
@@ -42,7 +42,7 @@ export const Header: VFC = () => {
               signOut={signOut}
             />
           ) : (
-            <HeaderButton onClick={onClickModalHandler}>Sign In</HeaderButton>
+            <PrimaryButton onClick={onClickModalHandler}>Sign In</PrimaryButton>
           )}
         </StyledHeaderInner>
       </header>

@@ -5,31 +5,23 @@ import { COLOR } from "../../../Themes/Color";
 type Props = {
   placeholder?: string;
   inputUsername: string;
-  defaultValue?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-export const index: VFC<Props> = ({
-  placeholder,
-  inputUsername,
-  defaultValue,
-  onChange,
-}) => {
+export const index: VFC<Props> = ({ placeholder, inputUsername, onChange }) => {
   return (
-    <StyledInput
-      type="text"
+    <StyledTextArea
       value={inputUsername}
       onChange={(e) => onChange(e)}
-      autoComplete="off"
       placeholder={placeholder}
     />
   );
 };
 
-const StyledInput = styled.input`
+const StyledTextArea = styled.textarea`
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 24%);
-  padding: 10px 20px;
+  padding: 14px 20px;
   display: block;
   width: 100%;
   font-size: 16px;

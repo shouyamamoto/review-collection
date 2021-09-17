@@ -26,7 +26,8 @@ export const UserNameRegister: VFC = memo(() => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  const updateDisplayName = () => {
+  const updateDisplayName = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const currentUser = auth.currentUser;
 
     currentUser
@@ -85,7 +86,7 @@ export const UserNameRegister: VFC = memo(() => {
                   inputUsername={inputUsername}
                   onChange={onChangeUsername}
                 />
-                <ErrorMsg isUserNameValid={isUserNameValid}>
+                <ErrorMsg isValid={isUserNameValid}>
                   {userNameValid.errorMessage}
                 </ErrorMsg>
               </StyledInputArea>

@@ -3,14 +3,14 @@ import styled from "styled-components";
 import MediaQuery from "react-responsive";
 import { DEVICE } from "../../Themes/Device";
 import { index as Icon } from "../atom/icon/index";
-import { HeaderButton } from "../atom/button/HeaderButton";
+import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { IconMenu } from "../molecules/IconMenu";
 
 type Props = {
   user: {
     uid: string;
-    displayName: string;
-    photoUrl: string;
+    username: string;
+    avatar: string;
   };
   isOpenMenu: boolean;
   onClick: () => void;
@@ -21,9 +21,9 @@ export const IconWithPostButton: VFC<Props> = memo(
   ({ user, isOpenMenu, onClick, signOut }) => {
     return (
       <StyledIconArea>
-        <Icon src={user.photoUrl} width="50" height="50" onClick={onClick} />
+        <Icon src={user.avatar} width="50" height="50" onClick={onClick} />
         <MediaQuery query={`${DEVICE.tabletL}`}>
-          <HeaderButton>Add Post</HeaderButton>
+          <PrimaryButton>Add Post</PrimaryButton>
         </MediaQuery>
         {isOpenMenu && (
           <IconMenu user={user} onClick={onClick} signOut={signOut} />

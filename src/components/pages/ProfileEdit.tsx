@@ -1,20 +1,70 @@
-import { VFC, useState, useEffect } from "react";
+import { VFC, useState, useEffect, useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import { updateUserProfile } from "../../features/users/userSlice";
+import { useDispatch } from "react-redux";
 import { storage, db } from "../../firebase";
 import firebase from "firebase/app";
 import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
 import { InputText } from "../molecules/InputText";
+import { InputTextArea } from "../molecules/InputTextArea";
 import { index as Icon } from "../atom/icon/index";
+import { PrimaryButton } from "../atom/button/PrimaryButton";
+import { ErrorMsg } from "../atom/text/ErrorMsg";
 import styled from "styled-components";
 import { COLOR } from "../../Themes/Color";
 
 type profile = {
+  uid: string;
   avatar: string;
   username: string;
   comment: string;
   githubName: string;
   twitterName: string;
   blogURL: string;
+};
+
+const validations = {
+  username: {
+    maxLength: 15,
+    minLength: 2,
+    errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
+  },
+  comment: {
+    maxLength: 100,
+    errorMessage: "※100文字以下にしてください。",
+  },
+  blogUrl: {
+    minLength: 0,
+    regex: /^https?:\/\//,
+    errorMessage: "※httpまたはhttpsから始まるURLを入力してください。",
+  },
+};
+
+const isUserNameValid = (username: string) => {
+  return (
+    username.length <= validations.username.maxLength &&
+    username.length >= validations.username.minLength
+  );
+};
+
+const isCommentValid = (comment: string) => {
+  return comment.length <= validations.comment.maxLength;
+};
+
+const isBlogUrlValid = (blogUrl: string) => {
+  return (
+    validations.blogUrl.minLength === blogUrl.length ||
+    validations.blogUrl.regex.test(blogUrl)
+  );
+};
+
+const isValidCheck = (username: string, comment: string, blogUrl: string) => {
+  return (
+    isUserNameValid(username) &&
+    isCommentValid(comment) &&
+    isBlogUrlValid(blogUrl)
+  );
 };
 
 const uniqueFileName = (file: any) => {
@@ -28,13 +78,16 @@ const uniqueFileName = (file: any) => {
 
 export const ProfileEdit: VFC = () => {
   const user = useSelector(selectUser);
-  const [avatar, setAvatar] = useState(user.photoUrl);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [avatar, setAvatar] = useState(user.avatar);
   const [username, setUsername] = useState("");
   const [comment, setComment] = useState("");
   const [githubName, setGithubName] = useState("");
   const [twitterName, setTwitterName] = useState("");
   const [blogUrl, setBlogUrl] = useState("");
   const [profile, setProfile] = useState<profile>({
+    uid: "",
     avatar: "",
     username: "",
     comment: "",
@@ -42,6 +95,7 @@ export const ProfileEdit: VFC = () => {
     twitterName: "",
     blogURL: "",
   });
+  const [isSend, setIsSend] = useState(false);
 
   useEffect(() => {
     db.collection("users")
@@ -50,10 +104,11 @@ export const ProfileEdit: VFC = () => {
       .then((snapshot) =>
         snapshot.forEach((doc) => {
           setProfile({
+            uid: doc.data().uid,
             avatar: doc.data().avatar,
             username: doc.data().username,
             comment: doc.data().comment,
-            githubName: doc.data().githubName,
+            githubName: doc.data().gitHubName,
             twitterName: doc.data().twitterName,
             blogURL: doc.data().blogURL,
           });
@@ -61,60 +116,115 @@ export const ProfileEdit: VFC = () => {
       );
   }, [user.uid]);
 
+  useEffect(() => {
+    if (isValidCheck(username, comment, blogUrl)) {
+      setIsSend(true);
+    } else {
+      setIsSend(false);
+    }
+  }, [username, comment, blogUrl]);
+
   const onChangeInputState = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
     setFunction: (e: string) => void
   ) => {
     setFunction(e.target.value);
   };
 
-  const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files![0]) {
-      const fileName = uniqueFileName(e.target.files![0]);
-      const uploadAvatar = storage
-        .ref(`images/${fileName}`)
-        .put(e.target.files![0]);
-      uploadAvatar.on(
-        firebase.storage.TaskEvent.STATE_CHANGED,
-        () => {},
-        (err) => {
-          alert(err.message);
-        },
-        async () => {
-          await storage
-            .ref("images")
-            .child(fileName)
-            .getDownloadURL()
-            .then((url) => {
-              setAvatar(url);
-              e.target.value = "";
+  const onChangeImageHandler = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files![0]) {
+        const fileName = uniqueFileName(e.target.files![0]);
+        const uploadAvatar = storage
+          .ref(`images/${fileName}`)
+          .put(e.target.files![0]);
+        uploadAvatar.on(
+          firebase.storage.TaskEvent.STATE_CHANGED,
+          () => {},
+          (err) => {
+            alert(err.message);
+          },
+          async () => {
+            await storage
+              .ref("images")
+              .child(fileName)
+              .getDownloadURL()
+              .then((url) => {
+                setAvatar(url);
+                e.target.value = "";
+              });
+          }
+        );
+      }
+    },
+    []
+  );
+
+  const onUpdate = () => {
+    db.collection("users")
+      .where("uid", "==", `${user.uid}`)
+      .get()
+      .then((snapshot) =>
+        snapshot.forEach((doc) => {
+          db.collection("users")
+            .doc(doc.id)
+            .update({
+              avatar: avatar ? avatar : profile.avatar,
+              blogURL: blogUrl ? blogUrl : profile.blogURL,
+              comment: comment ? comment : profile.comment,
+              gitHubName: githubName ? githubName : profile.githubName,
+              twitterName: twitterName ? twitterName : profile.twitterName,
+              username: username ? username : profile.username,
             });
-        }
+        })
       );
-    }
+    dispatch(
+      updateUserProfile({
+        uid: profile.uid,
+        avatar: avatar ? avatar : profile.avatar,
+        blogURL: blogUrl ? blogUrl : profile.blogURL,
+        comment: comment ? comment : profile.comment,
+        gitHubName: githubName ? githubName : profile.githubName,
+        twitterName: twitterName ? twitterName : profile.twitterName,
+        username: username ? username : profile.username,
+      })
+    );
+    history.push(`/${user.uid}`);
   };
 
   return (
     <StyledProfileEditArea>
       <StyledIconWithLabel>
-        <Icon src={avatar ? avatar : profile.avatar} width="112" height="112" />
+        <Icon src={profile.avatar} width="112" height="112" />
         <StyleLabel>
           変更する
           <StyledHiddenInput type="file" onChange={onChangeImageHandler} />
         </StyleLabel>
       </StyledIconWithLabel>
+
       <InputText
         placeholder={profile.username}
         text="ユーザ名"
+        defaultValue={profile.username}
         inputUsername={username}
         onChange={(e) => onChangeInputState(e, setUsername)}
       />
-      <InputText
+      <ErrorMsg isValid={() => isUserNameValid(username)}>
+        {validations.username.errorMessage}
+      </ErrorMsg>
+
+      <InputTextArea
         placeholder={profile.comment}
         text="自己紹介"
         inputUsername={comment}
         onChange={(e) => onChangeInputState(e, setComment)}
       />
+      <ErrorMsg isValid={() => isCommentValid(comment)}>
+        {validations.comment.errorMessage}
+      </ErrorMsg>
+
       <InputText
         placeholder={profile.githubName}
         text="GitHubユーザ名"
@@ -133,6 +243,15 @@ export const ProfileEdit: VFC = () => {
         inputUsername={blogUrl}
         onChange={(e) => onChangeInputState(e, setBlogUrl)}
       />
+      <ErrorMsg isValid={() => isBlogUrlValid(blogUrl)}>
+        {validations.blogUrl.errorMessage}
+      </ErrorMsg>
+
+      <StyledButtonArea>
+        <PrimaryButton onClick={onUpdate} disabled={!isSend}>
+          更新する
+        </PrimaryButton>
+      </StyledButtonArea>
     </StyledProfileEditArea>
   );
 };
@@ -165,4 +284,9 @@ const StyleLabel = styled.label`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StyledButtonArea = styled.div`
+  margin-top: 40px;
+  text-align: center;
 `;
