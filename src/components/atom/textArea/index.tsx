@@ -4,14 +4,14 @@ import { COLOR } from "../../../Themes/Color";
 
 type Props = {
   placeholder?: string;
-  inputUsername: string;
+  inputValue: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-export const index: VFC<Props> = ({ placeholder, inputUsername, onChange }) => {
+export const index: VFC<Props> = ({ placeholder, inputValue, onChange }) => {
   return (
     <StyledTextArea
-      value={inputUsername}
+      value={inputValue}
       onChange={(e) => onChange(e)}
       placeholder={placeholder}
     />

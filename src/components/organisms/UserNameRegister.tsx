@@ -84,7 +84,7 @@ export const UserNameRegister: VFC = memo(() => {
                 <InputText
                   placeholder=""
                   text="サービス内で使う名前を教えてください"
-                  inputUsername={inputUsername}
+                  inputValue={inputUsername}
                   onChange={onChangeUsername}
                 />
                 <ErrorMsg isValid={isUserNameValid}>
