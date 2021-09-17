@@ -1,19 +1,16 @@
-import { VFC } from 'react'
-import { StyledButton } from "./index"
-import styled from "styled-components"
-import { COLOR } from "../../../Themes/Color"
+import React, { VFC } from "react";
+import { StyledButton } from "./index";
+import styled from "styled-components";
+import { COLOR } from "../../../Themes/Color";
 
 type Props = {
-  children: string;
+  children: React.ReactNode;
   onClick: () => void;
-  icon: any;
-}
+};
 
-export const SignInButton:VFC<Props> = ({ children, onClick, icon }) => {
-  return (
-    <StyledSingInButton onClick={onClick}>{icon}{ children }</StyledSingInButton>
-  )
-}
+export const SignInButton: VFC<Props> = ({ children, onClick }) => {
+  return <StyledSingInButton onClick={onClick}>{children}</StyledSingInButton>;
+};
 
 const StyledSingInButton = styled(StyledButton)`
   display: flex;
@@ -21,7 +18,7 @@ const StyledSingInButton = styled(StyledButton)`
   align-items: center;
   padding: 14px 40px;
   border: none;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 400;
   transition: background-color 0.3s, color 0.3s;
   border-radius: 10px;
@@ -32,4 +29,4 @@ const StyledSingInButton = styled(StyledButton)`
     background-color: ${COLOR.PRIMARY};
     color: ${COLOR.WHITE};
   }
-`
+`;

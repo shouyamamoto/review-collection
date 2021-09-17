@@ -1,33 +1,37 @@
-import { memo, VFC } from 'react'
-import styled from "styled-components"
+import { memo, VFC } from "react";
+import styled from "styled-components";
 import MediaQuery from "react-responsive";
-import { DEVICE } from "../../Themes/Device" 
-import { index as Icon } from "../atom/icon/index"
-import { HeaderButton } from "../atom/button/HeaderButton"
-import { IconMenu } from "../molecules/IconMenu"
+import { DEVICE } from "../../Themes/Device";
+import { index as Icon } from "../atom/icon/index";
+import { PrimaryButton } from "../atom/button/PrimaryButton";
+import { IconMenu } from "../molecules/IconMenu";
 
 type Props = {
   user: {
     uid: string;
-    displayName: string;
-    photoUrl: string;
+    username: string;
+    avatar: string;
   };
   isOpenMenu: boolean;
-  onClickMenuHandler: () => void;
+  onClick: () => void;
   signOut: () => void;
-}
+};
 
-export const IconWithPostButton:VFC<Props> = memo(({ user, isOpenMenu, onClickMenuHandler, signOut }) => {
-  return (
-    <StyledIconArea>
-      <Icon src={user.photoUrl} width="50" height="50" onClickMenuHandler={onClickMenuHandler} /> 
-      <MediaQuery query={`${DEVICE.tabletL}`}>
-        <HeaderButton>Add Post</HeaderButton>
-      </MediaQuery>
-      { isOpenMenu && <IconMenu user={user} onClickMenuHandler={onClickMenuHandler} signOut={signOut} /> }
-    </StyledIconArea>
-  )
-})
+export const IconWithPostButton: VFC<Props> = memo(
+  ({ user, isOpenMenu, onClick, signOut }) => {
+    return (
+      <StyledIconArea>
+        <Icon src={user.avatar} width="50" height="50" onClick={onClick} />
+        <MediaQuery query={`${DEVICE.tabletL}`}>
+          <PrimaryButton>Add Post</PrimaryButton>
+        </MediaQuery>
+        {isOpenMenu && (
+          <IconMenu user={user} onClick={onClick} signOut={signOut} />
+        )}
+      </StyledIconArea>
+    );
+  }
+);
 
 const StyledIconArea = styled.div`
   position: relative;
@@ -38,4 +42,4 @@ const StyledIconArea = styled.div`
   @media ${DEVICE.tabletL} {
     width: 200px;
   }
-`
+`;

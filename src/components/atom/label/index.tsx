@@ -1,24 +1,22 @@
-import { VFC } from 'react'
-import styled from "styled-components"
-import { DEVICE } from "../../../Themes/Device"
+import React, { VFC, memo } from "react";
+import styled from "styled-components";
+import { DEVICE } from "../../../Themes/Device";
 
 type Props = {
-  children: string;
-}
+  children: React.ReactNode;
+};
 
-export const index:VFC<Props> = ({ children }) => {
-  return (
-    <StyledLabel>{ children }</StyledLabel>
-  )
-}
+export const index: VFC<Props> = memo(({ children }) => {
+  return <StyledLabel>{children}</StyledLabel>;
+});
 
 const StyledLabel = styled.label`
-  font-size: 14px;
+  font-size: 12px;
   display: inline-block;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
+  font-weight: bold;
 
-  @media ${DEVICE.mobileL} {
-    font-size: 16px;
+  @media ${DEVICE.tabletL} {
+    font-size: 14px;
   }
-
-`
+`;

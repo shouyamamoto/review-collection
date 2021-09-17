@@ -9,27 +9,14 @@ import { toast } from "react-toastify";
 import { SignInButton } from "../atom/button/SignInButton";
 import { DEVICE } from "../../Themes/Device";
 import { db } from "../../firebase";
+import firebase from "firebase/app";
 
 type Props = {
   modalHandler: () => void;
 };
 
-const findUserId = async (user: any, userId: any) => {
-  await db
-    .collection("users")
-    .where("uid", "==", `${user?.uid}`)
-    .get()
-    .then((snapShot) => {
-      snapShot.forEach((doc) => {
-        if (doc.id) {
-          userId = doc.id;
-        }
-      });
-    });
-};
-
-const createUserCollection = async (user: any) =>
-  await db.collection("users").add({
+const createUsersCollection = (user: firebase.User | null) => {
+  db.collection("users").add({
     uid: user!.uid,
     username: user!.displayName,
     comment: "",
@@ -40,21 +27,38 @@ const createUserCollection = async (user: any) =>
     twitterName: "",
     blogURL: "",
   });
+};
 
 export const Auth: VFC<Props> = ({ modalHandler }) => {
   const history = useHistory();
 
-  const signIn = (provider: any) => {
+  const signIn = (
+    provider:
+      | firebase.auth.GithubAuthProvider
+      | firebase.auth.GoogleAuthProvider
+  ) => {
     auth
       .signInWithPopup(provider)
-      .then(async ({ user }) => {
+      .then(({ user }) => {
         modalHandler();
-        // もしログインしたユーザのidをもつコレクションが存在すればusersコレクションに追加しない
-        let userId;
-        findUserId(user, userId);
-        if (!userId) {
-          createUserCollection(user);
-        }
+        // もしサインインしたユーザのidをもつコレクションが存在しなければusersコレクションに追加する
+        let userId = "";
+        db.collection("users")
+          .where("uid", "==", `${user?.uid}`)
+          .get()
+          .then((snapShot) => {
+            snapShot.forEach((doc) => {
+              if (doc.id) {
+                userId = doc.id;
+              }
+            });
+          })
+          .then(() => {
+            if (!userId) {
+              createUsersCollection(user);
+            }
+          });
+
         history.push(`/`);
         toast.success("Sign In!", { position: toast.POSITION.BOTTOM_RIGHT });
       })
@@ -71,18 +75,14 @@ export const Auth: VFC<Props> = ({ modalHandler }) => {
         <StyledModalTitle>レビューはきっと宝になる。</StyledModalTitle>
         <ul>
           <LoginItem>
-            <SignInButton
-              onClick={() => signIn(githubProvider)}
-              icon={<StyledFaGithub />}
-            >
+            <SignInButton onClick={() => signIn(githubProvider)}>
+              <StyledFaGithub />
               Sign in with Github
             </SignInButton>
           </LoginItem>
           <LoginItem>
-            <SignInButton
-              onClick={() => signIn(googleProvider)}
-              icon={<StyledFaGoogle />}
-            >
+            <SignInButton onClick={() => signIn(googleProvider)}>
+              <StyledFaGoogle />
               Sign in with Google
             </SignInButton>
           </LoginItem>
