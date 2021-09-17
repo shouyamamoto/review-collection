@@ -4,24 +4,23 @@ import { COLOR } from "../../../Themes/Color";
 
 type Props = {
   placeholder?: string;
-  inputUsername: string;
+  inputValue: string;
   defaultValue?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const index: VFC<Props> = ({
   placeholder,
-  inputUsername,
+  inputValue,
   defaultValue,
   onChange,
 }) => {
   return (
     <StyledInput
       type="text"
-      value={inputUsername}
+      value={inputValue}
       onChange={(e) => onChange(e)}
       autoComplete="off"
-      placeholder={placeholder}
     />
   );
 };

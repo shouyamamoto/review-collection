@@ -23,9 +23,9 @@ const createUsersCollection = (user: firebase.User | null) => {
     avatar: user!.photoURL,
     followingUserIds: [],
     followedUserIds: [],
-    gitHubName: "",
+    githubName: "",
     twitterName: "",
-    blogURL: "",
+    blogUrl: "",
   });
 };
 

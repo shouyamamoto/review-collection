@@ -1,18 +1,19 @@
 import { VFC, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { updateUserProfile } from "../../features/users/userSlice";
 import { useDispatch } from "react-redux";
-import { storage, db } from "../../firebase";
+import { selectUser, updateUserProfile } from "../../features/users/userSlice";
 import firebase from "firebase/app";
-import { selectUser } from "../../features/users/userSlice";
+import { storage, db } from "../../firebase";
 import { useSelector } from "react-redux";
-import { InputText } from "../molecules/InputText";
-import { InputTextArea } from "../molecules/InputTextArea";
+
 import { index as Icon } from "../atom/icon/index";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { ErrorMsg } from "../atom/text/ErrorMsg";
-import styled from "styled-components";
+import { InputText } from "../molecules/InputText";
+import { InputTextArea } from "../molecules/InputTextArea";
+
 import { COLOR } from "../../Themes/Color";
+import styled from "styled-components";
 
 type profile = {
   uid: string;
@@ -21,7 +22,7 @@ type profile = {
   comment: string;
   githubName: string;
   twitterName: string;
-  blogURL: string;
+  blogUrl: string;
 };
 
 const validations = {
@@ -81,11 +82,15 @@ export const ProfileEdit: VFC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [avatar, setAvatar] = useState(user.avatar);
-  const [username, setUsername] = useState("");
-  const [comment, setComment] = useState("");
-  const [githubName, setGithubName] = useState("");
-  const [twitterName, setTwitterName] = useState("");
-  const [blogUrl, setBlogUrl] = useState("");
+  const [username, setUsername] = useState(user.username ? user.username : "");
+  const [comment, setComment] = useState(user.comment ? user.comment : "");
+  const [githubName, setGithubName] = useState(
+    user.githubName ? user.githubName : ""
+  );
+  const [twitterName, setTwitterName] = useState(
+    user.twitterName ? user.twitterName : ""
+  );
+  const [blogUrl, setBlogUrl] = useState(user.blogUrl ? user.blogUrl : "");
   const [profile, setProfile] = useState<profile>({
     uid: "",
     avatar: "",
@@ -93,7 +98,7 @@ export const ProfileEdit: VFC = () => {
     comment: "",
     githubName: "",
     twitterName: "",
-    blogURL: "",
+    blogUrl: "",
   });
   const [isSend, setIsSend] = useState(false);
 
@@ -108,9 +113,9 @@ export const ProfileEdit: VFC = () => {
             avatar: doc.data().avatar,
             username: doc.data().username,
             comment: doc.data().comment,
-            githubName: doc.data().gitHubName,
+            githubName: doc.data().githubName,
             twitterName: doc.data().twitterName,
-            blogURL: doc.data().blogURL,
+            blogUrl: doc.data().blogUrl,
           });
         })
       );
@@ -172,10 +177,10 @@ export const ProfileEdit: VFC = () => {
             .doc(doc.id)
             .update({
               avatar: avatar ? avatar : profile.avatar,
-              blogURL: blogUrl ? blogUrl : profile.blogURL,
-              comment: comment ? comment : profile.comment,
-              gitHubName: githubName ? githubName : profile.githubName,
-              twitterName: twitterName ? twitterName : profile.twitterName,
+              blogURL: blogUrl,
+              comment: comment,
+              gitHubName: githubName,
+              twitterName: twitterName,
               username: username ? username : profile.username,
             });
         })
@@ -184,9 +189,9 @@ export const ProfileEdit: VFC = () => {
       updateUserProfile({
         uid: profile.uid,
         avatar: avatar ? avatar : profile.avatar,
-        blogURL: blogUrl ? blogUrl : profile.blogURL,
+        blogUrl: blogUrl ? blogUrl : profile.blogUrl,
         comment: comment ? comment : profile.comment,
-        gitHubName: githubName ? githubName : profile.githubName,
+        githubName: githubName ? githubName : profile.githubName,
         twitterName: twitterName ? twitterName : profile.twitterName,
         username: username ? username : profile.username,
       })
@@ -207,8 +212,8 @@ export const ProfileEdit: VFC = () => {
       <InputText
         placeholder={profile.username}
         text="ユーザ名"
+        inputValue={username}
         defaultValue={profile.username}
-        inputUsername={username}
         onChange={(e) => onChangeInputState(e, setUsername)}
       />
       <ErrorMsg isValid={() => isUserNameValid(username)}>
@@ -218,7 +223,7 @@ export const ProfileEdit: VFC = () => {
       <InputTextArea
         placeholder={profile.comment}
         text="自己紹介"
-        inputUsername={comment}
+        inputValue={comment}
         onChange={(e) => onChangeInputState(e, setComment)}
       />
       <ErrorMsg isValid={() => isCommentValid(comment)}>
@@ -228,20 +233,25 @@ export const ProfileEdit: VFC = () => {
       <InputText
         placeholder={profile.githubName}
         text="GitHubユーザ名"
-        inputUsername={githubName}
+        inputValue={githubName}
         onChange={(e) => onChangeInputState(e, setGithubName)}
+        defaultValue={profile.githubName}
       />
+
       <InputText
         placeholder={profile.twitterName}
         text="Twitterユーザ名"
-        inputUsername={twitterName}
+        inputValue={twitterName}
         onChange={(e) => onChangeInputState(e, setTwitterName)}
+        defaultValue={profile.twitterName}
       />
+
       <InputText
-        placeholder={profile.blogURL}
+        placeholder={profile.blogUrl}
         text="自分のサイト名"
-        inputUsername={blogUrl}
+        inputValue={blogUrl}
         onChange={(e) => onChangeInputState(e, setBlogUrl)}
+        defaultValue={profile.blogUrl}
       />
       <ErrorMsg isValid={() => isBlogUrlValid(blogUrl)}>
         {validations.blogUrl.errorMessage}

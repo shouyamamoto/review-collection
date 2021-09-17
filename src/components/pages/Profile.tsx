@@ -9,7 +9,6 @@ import { DEVICE } from "../../Themes/Device";
 
 export const Profile: VFC = () => {
   const user = useSelector(selectUser);
-  console.log(user);
 
   return (
     <>

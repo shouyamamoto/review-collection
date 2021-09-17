@@ -5,18 +5,18 @@ import { index as TextArea } from "../atom/textArea/index";
 type Props = {
   placeholder?: string;
   text: string;
-  inputUsername: string;
+  inputValue: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 export const InputTextArea: VFC<Props> = memo(
-  ({ placeholder, text, inputUsername, onChange }) => {
+  ({ placeholder, text, inputValue, onChange }) => {
     return (
       <>
         <Label>{text}</Label>
         <TextArea
           placeholder={placeholder}
-          inputUsername={inputUsername}
+          inputValue={inputValue}
           onChange={onChange}
         />
       </>
