@@ -9,10 +9,11 @@ import { toast } from "react-toastify";
 import { RegisterButton } from "../atom/button/RegisterButton";
 import { ErrorMsg } from "../atom/text/ErrorMsg";
 import { InputText } from "../molecules/InputText";
+
 import { COLOR } from "../../Themes/Color";
+import { DEVICE } from "../../Themes/Device";
 
 import Logo from "../../images/logo.svg";
-import { DEVICE } from "../../Themes/Device";
 
 const userNameValid = {
   maxLength: 15,
@@ -45,7 +46,7 @@ export const UserNameRegister: VFC = memo(() => {
               });
             });
           });
-        toast.success(`WellCome ${currentUser.displayName}`, {
+        toast.success(`WellCome ${user.username}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
       })
@@ -55,7 +56,7 @@ export const UserNameRegister: VFC = memo(() => {
 
     dispatch(
       updateUserName({
-        displayName: inputUsername,
+        username: inputUsername,
       })
     );
   };
