@@ -1,5 +1,4 @@
-import { VFC } from "react";
-import { useState } from "react";
+import { VFC, useState, useCallback, memo } from "react";
 import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -13,19 +12,20 @@ import { IconWithPostButton } from "../molecules/IconWithPostButton";
 
 import { DEVICE } from "../../Themes/Device";
 
-export const Header: VFC = () => {
+export const Header: VFC = memo(() => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const history = useHistory();
   const user = useSelector(selectUser);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     setIsOpenMenu(false);
     await auth.signOut();
     history.push("/");
-  };
+  }, []);
 
   const onClickMenuHandler = () => setIsOpenMenu(!isOpenMenu);
+  const onClickCloseMenu = () => setIsOpenMenu(false);
   const onClickModalHandler = () => setIsOpenModal(!isOpenModal);
 
   return (
@@ -33,7 +33,7 @@ export const Header: VFC = () => {
       <header>
         <StyledHeaderInner>
           <Link to="/">
-            <StyledLogo src={logo} alt="" />
+            <StyledLogo src={logo} alt="" onClick={onClickCloseMenu} />
           </Link>
           {user.uid ? (
             <IconWithPostButton
@@ -50,7 +50,7 @@ export const Header: VFC = () => {
       {isOpenModal && <Auth modalHandler={onClickModalHandler} />}
     </>
   );
-};
+});
 
 const StyledHeaderInner = styled.div`
   width: 90%;

@@ -1,10 +1,10 @@
-import { VFC } from "react";
-import { useState, memo } from "react";
+import { VFC, useState, useCallback } from "react";
 import { selectUser, updateUserName } from "../../features/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { auth, db } from "../../firebase";
 import styled from "styled-components";
 
+import { index as Logo } from "../atom/logo/index";
 import { RegisterButton } from "../atom/button/RegisterButton";
 import { ErrorMsg } from "../atom/text/ErrorMsg";
 import { InputText } from "../molecules/InputText";
@@ -12,15 +12,13 @@ import { InputText } from "../molecules/InputText";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
-import Logo from "../../images/logo.svg";
-
 const userNameValid = {
   maxLength: 15,
   minLength: 2,
   errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
 };
 
-export const UserNameRegister: VFC = memo(() => {
+export const UserNameRegister: VFC = () => {
   const [inputUsername, setInputUsername] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
   const user = useSelector(selectUser);
@@ -58,12 +56,12 @@ export const UserNameRegister: VFC = memo(() => {
       });
   };
 
-  const isUserNameValid = () => {
+  const isUserNameValid = useCallback(() => {
     return (
       inputUsername.length <= userNameValid.maxLength &&
       inputUsername.length >= userNameValid.minLength
     );
-  };
+  }, [inputUsername]);
 
   const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputUsername(e.target.value);
@@ -76,7 +74,7 @@ export const UserNameRegister: VFC = memo(() => {
           <StyledModalMask />
           <StyledModalInner>
             <StyledForm onSubmit={updateDisplayName}>
-              <StyledLogo src={Logo} alt="" />
+              <Logo />
               <StyledInputArea>
                 <InputText
                   placeholder=""
@@ -102,7 +100,7 @@ export const UserNameRegister: VFC = memo(() => {
       )}
     </>
   );
-});
+};
 
 const StyledModal = styled.div`
   position: fixed;
@@ -144,12 +142,4 @@ const StyledForm = styled.form`
 
 const StyledInputArea = styled.div`
   margin-bottom: 32px;
-`;
-
-const StyledLogo = styled.img`
-  text-align: center;
-  width: 80%;
-  max-width: 320px;
-  margin: 0 auto 40px;
-  display: block;
 `;

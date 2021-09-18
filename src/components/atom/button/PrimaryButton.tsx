@@ -1,4 +1,4 @@
-import React, { VFC } from "react";
+import React, { VFC, memo } from "react";
 import styled from "styled-components";
 import { COLOR } from "../../../Themes/Color";
 import { StyledButton } from "./index";
@@ -9,13 +9,15 @@ type Props = {
   disabled?: boolean;
 };
 
-export const PrimaryButton: VFC<Props> = ({ onClick, disabled, children }) => {
-  return (
-    <StyledBtn onClick={onClick} disabled={disabled}>
-      {children}
-    </StyledBtn>
-  );
-};
+export const PrimaryButton: VFC<Props> = memo(
+  ({ onClick, disabled, children }) => {
+    return (
+      <StyledBtn onClick={onClick} disabled={disabled}>
+        {children}
+      </StyledBtn>
+    );
+  }
+);
 
 const StyledBtn = styled(StyledButton)`
   background-color: ${(props) =>
