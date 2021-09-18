@@ -13,6 +13,7 @@ import { InputWithErrorMessage } from "../molecules/InputWithErrorMessage";
 import { TextAreaWithErrorMessage } from "../molecules/TextAreaWithErrorMessage";
 
 import styled from "styled-components";
+import { DEVICE } from "../../Themes/Device";
 
 type profile = {
   uid: string;
@@ -204,65 +205,105 @@ export const ProfileEditArea: VFC = () => {
   };
 
   return (
-    <>
-      <IconWithLabel src={profile.avatar} onChange={onChangeImageHandler} />
+    <StyledEditArea>
+      <StyledIconArea>
+        <IconWithLabel src={profile.avatar} onChange={onChangeImageHandler} />
+      </StyledIconArea>
 
-      <InputWithErrorMessage
-        placeholder={profile.username}
-        text="ユーザ名"
-        inputValue={username}
-        defaultValue={profile.username}
-        onChange={(e) => onChangeInputState(e, setUsername)}
-        isValid={() => isUserNameValid(username)}
-        errorMessage={validations.username.errorMessage}
-      />
+      <StyledInputArea>
+        <StyledInputWrap>
+          <InputWithErrorMessage
+            placeholder={profile.username}
+            text="ユーザ名"
+            inputValue={username}
+            defaultValue={profile.username}
+            onChange={(e) => onChangeInputState(e, setUsername)}
+            isValid={() => isUserNameValid(username)}
+            errorMessage={validations.username.errorMessage}
+          />
+        </StyledInputWrap>
 
-      <TextAreaWithErrorMessage
-        placeholder={profile.comment}
-        text="自己紹介"
-        inputValue={comment}
-        defaultValue={profile.comment}
-        onChange={(e) => onChangeInputState(e, setComment)}
-        isValid={() => isCommentValid(comment)}
-        errorMessage={validations.comment.errorMessage}
-      />
+        <StyledInputWrap>
+          <TextAreaWithErrorMessage
+            placeholder={profile.comment}
+            text="自己紹介"
+            inputValue={comment}
+            defaultValue={profile.comment}
+            onChange={(e) => onChangeInputState(e, setComment)}
+            isValid={() => isCommentValid(comment)}
+            errorMessage={validations.comment.errorMessage}
+          />
+        </StyledInputWrap>
 
-      <InputText
-        placeholder={profile.githubName}
-        text="GitHubユーザ名"
-        inputValue={githubName}
-        onChange={(e) => onChangeInputState(e, setGithubName)}
-        defaultValue={profile.githubName}
-      />
+        <StyledInputWrap>
+          <InputText
+            placeholder={profile.githubName}
+            text="GitHubユーザ名"
+            inputValue={githubName}
+            onChange={(e) => onChangeInputState(e, setGithubName)}
+            defaultValue={profile.githubName}
+          />
+        </StyledInputWrap>
 
-      <InputText
-        placeholder={profile.twitterName}
-        text="Twitterユーザ名"
-        inputValue={twitterName}
-        onChange={(e) => onChangeInputState(e, setTwitterName)}
-        defaultValue={profile.twitterName}
-      />
+        <StyledInputWrap>
+          <InputText
+            placeholder={profile.twitterName}
+            text="Twitterユーザ名"
+            inputValue={twitterName}
+            onChange={(e) => onChangeInputState(e, setTwitterName)}
+            defaultValue={profile.twitterName}
+          />
+        </StyledInputWrap>
 
-      <InputWithErrorMessage
-        placeholder={profile.blogUrl}
-        text="自分のサイト名"
-        inputValue={blogUrl}
-        defaultValue={profile.blogUrl}
-        onChange={(e) => onChangeInputState(e, setBlogUrl)}
-        isValid={() => isBlogUrlValid(blogUrl)}
-        errorMessage={validations.blogUrl.errorMessage}
-      />
-
-      <StyledButtonArea>
-        <PrimaryButton onClick={onUpdate} disabled={!isSend}>
-          更新する
-        </PrimaryButton>
-      </StyledButtonArea>
-    </>
+        <StyledInputWrap>
+          <InputWithErrorMessage
+            placeholder={profile.blogUrl}
+            text="自分のサイト名"
+            inputValue={blogUrl}
+            defaultValue={profile.blogUrl}
+            onChange={(e) => onChangeInputState(e, setBlogUrl)}
+            isValid={() => isBlogUrlValid(blogUrl)}
+            errorMessage={validations.blogUrl.errorMessage}
+          />
+        </StyledInputWrap>
+        <StyledButtonArea>
+          <PrimaryButton onClick={onUpdate} disabled={!isSend}>
+            更新する
+          </PrimaryButton>
+        </StyledButtonArea>
+      </StyledInputArea>
+    </StyledEditArea>
   );
 };
+
+const StyledEditArea = styled.div`
+  @media ${DEVICE.laptop} {
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+    margin: 0 auto;
+    max-width: ${DEVICE.laptop};
+  }
+`;
+
+const StyledInputArea = styled.div`
+  flex-basis: 50%;
+  flex-shrink: 1;
+  flex-grow: 2;
+  max-width: 800px;
+`;
+
+const StyledIconArea = styled.div`
+  flex-basis: 20%;
+  flex-shrink: 1;
+  flex-grow: 1;
+`;
 
 const StyledButtonArea = styled.div`
   margin-top: 40px;
   text-align: center;
+`;
+
+const StyledInputWrap = styled.div`
+  margin-bottom: 14px;
 `;
