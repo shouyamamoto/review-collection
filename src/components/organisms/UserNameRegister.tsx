@@ -4,7 +4,6 @@ import { selectUser, updateUserName } from "../../features/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { auth, db } from "../../firebase";
 import styled from "styled-components";
-import { toast } from "react-toastify";
 
 import { RegisterButton } from "../atom/button/RegisterButton";
 import { ErrorMsg } from "../atom/text/ErrorMsg";
@@ -45,20 +44,18 @@ export const UserNameRegister: VFC = memo(() => {
                 username: inputUsername,
               });
             });
+          })
+          .then(() => {
+            dispatch(
+              updateUserName({
+                username: inputUsername,
+              })
+            );
           });
-        toast.success(`WellCome ${user.username}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
       })
       .catch((err) => {
         console.error(err);
       });
-
-    dispatch(
-      updateUserName({
-        username: inputUsername,
-      })
-    );
   };
 
   const isUserNameValid = () => {
