@@ -207,7 +207,7 @@ export const ProfileEditArea: VFC = () => {
   return (
     <StyledEditArea>
       <StyledIconArea>
-        <IconWithLabel src={profile.avatar} onChange={onChangeImageHandler} />
+        <IconWithLabel src={avatar} onChange={onChangeImageHandler} />
       </StyledIconArea>
 
       <StyledInputArea>

@@ -9,7 +9,7 @@ import { DEVICE } from "../../Themes/Device";
 
 export const SocialIcons: VFC = () => {
   const user = useSelector(selectUser);
-  console.log(user);
+
   return (
     <StyledLinkLists>
       <StyledLinkItems>
