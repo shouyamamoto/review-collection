@@ -20,6 +20,7 @@ export const Header: VFC = () => {
   const user = useSelector(selectUser);
 
   const signOut = async () => {
+    setIsOpenMenu(false);
     await auth.signOut();
     history.push("/");
   };
