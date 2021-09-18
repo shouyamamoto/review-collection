@@ -177,9 +177,9 @@ export const ProfileEdit: VFC = () => {
             .doc(doc.id)
             .update({
               avatar: avatar ? avatar : profile.avatar,
-              blogURL: blogUrl,
+              blogUrl: blogUrl,
               comment: comment,
-              gitHubName: githubName,
+              githubName: githubName,
               twitterName: twitterName,
               username: username ? username : profile.username,
             });
