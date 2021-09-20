@@ -1,6 +1,5 @@
 import { VFC } from "react";
 import { Link } from "react-router-dom";
-import MediaQuery from "react-responsive";
 import { FiLogOut, FiUserCheck } from "react-icons/fi";
 import styled from "styled-components";
 import { COLOR } from "../../Themes/Color";
@@ -23,14 +22,12 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
           to={`/${user.uid}`}
         >{`@ ${user.username}`}</StyledProfileLink>
       </StyledMenuItem>
-      <MediaQuery query="(max-width: 767px)">
-        <StyledMenuItem>
-          <StyledProfileLink to={`/${user.uid}`}>
-            <StyledUserEditIcon />
-            記事を投稿する
-          </StyledProfileLink>
-        </StyledMenuItem>
-      </MediaQuery>
+      <StyledMenuItem onClick={onClick}>
+        <StyledProfileLink to={`/${user.uid}/draft`}>
+          <StyledUserEditIcon />
+          記事を投稿する
+        </StyledProfileLink>
+      </StyledMenuItem>
       <StyledMenuItem onClick={onClick}>
         <StyledProfileLink to={`/${user.uid}/profile/settings`}>
           <StyledUserEditIcon />

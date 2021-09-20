@@ -22,7 +22,7 @@ export const Header: VFC = memo(() => {
     setIsOpenMenu(false);
     await auth.signOut();
     history.push("/");
-  }, []);
+  }, [history]);
 
   const onClickMenuHandler = () => setIsOpenMenu(!isOpenMenu);
   const onClickCloseMenu = () => setIsOpenMenu(false);
@@ -40,6 +40,7 @@ export const Header: VFC = memo(() => {
               user={user}
               isOpenMenu={isOpenMenu}
               onClick={onClickMenuHandler}
+              onClose={onClickCloseMenu}
               signOut={signOut}
             />
           ) : (

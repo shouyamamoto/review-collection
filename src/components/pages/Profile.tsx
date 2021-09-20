@@ -6,6 +6,7 @@ import { COLOR } from "../../Themes/Color";
 import { index as Icon } from "../atom/icon/index";
 import { SocialIcons } from "../molecules/SocialIcons";
 import { DEVICE } from "../../Themes/Device";
+import { Toaster } from "react-hot-toast";
 
 export const Profile: VFC = () => {
   const user = useSelector(selectUser);
@@ -26,6 +27,8 @@ export const Profile: VFC = () => {
       </StyledProfile>
 
       <StyledPosts></StyledPosts>
+
+      <Toaster position="bottom-right" reverseOrder={false} />
     </>
   );
 };

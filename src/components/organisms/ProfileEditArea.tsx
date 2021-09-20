@@ -291,6 +291,7 @@ const StyledInputArea = styled.div`
   flex-shrink: 1;
   flex-grow: 2;
   max-width: 800px;
+  margin: 0 auto;
 `;
 
 const StyledIconArea = styled.div`

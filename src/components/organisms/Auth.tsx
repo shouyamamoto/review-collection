@@ -5,7 +5,7 @@ import { FaGithub, FaGoogle } from "react-icons/fa";
 import styled from "styled-components";
 import { COLOR } from "../../Themes/Color";
 import LoginImg from "../../images/logo.svg";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { SignInButton } from "../atom/button/SignInButton";
 import { DEVICE } from "../../Themes/Device";
 import { db } from "../../firebase";
@@ -60,7 +60,12 @@ export const Auth: VFC<Props> = ({ modalHandler }) => {
           });
 
         history.push(`/`);
-        toast.success("Sign In!", { position: toast.POSITION.BOTTOM_RIGHT });
+        toast.success("Sign In!!", {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+          },
+        });
       })
       .catch((err) => {
         console.log(err);
