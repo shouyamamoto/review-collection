@@ -15,6 +15,12 @@ import { PrimaryButton } from "../atom/button/PrimaryButton";
 
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
+import {
+  VALIDATIONS,
+  isPostTitleValid,
+  isPostTextValid,
+  isValidPost,
+} from "../../Themes/Validations";
 
 export const CreatePost: VFC = () => {
   const user = useSelector(selectUser);
@@ -53,19 +59,24 @@ export const CreatePost: VFC = () => {
     [history, user]
   );
 
+  const onChangeInputState = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    setFunction: (e: string) => void
+  ) => {
+    setFunction(e.target.value);
+  };
+
   return (
     <StyledPostArea>
       <StyledTextAreaWrap>
         <StyledTitle
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => onChangeInputState(e, setTitle)}
           placeholder="Title"
         />
 
         <StyledTextArea
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
+          onChange={(e) => onChangeInputState(e, setText)}
           value={text}
           placeholder="マークダウン記法で書いてください"
         />
@@ -75,6 +86,7 @@ export const CreatePost: VFC = () => {
             onClick={() => {
               sendPost(title, text);
             }}
+            disabled={!isValidPost(title, text)}
           >
             投稿する
           </PrimaryButton>

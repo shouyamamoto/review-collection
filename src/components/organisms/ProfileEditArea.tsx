@@ -14,6 +14,13 @@ import { TextAreaWithErrorMessage } from "../molecules/TextAreaWithErrorMessage"
 
 import styled from "styled-components";
 import { DEVICE } from "../../Themes/Device";
+import {
+  VALIDATIONS,
+  isUserNameValid,
+  isCommentValid,
+  isBlogUrlValid,
+  isValidProfile,
+} from "../../Themes/Validations";
 
 type profile = {
   uid: string;
@@ -25,32 +32,6 @@ type profile = {
   blogUrl: string;
 };
 
-const isUserNameValid = (username: string) => {
-  return (
-    username.length <= validations.username.maxLength &&
-    username.length >= validations.username.minLength
-  );
-};
-
-const isCommentValid = (comment: string) => {
-  return comment.length <= validations.comment.maxLength;
-};
-
-const isBlogUrlValid = (blogUrl: string) => {
-  return (
-    validations.blogUrl.minLength === blogUrl.length ||
-    validations.blogUrl.regex.test(blogUrl)
-  );
-};
-
-const isValidCheck = (username: string, comment: string, blogUrl: string) => {
-  return (
-    isUserNameValid(username) &&
-    isCommentValid(comment) &&
-    isBlogUrlValid(blogUrl)
-  );
-};
-
 // firebaseの使用上、同じファイル名のものがあると、先にあるものが削除されてしまう
 // ファイル名の先頭にランダムな文字を付与することで上記の問題を防ぐための関数
 const uniqueFileName = (file: any) => {
@@ -60,23 +41,6 @@ const uniqueFileName = (file: any) => {
     .map((n) => S[n % S.length])
     .join("");
   return randomChar + "_" + file.name;
-};
-
-const validations = {
-  username: {
-    maxLength: 15,
-    minLength: 2,
-    errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
-  },
-  comment: {
-    maxLength: 100,
-    errorMessage: "※100文字以下にしてください。",
-  },
-  blogUrl: {
-    minLength: 0,
-    regex: /^https?:\/\//,
-    errorMessage: "※httpまたはhttpsから始まるURLを入力してください。",
-  },
 };
 
 export const ProfileEditArea: VFC = () => {
@@ -126,7 +90,7 @@ export const ProfileEditArea: VFC = () => {
   }, [user.uid]);
 
   useEffect(() => {
-    if (isValidCheck(username, comment, blogUrl)) {
+    if (isValidProfile(username, comment, blogUrl)) {
       setIsSend(true);
     } else {
       setIsSend(false);
@@ -219,7 +183,7 @@ export const ProfileEditArea: VFC = () => {
             defaultValue={profile.username}
             onChange={(e) => onChangeInputState(e, setUsername)}
             isValid={() => isUserNameValid(username)}
-            errorMessage={validations.username.errorMessage}
+            errorMessage={VALIDATIONS.username.errorMessage}
           />
         </StyledInputWrap>
 
@@ -231,7 +195,7 @@ export const ProfileEditArea: VFC = () => {
             defaultValue={profile.comment}
             onChange={(e) => onChangeInputState(e, setComment)}
             isValid={() => isCommentValid(comment)}
-            errorMessage={validations.comment.errorMessage}
+            errorMessage={VALIDATIONS.comment.errorMessage}
           />
         </StyledInputWrap>
 
@@ -263,7 +227,7 @@ export const ProfileEditArea: VFC = () => {
             defaultValue={profile.blogUrl}
             onChange={(e) => onChangeInputState(e, setBlogUrl)}
             isValid={() => isBlogUrlValid(blogUrl)}
-            errorMessage={validations.blogUrl.errorMessage}
+            errorMessage={VALIDATIONS.blogUrl.errorMessage}
           />
         </StyledInputWrap>
         <StyledButtonArea>
