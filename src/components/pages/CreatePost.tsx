@@ -1,4 +1,4 @@
-import { VFC, useState } from "react";
+import { VFC, useState, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import firebase from "firebase/app";
@@ -22,33 +22,36 @@ export const CreatePost: VFC = () => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
 
-  const sendPost = async (title: string, text: string) => {
-    await db
-      .collection("posts")
-      .add({
-        uid: user.uid,
-        username: user.username,
-        title: title,
-        body: text,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      .then(() => {
-        toast.success("記事を投稿しました", {
-          icon: "👏",
-          style: {
-            borderRadius: "10px",
-          },
+  const sendPost = useCallback(
+    async (title: string, text: string) => {
+      await db
+        .collection("posts")
+        .add({
+          uid: user.uid,
+          username: user.username,
+          title: title,
+          body: text,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+        .then(() => {
+          toast.success("記事を投稿しました", {
+            icon: "👏",
+            style: {
+              borderRadius: "10px",
+            },
+          });
+          history.push(`/${user.uid}`);
+        })
+        .catch(() => {
+          toast.error("記事が投稿できませんでした。", {
+            style: {
+              borderRadius: "10px",
+            },
+          });
         });
-        history.push(`/${user.uid}`);
-      })
-      .catch(() => {
-        toast.error("記事が投稿できませんでした。", {
-          style: {
-            borderRadius: "10px",
-          },
-        });
-      });
-  };
+    },
+    [history, user]
+  );
 
   return (
     <StyledPostArea>
