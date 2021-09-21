@@ -1,6 +1,7 @@
 import { VFC } from "react";
 import { Link } from "react-router-dom";
 import { FiLogOut, FiUserCheck } from "react-icons/fi";
+import { BsPencil } from "react-icons/bs";
 import styled from "styled-components";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
@@ -24,7 +25,7 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
       </StyledMenuItem>
       <StyledMenuItem onClick={onClick}>
         <StyledProfileLink to={`/${user.uid}/draft`}>
-          <StyledUserEditIcon />
+          <StyledBsPencil />
           記事を投稿する
         </StyledProfileLink>
       </StyledMenuItem>
@@ -82,6 +83,9 @@ const StyledLogoutIcon = styled(FiLogOut)`
   padding-right: 10px;
 `;
 const StyledUserEditIcon = styled(FiUserCheck)`
+  padding-right: 10px;
+`;
+const StyledBsPencil = styled(BsPencil)`
   padding-right: 10px;
 `;
 

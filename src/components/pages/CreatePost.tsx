@@ -2,11 +2,12 @@ import { VFC, useState, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import firebase from "firebase/app";
-import { db } from "../../firebase";
+import { db, storage } from "../../firebase";
 import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
+import { uniqueFileName } from "../organisms/ProfileEditArea";
 
 import TextareaAutosize from "react-textarea-autosize";
 import styled from "styled-components";
@@ -15,12 +16,8 @@ import { PrimaryButton } from "../atom/button/PrimaryButton";
 
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
-import {
-  VALIDATIONS,
-  isPostTitleValid,
-  isPostTextValid,
-  isValidPost,
-} from "../../Themes/Validations";
+import { isValidPost } from "../../Themes/Validations";
+import { RiImageAddLine } from "react-icons/ri";
 
 export const CreatePost: VFC = () => {
   const user = useSelector(selectUser);
@@ -66,6 +63,34 @@ export const CreatePost: VFC = () => {
     setFunction(e.target.value);
   };
 
+  const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files![0]) {
+      const fileName = uniqueFileName(e.target.files![0]);
+      const uploadImage = storage
+        .ref(`images/${fileName}`)
+        .put(e.target.files![0]);
+      uploadImage.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        () => {},
+        (err) => {
+          alert(err.message);
+        },
+        async () => {
+          await storage
+            .ref("images")
+            .child(fileName)
+            .getDownloadURL()
+            .then((url) => {
+              setText((prevText) => {
+                return prevText + `![](${url})`;
+              });
+              e.target.value = "";
+            });
+        }
+      );
+    }
+  };
+
   return (
     <StyledPostArea>
       <StyledTextAreaWrap>
@@ -82,6 +107,10 @@ export const CreatePost: VFC = () => {
         />
 
         <StyledButtonWrap>
+          <StyledLabel>
+            <StyledRiImageAddLine />
+            <StyledHiddenInput type="file" onChange={onClickAddImage} />
+          </StyledLabel>
           <PrimaryButton
             onClick={() => {
               sendPost(title, text);
@@ -91,6 +120,10 @@ export const CreatePost: VFC = () => {
             投稿する
           </PrimaryButton>
         </StyledButtonWrap>
+
+        <ul>
+          <li></li>
+        </ul>
       </StyledTextAreaWrap>
 
       <StyledMarkdownArea>
@@ -99,6 +132,36 @@ export const CreatePost: VFC = () => {
     </StyledPostArea>
   );
 };
+
+const StyledRiImageAddLine = styled(RiImageAddLine)`
+  width: 32px;
+  height: 32px;
+  background-color: ${COLOR.WHITE};
+  padding: 10px;
+  border-radius: 24px;
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0 3px 12px -1px #04253f40;
+  }
+`;
+
+const StyledLabel = styled.label`
+  display: inline-block;
+  text-align: center;
+  padding: 5px 0;
+  font-size: 12px;
+  margin-right: 20px;
+  color: ${COLOR.GRAY};
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const StyledHiddenInput = styled.input`
+  display: none;
+`;
 
 const StyledPostArea = styled.div`
   display: flex;
@@ -188,6 +251,7 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
 const StyledButtonWrap = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   margin: 0 auto;
   padding: 40px 0;
 `;

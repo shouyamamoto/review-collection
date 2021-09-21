@@ -34,7 +34,7 @@ type profile = {
 
 // firebaseの使用上、同じファイル名のものがあると、先にあるものが削除されてしまう
 // ファイル名の先頭にランダムな文字を付与することで上記の問題を防ぐための関数
-const uniqueFileName = (file: any) => {
+export const uniqueFileName = (file: any) => {
   const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const N = 16;
   const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
@@ -111,7 +111,7 @@ export const ProfileEditArea: VFC = () => {
       if (e.target.files![0]) {
         const fileName = uniqueFileName(e.target.files![0]);
         const uploadAvatar = storage
-          .ref(`images/${fileName}`)
+          .ref(`avatars/${fileName}`)
           .put(e.target.files![0]);
         uploadAvatar.on(
           firebase.storage.TaskEvent.STATE_CHANGED,
@@ -121,7 +121,7 @@ export const ProfileEditArea: VFC = () => {
           },
           async () => {
             await storage
-              .ref("images")
+              .ref("avatars")
               .child(fileName)
               .getDownloadURL()
               .then((url) => {

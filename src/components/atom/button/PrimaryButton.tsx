@@ -29,6 +29,6 @@ const StyledBtn = styled(StyledButton)`
   font-weight: bold;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
 `;
