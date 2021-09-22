@@ -6,7 +6,7 @@ import { db, storage } from "../../firebase";
 import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { uniqueFileName } from "../organisms/ProfileEditArea";
 
 import TextareaAutosize from "react-textarea-autosize";
@@ -18,12 +18,18 @@ import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 import { isValidPost } from "../../Themes/Validations";
 import { RiImageAddLine } from "react-icons/ri";
+import { BiRightArrowCircle } from "react-icons/bi";
+
+type PreviewProps = {
+  isPreview: boolean;
+};
 
 export const CreatePost: VFC = () => {
   const user = useSelector(selectUser);
   const history = useHistory();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [isPreview, setIsPreview] = useState(false);
 
   const sendPost = useCallback(
     async (title: string, text: string) => {
@@ -72,8 +78,8 @@ export const CreatePost: VFC = () => {
       uploadImage.on(
         firebase.storage.TaskEvent.STATE_CHANGED,
         () => {},
-        (err) => {
-          alert(err.message);
+        () => {
+          alert("画像が挿入できませんでした。もう一度試してください。");
         },
         async () => {
           await storage
@@ -92,57 +98,136 @@ export const CreatePost: VFC = () => {
   };
 
   return (
-    <StyledPostArea>
-      <StyledTextAreaWrap>
-        <StyledTitle
-          value={title}
-          onChange={(e) => onChangeInputState(e, setTitle)}
-          placeholder="Title"
-        />
+    <>
+      <StyledPostArea>
+        <StyledTextAreaWrap>
+          <StyledTitle
+            value={title}
+            onChange={(e) => onChangeInputState(e, setTitle)}
+            placeholder="Title"
+          />
 
-        <StyledTextArea
-          onChange={(e) => onChangeInputState(e, setText)}
-          value={text}
-          placeholder="マークダウン記法で書いてください"
-        />
+          <TextAreaWrap>
+            <StyledTextArea
+              onChange={(e) => onChangeInputState(e, setText)}
+              value={text}
+              placeholder="マークダウン記法で書いてください"
+              isPreview={isPreview}
+            />
+            <StyledMarkdownArea isPreview={isPreview}>
+              <StyledReactMarkdown remarkPlugins={[gfm]} children={text} />
+            </StyledMarkdownArea>
+          </TextAreaWrap>
 
-        <StyledButtonWrap>
-          <StyledLabel>
-            <StyledRiImageAddLine />
-            <StyledHiddenInput type="file" onChange={onClickAddImage} />
-          </StyledLabel>
-          <PrimaryButton
-            onClick={() => {
-              sendPost(title, text);
-            }}
-            disabled={!isValidPost(title, text)}
-          >
-            投稿する
-          </PrimaryButton>
-        </StyledButtonWrap>
+          <StyledButtonWrap>
+            <StyledBiRightArrowCircle
+              onClick={() => setIsPreview(!isPreview)}
+            />
 
-        <ul>
-          <li></li>
-        </ul>
-      </StyledTextAreaWrap>
-
-      <StyledMarkdownArea>
-        <StyledReactMarkdown remarkPlugins={[gfm]} children={text} />
-      </StyledMarkdownArea>
-    </StyledPostArea>
+            <StyledLabel>
+              <StyledRiImageAddLine />
+              <StyledHiddenInput type="file" onChange={onClickAddImage} />
+            </StyledLabel>
+            <PrimaryButton
+              onClick={() => {
+                sendPost(title, text);
+              }}
+              disabled={!isValidPost(title, text)}
+            >
+              投稿する
+            </PrimaryButton>
+          </StyledButtonWrap>
+        </StyledTextAreaWrap>
+      </StyledPostArea>
+      <Toaster position="bottom-right" reverseOrder={false} />
+    </>
   );
 };
+
+const TextAreaWrap = styled.div`
+  display: flex;
+  overflow: hidden;
+`;
+
+const StyledTextArea = styled(TextareaAutosize)<PreviewProps>`
+  box-sizing: border-box;
+  min-height: 50vh;
+  display: block;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  background-color: ${COLOR.WHITE};
+  font-size: 16px;
+  line-height: 1.8;
+  padding: 20px 14px;
+  resize: none;
+  min-width: 90vw;
+  flex-shrink: 1;
+  flex-basis: 2;
+  transition: transform 0.3s;
+  transform: ${(props) =>
+    props.isPreview ? "translateX(-100%)" : "translateX(0)"};
+
+  @media ${DEVICE.laptop} {
+    padding: 28px;
+    min-width: 66vw;
+  }
+`;
+
+const StyledReactMarkdown = styled(ReactMarkdown)`
+  box-sizing: border-box;
+  min-width: 90vw;
+  min-height: 50vh;
+  display: block;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  background-color: ${COLOR.WHITE};
+  font-size: 16px;
+  line-height: 1.8;
+  padding: 20px 14px;
+  resize: none;
+
+  @media ${DEVICE.laptop} {
+    padding: 28px;
+    min-width: 66vw;
+  }
+`;
 
 const StyledRiImageAddLine = styled(RiImageAddLine)`
   width: 32px;
   height: 32px;
   background-color: ${COLOR.WHITE};
+  color: ${COLOR.GRAY};
   padding: 10px;
   border-radius: 24px;
   transition: box-shadow 0.3s;
 
   &:hover {
     box-shadow: 0 3px 12px -1px #04253f40;
+    color: ${COLOR.PRIMARY};
+  }
+`;
+
+const StyledBiRightArrowCircle = styled(BiRightArrowCircle)`
+  width: 32px;
+  height: 32px;
+  background-color: ${COLOR.WHITE};
+  color: ${COLOR.GRAY};
+  padding: 10px;
+  border-radius: 24px;
+  transition: box-shadow 0.3s;
+  margin-right: 20px;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 3px 12px -1px #04253f40;
+    color: ${COLOR.PRIMARY};
+  }
+
+  @media ${DEVICE.laptop} {
+    margin-right: 0;
+    margin-bottom: 20px;
   }
 `;
 
@@ -152,10 +237,14 @@ const StyledLabel = styled.label`
   padding: 5px 0;
   font-size: 12px;
   margin-right: 20px;
-  color: ${COLOR.GRAY};
 
   &:hover {
     cursor: pointer;
+  }
+
+  @media ${DEVICE.laptop} {
+    margin-right: 0;
+    margin-bottom: 20px;
   }
 `;
 
@@ -164,10 +253,8 @@ const StyledHiddenInput = styled.input`
 `;
 
 const StyledPostArea = styled.div`
-  display: flex;
-  flex-flow: column;
-  min-height: 100vh;
   background-color: ${COLOR.BACKGROUND};
+  min-height: 100vh;
 `;
 
 const StyledTextAreaWrap = styled.div`
@@ -199,29 +286,13 @@ const StyledTitle = styled(TextareaAutosize)`
   resize: none;
 `;
 
-const StyledTextArea = styled(TextareaAutosize)`
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 50vh;
-  display: block;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  background-color: ${COLOR.WHITE};
-  font-size: 16px;
-  line-height: 1.8;
-  padding: 20px 14px;
-  resize: none;
-
-  @media ${DEVICE.laptop} {
-    padding: 28px;
-  }
-`;
-
-const StyledMarkdownArea = styled.div`
+const StyledMarkdownArea = styled.div<PreviewProps>`
   width: 90vw;
   margin: 0 auto;
-  padding: 40px 0;
+  transition: transform 0.3s;
+  transform: ${(props) =>
+    props.isPreview ? "translateX(-100%)" : "translateX(0)"};
+  height: ${(props) => (props.isPreview ? "100%" : "0")};
 
   @media ${DEVICE.laptop} {
     width: 66vw;
@@ -229,29 +300,23 @@ const StyledMarkdownArea = styled.div`
   }
 `;
 
-const StyledReactMarkdown = styled(ReactMarkdown)`
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 50vh;
-  display: block;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  background-color: ${COLOR.WHITE};
-  font-size: 16px;
-  line-height: 1.8;
-  padding: 20px 14px;
-  resize: none;
-
-  @media ${DEVICE.laptop} {
-    padding: 28px;
-  }
-`;
-
 const StyledButtonWrap = styled.div`
+  position: fixed;
+  bottom: 0;
+  right: 10%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 20px 0;
+
+  @media ${DEVICE.laptop} {
+    top: 175px;
+    right: 5%;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  @media ${DEVICE.laptopL} {
+    right: 7%;
+  }
 `;

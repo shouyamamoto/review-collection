@@ -47,6 +47,7 @@ const StyledMenu = styled.ul`
   position: absolute;
   top: 60px;
   right: 20px;
+  z-index: 9999;
   box-shadow: 0 3px 12px -1px #04253f40;
   border-radius: 10px;
   width: 200px;
