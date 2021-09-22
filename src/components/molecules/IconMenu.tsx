@@ -1,7 +1,7 @@
 import { VFC } from "react";
 import { Link } from "react-router-dom";
-import MediaQuery from "react-responsive";
 import { FiLogOut, FiUserCheck } from "react-icons/fi";
+import { BsPencil } from "react-icons/bs";
 import styled from "styled-components";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
@@ -23,14 +23,12 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
           to={`/${user.uid}`}
         >{`@ ${user.username}`}</StyledProfileLink>
       </StyledMenuItem>
-      <MediaQuery query="(max-width: 767px)">
-        <StyledMenuItem>
-          <StyledProfileLink to={`/${user.uid}`}>
-            <StyledUserEditIcon />
-            記事を投稿する
-          </StyledProfileLink>
-        </StyledMenuItem>
-      </MediaQuery>
+      <StyledMenuItem onClick={onClick}>
+        <StyledProfileLink to={`/${user.uid}/draft`}>
+          <StyledBsPencil />
+          記事を投稿する
+        </StyledProfileLink>
+      </StyledMenuItem>
       <StyledMenuItem onClick={onClick}>
         <StyledProfileLink to={`/${user.uid}/profile/settings`}>
           <StyledUserEditIcon />
@@ -49,6 +47,7 @@ const StyledMenu = styled.ul`
   position: absolute;
   top: 60px;
   right: 20px;
+  z-index: 9999;
   box-shadow: 0 3px 12px -1px #04253f40;
   border-radius: 10px;
   width: 200px;
@@ -85,6 +84,9 @@ const StyledLogoutIcon = styled(FiLogOut)`
   padding-right: 10px;
 `;
 const StyledUserEditIcon = styled(FiUserCheck)`
+  padding-right: 10px;
+`;
+const StyledBsPencil = styled(BsPencil)`
   padding-right: 10px;
 `;
 

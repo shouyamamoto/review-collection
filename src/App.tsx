@@ -5,11 +5,10 @@ import { useDispatch } from "react-redux";
 import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile";
 import { ProfileEdit } from "./components/pages/ProfileEdit";
+import { CreatePost } from "./components/pages/CreatePost";
 import { Header } from "./components/organisms/Header";
 import { BrowserRouter, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -31,28 +30,6 @@ a {
 
 const App: React.VFC = () => {
   const dispatch = useDispatch();
-
-  // ログイン時に名前を入力
-  // 名前を入力
-  // shouyamamotoと入力
-  // アイコンメニューではundefined
-  // Profileもundefined
-  // 編集画面ではshouyamamotoと表示される
-  // 編集画面にいったらshouyamamotoとアイコンに表示される
-  // Profileにうつるとshouyamamotoと表示される
-
-  // ログインしなおしてもちゃんと表示される
-  // 名前変更
-  // 変更したらProfileにも表示される、メニューにも表示される
-  // アイコン変更しても表示される
-
-  // ログインし直す
-  // 前のアイコンと名前が表示される
-  // 変更するところではちゃんと表示される
-  // Profileでは前のやつ
-
-  // やること
-  // アイコンメニューを確認する
 
   useEffect(() => {
     const unSub = auth.onAuthStateChanged((authUser) => {
@@ -119,8 +96,10 @@ const App: React.VFC = () => {
         <Route exact path="/:userId/profile/settings">
           <ProfileEdit />
         </Route>
+        <Route exact path="/:userId/draft">
+          <CreatePost />
+        </Route>
       </BrowserRouter>
-      <ToastContainer autoClose={2000} />
     </>
   );
 };
