@@ -100,14 +100,14 @@ export const CreatePost: VFC = () => {
   return (
     <>
       <StyledPostArea>
-        <StyledTextAreaWrap>
+        <StyledInner>
           <StyledTitle
             value={title}
             onChange={(e) => onChangeInputState(e, setTitle)}
             placeholder="Title"
           />
 
-          <TextAreaWrap>
+          <StyledTextAreaWrap>
             <StyledTextArea
               onChange={(e) => onChangeInputState(e, setText)}
               value={text}
@@ -117,7 +117,7 @@ export const CreatePost: VFC = () => {
             <StyledMarkdownArea isPreview={isPreview}>
               <StyledReactMarkdown remarkPlugins={[gfm]} children={text} />
             </StyledMarkdownArea>
-          </TextAreaWrap>
+          </StyledTextAreaWrap>
 
           <StyledButtonWrap>
             <StyledBiRightArrowCircle
@@ -137,16 +137,17 @@ export const CreatePost: VFC = () => {
               投稿する
             </PrimaryButton>
           </StyledButtonWrap>
-        </StyledTextAreaWrap>
+        </StyledInner>
       </StyledPostArea>
       <Toaster position="bottom-right" reverseOrder={false} />
     </>
   );
 };
 
-const TextAreaWrap = styled.div`
+const StyledTextAreaWrap = styled.div`
   display: flex;
   overflow: hidden;
+  border-radius: 10px;
 `;
 
 const StyledTextArea = styled(TextareaAutosize)<PreviewProps>`
@@ -257,7 +258,7 @@ const StyledPostArea = styled.div`
   min-height: 100vh;
 `;
 
-const StyledTextAreaWrap = styled.div`
+const StyledInner = styled.div`
   flex: 1;
   width: 90vw;
   margin: 0 auto;
