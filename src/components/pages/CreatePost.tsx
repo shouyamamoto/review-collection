@@ -1,5 +1,6 @@
-import { VFC, useState, useCallback } from "react";
+import React, { VFC, useState, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
+
 import gfm from "remark-gfm";
 import firebase from "firebase/app";
 import { db, storage } from "../../firebase";
@@ -13,6 +14,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import styled from "styled-components";
 
 import { PrimaryButton } from "../atom/button/PrimaryButton";
+import { index as CodeBlock } from "../atom/code/index";
 
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
@@ -115,7 +117,11 @@ export const CreatePost: VFC = () => {
               isPreview={isPreview}
             />
             <StyledMarkdownArea isPreview={isPreview}>
-              <StyledReactMarkdown remarkPlugins={[gfm]} children={text} />
+              <StyledReactMarkdown
+                remarkPlugins={[gfm]}
+                children={text}
+                components={{ code: CodeBlock }}
+              />
             </StyledMarkdownArea>
           </StyledTextAreaWrap>
 
