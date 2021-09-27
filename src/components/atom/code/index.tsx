@@ -9,7 +9,9 @@ import styled from "styled-components";
 import { COLOR } from "../../../Themes/Color";
 
 const customStyle = {
-  padding: "40px 10px 20px",
+  padding: "40px 10px 40px",
+  margin: "20px 0",
+  whiteSpace: "pre-line",
 };
 
 export const index: CodeComponent | ReactMarkdownNames = ({
@@ -17,18 +19,20 @@ export const index: CodeComponent | ReactMarkdownNames = ({
   className,
   children,
 }) => {
-  const match = /language-(\w+)(:.+)/.exec(className || "");
+  const match = /language-(\w+)/.exec(className || "");
+  const matchName = /language-(\w+)(:.+)/.exec(className || "");
   const lang = match && match[1] ? match[1] : "";
-  const name = match && match[2] ? match[2].slice(1) : "";
+  const name = matchName && matchName[2] ? matchName[2].slice(1) : "";
 
   return !inline && match ? (
     <CodeBlockWrapper>
-      <CodeBlockTitle>{name}</CodeBlockTitle>
+      {name && <CodeBlockTitle>{name}</CodeBlockTitle>}
       <SyntaxHighlighter
         style={dracula}
         language={lang}
         children={String(children).replace(/\n$/, "")}
         customStyle={customStyle}
+        PreTag="div"
         showLineNumbers
       />
     </CodeBlockWrapper>
