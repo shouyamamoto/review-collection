@@ -28,7 +28,6 @@ export const PostArea: VFC = () => {
         .collection("posts")
         .add({
           uid: user.uid,
-          username: user.username,
           title: title,
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
