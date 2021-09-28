@@ -62,9 +62,18 @@ a {
 .preview ul li {
   list-style: disc inside !important;
 }
+.preview ul li li{
+  list-style: circle inside !important;
+}
+.preview ul li li li {
+  list-style: disc inside !important;
+}
 .preview ol,
-.preview ol li{
+.preview ol li {
   list-style: decimal inside !important;
+}
+.preview ol li li {
+  list-style: lower-roman inside !important;
 }
 .preview li {
   padding-left: 10px;
@@ -72,12 +81,12 @@ a {
 .preview h1 {
   border-bottom: 2px solid ${COLOR.BACKGROUND};
   padding: 0.4rem 0;
-  margin-top: 1.5rem;
+  margin-top: 2.4rem;
 }
 .preview h2 {
   border-bottom: 2px solid ${COLOR.BACKGROUND};
   padding: 0.4rem 0;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 .preview h3,
 .preview h4,
@@ -86,11 +95,30 @@ a {
   padding: 0.4rem 0;
   margin-top: 1.5rem;
 }
-
 .preview img {
   width: 100%;
   display: inline-block;
   margin: 0 auto;
+}
+.preview img + em {
+  display: block;
+  text-align: center;
+  color: ${COLOR.GRAY};
+  font-size: 12px;
+}
+.preview a {
+  color: ${COLOR.PRIMARY};
+}
+.preview table {
+  margin-top: 1.5rem;
+}
+.preview table, td, th {
+  padding: 0.42rem;
+  border-collapse: collapse;
+  border: 1px solid ${COLOR.BACKGROUND};
+} 
+.preview thead {
+  background-color: ${COLOR.BACKGROUND};
 }
 `;
 

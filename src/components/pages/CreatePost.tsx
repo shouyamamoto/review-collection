@@ -315,7 +315,7 @@ const StyledButtonWrap = styled.div`
   margin: 0 auto;
   padding: 20px 0;
 
-  @media ${DEVICE.laptop} {
+  @media ${DEVICE.laptopL} {
     top: 80px;
     right: 3%;
     bottom: auto;
