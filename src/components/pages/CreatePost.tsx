@@ -14,12 +14,14 @@ import styled from "styled-components";
 
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { index as CodeBlock } from "../atom/code/index";
+import { TitleTextArea } from "../atom/textArea/TitleTextArea";
 
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 import { isValidPost } from "../../Themes/Validations";
 import { RiImageAddLine } from "react-icons/ri";
 import { BiRightArrowCircle } from "react-icons/bi";
+import { FiRotateCw } from "react-icons/fi";
 
 type PreviewProps = {
   isPreview: boolean;
@@ -102,8 +104,8 @@ export const CreatePost: VFC = () => {
     <>
       <StyledPostArea>
         <StyledInner>
-          <StyledTitle
-            value={title}
+          <TitleTextArea
+            inputValue={title}
             onChange={(e) => onChangeInputState(e, setTitle)}
             placeholder="Title"
           />

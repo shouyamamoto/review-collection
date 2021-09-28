@@ -1,6 +1,6 @@
 import { memo, VFC } from "react";
 import { index as Label } from "../atom/label/index";
-import { index as TextArea } from "../atom/textArea/index";
+import { ProfileTextArea } from "../atom/textArea/ProfileTextArea";
 
 type Props = {
   placeholder?: string;
@@ -14,7 +14,7 @@ export const InputTextArea: VFC<Props> = memo(
     return (
       <>
         <Label>{text}</Label>
-        <TextArea
+        <ProfileTextArea
           placeholder={placeholder}
           inputValue={inputValue}
           onChange={onChange}
