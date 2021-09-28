@@ -1,5 +1,6 @@
-import { VFC, useState, useCallback } from "react";
+import React, { VFC, useState, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
+
 import gfm from "remark-gfm";
 import firebase from "firebase/app";
 import { db, storage } from "../../firebase";
@@ -8,11 +9,11 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { uniqueFileName } from "../organisms/ProfileEditArea";
-
 import TextareaAutosize from "react-textarea-autosize";
 import styled from "styled-components";
 
 import { PrimaryButton } from "../atom/button/PrimaryButton";
+import { index as CodeBlock } from "../atom/code/index";
 
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
@@ -114,9 +115,13 @@ export const CreatePost: VFC = () => {
               placeholder="マークダウン記法で書いてください"
               isPreview={isPreview}
             />
-            <StyledMarkdownArea isPreview={isPreview}>
-              <StyledReactMarkdown remarkPlugins={[gfm]} children={text} />
-            </StyledMarkdownArea>
+            <StyledReactMarkdown
+              remarkPlugins={[gfm]}
+              children={text}
+              components={{ code: CodeBlock }}
+              className="preview"
+              isPreview={isPreview}
+            />
           </StyledTextAreaWrap>
 
           <StyledButtonWrap>
@@ -146,13 +151,20 @@ export const CreatePost: VFC = () => {
 
 const StyledTextAreaWrap = styled.div`
   display: flex;
+  max-width: 90vw;
   overflow: hidden;
   border-radius: 10px;
+
+  @media ${DEVICE.laptopL} {
+    justify-content: space-between;
+    max-width: 1200px;
+  }
 `;
 
 const StyledTextArea = styled(TextareaAutosize)<PreviewProps>`
   box-sizing: border-box;
   min-height: 50vh;
+  min-width: 90vw;
   display: block;
   border: none;
   border-radius: 10px;
@@ -162,23 +174,23 @@ const StyledTextArea = styled(TextareaAutosize)<PreviewProps>`
   line-height: 1.8;
   padding: 20px 14px;
   resize: none;
-  min-width: 90vw;
-  flex-shrink: 1;
-  flex-basis: 2;
   transition: transform 0.3s;
   transform: ${(props) =>
     props.isPreview ? "translateX(-100%)" : "translateX(0)"};
 
-  @media ${DEVICE.laptop} {
+  @media ${DEVICE.laptopL} {
     padding: 28px;
-    min-width: 66vw;
+    transform: translateX(0%);
+    width: 100%;
+    min-width: 50%;
+    min-height: 70vh;
+    margin-right: 6px;
   }
 `;
 
-const StyledReactMarkdown = styled(ReactMarkdown)`
+const StyledReactMarkdown = styled(ReactMarkdown)<PreviewProps>`
   box-sizing: border-box;
   min-width: 90vw;
-  min-height: 50vh;
   display: block;
   border: none;
   border-radius: 10px;
@@ -188,10 +200,19 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
   line-height: 1.8;
   padding: 20px 14px;
   resize: none;
+  overflow-wrap: break-word;
+  transform: ${(props) =>
+    props.isPreview ? "translateX(-100%)" : "translateX(0)"};
+  height: ${(props) => (props.isPreview ? "100%" : "0")};
+  min-height: 50vh;
+  transition: transform 0.3s;
 
-  @media ${DEVICE.laptop} {
+  @media ${DEVICE.laptopL} {
     padding: 28px;
-    min-width: 66vw;
+    width: 100%;
+    min-width: 50%;
+    height: 100%;
+    min-height: 70vh;
   }
 `;
 
@@ -202,10 +223,9 @@ const StyledRiImageAddLine = styled(RiImageAddLine)`
   color: ${COLOR.GRAY};
   padding: 10px;
   border-radius: 24px;
-  transition: box-shadow 0.3s;
+  box-shadow: 0 3px 12px -1px #04253f40;
 
   &:hover {
-    box-shadow: 0 3px 12px -1px #04253f40;
     color: ${COLOR.PRIMARY};
   }
 `;
@@ -217,18 +237,16 @@ const StyledBiRightArrowCircle = styled(BiRightArrowCircle)`
   color: ${COLOR.GRAY};
   padding: 10px;
   border-radius: 24px;
-  transition: box-shadow 0.3s;
   margin-right: 20px;
+  box-shadow: 0 3px 12px -1px #04253f40;
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0 3px 12px -1px #04253f40;
     color: ${COLOR.PRIMARY};
   }
 
-  @media ${DEVICE.laptop} {
-    margin-right: 0;
-    margin-bottom: 20px;
+  @media ${DEVICE.laptopL} {
+    visibility: hidden;
   }
 `;
 
@@ -243,7 +261,7 @@ const StyledLabel = styled.label`
     cursor: pointer;
   }
 
-  @media ${DEVICE.laptop} {
+  @media ${DEVICE.laptopL} {
     margin-right: 0;
     margin-bottom: 20px;
   }
@@ -264,9 +282,9 @@ const StyledInner = styled.div`
   margin: 0 auto;
   padding: 40px 0;
 
-  @media ${DEVICE.laptop} {
-    width: 66vw;
-    max-width: ${DEVICE.laptop};
+  @media ${DEVICE.laptopL} {
+    width: 90vw;
+    max-width: 1440px;
   }
 `;
 
@@ -287,20 +305,6 @@ const StyledTitle = styled(TextareaAutosize)`
   resize: none;
 `;
 
-const StyledMarkdownArea = styled.div<PreviewProps>`
-  width: 90vw;
-  margin: 0 auto;
-  transition: transform 0.3s;
-  transform: ${(props) =>
-    props.isPreview ? "translateX(-100%)" : "translateX(0)"};
-  height: ${(props) => (props.isPreview ? "100%" : "0")};
-
-  @media ${DEVICE.laptop} {
-    width: 66vw;
-    max-width: ${DEVICE.laptop};
-  }
-`;
-
 const StyledButtonWrap = styled.div`
   position: fixed;
   bottom: 0;
@@ -311,13 +315,11 @@ const StyledButtonWrap = styled.div`
   margin: 0 auto;
   padding: 20px 0;
 
-  @media ${DEVICE.laptop} {
-    top: 175px;
-    right: 5%;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
   @media ${DEVICE.laptopL} {
-    right: 7%;
+    top: 80px;
+    right: 3%;
+    bottom: auto;
+    justify-content: flex-start;
+    flex-direction: column;
   }
 `;

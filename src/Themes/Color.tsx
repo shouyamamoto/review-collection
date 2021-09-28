@@ -7,6 +7,6 @@ export const COLOR = {
   BLACK: "#000000",
   GRAY: "#93a5b1",
   DANGER: "#DA5040",
-  GRADATION: "linear-gradient(to right, #25bcbf, #3177b3)",
+  CODE: "#DA5040",
   TRANSPARENT: "transparent",
 };
