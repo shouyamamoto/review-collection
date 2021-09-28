@@ -48,7 +48,9 @@ a {
 }
 .preview hr {
   margin: 1.5rem 0;
-  background-color: ${COLOR.DANGER};
+  background-color: ${COLOR.BACKGROUND};
+  height: 2px;
+  border: none;
 }
 .preview ul,
 .preview ol {
@@ -74,6 +76,9 @@ a {
 }
 .preview ol li li {
   list-style: lower-roman inside !important;
+}
+.preview ol li li li{
+  list-style: decimal inside !important;
 }
 .preview li {
   padding-left: 10px;
@@ -101,6 +106,12 @@ a {
   margin: 0 auto;
 }
 .preview img + em {
+  display: block;
+  text-align: center;
+  color: ${COLOR.GRAY};
+  font-size: 12px;
+}
+.preview a + em {
   display: block;
   text-align: center;
   color: ${COLOR.GRAY};
