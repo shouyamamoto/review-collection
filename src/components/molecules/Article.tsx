@@ -2,10 +2,14 @@ import { VFC } from "react";
 import styled from "styled-components";
 import { format } from "date-fns";
 import { COLOR } from "../../Themes/Color";
+
 import { index as Icon } from "../atom/icon";
+import { index as Link } from "../atom/link";
+import { NameWithTimestamp } from "./NameWithTimestamp";
 import { DEVICE } from "../../Themes/Device";
 
 type Props = {
+  uid: string;
   username: string;
   avatar: string;
   title: string;
@@ -13,18 +17,29 @@ type Props = {
   timestamp: any;
 };
 
-export const Article: VFC<Props> = ({ username, avatar, title, timestamp }) => {
+export const Article: VFC<Props> = ({
+  uid,
+  username,
+  avatar,
+  title,
+  timestamp,
+}) => {
   return (
     <StyledArticle>
-      <StyledTitle>{title}</StyledTitle>
+      <Link to={`/`}>
+        <StyledArticleTitle>{title}</StyledArticleTitle>
+      </Link>
+
       <StyledIconWithName>
-        <Icon src={avatar} alt={username} width="30" height="30" />
-        <div>
-          <StyledUsername>{username}</StyledUsername>
-          <StyledTimestamp>
-            {timestamp && format(timestamp, "yyyy-MM-dd")}に公開
-          </StyledTimestamp>
-        </div>
+        <Link to={`/${uid}`}>
+          <Icon src={avatar} alt={username} width="30" height="30" />
+        </Link>
+        <Link to={`/${uid}`}>
+          <NameWithTimestamp
+            username={username}
+            timestamp={timestamp && format(timestamp, "yyyy-MM-dd")}
+          />
+        </Link>
       </StyledIconWithName>
     </StyledArticle>
   );
@@ -43,7 +58,6 @@ const StyledArticle = styled.article`
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 3px 12px -1px #04253f40;
-    cursor: pointer;
   }
 `;
 
@@ -57,17 +71,9 @@ const StyledIconWithName = styled.div`
   margin: auto auto 0;
 `;
 
-const StyledUsername = styled.p`
-  font-size: 11px;
-  margin-left: 0.4rem;
-
-  @media ${DEVICE.laptop} {
-    margin-left: 0.8rem;
-  }
-`;
-
-const StyledTitle = styled.h2`
+const StyledArticleTitle = styled.p`
   font-size: 13px;
+  font-weight: bold;
   padding: 0 14px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -82,14 +88,5 @@ const StyledTitle = styled.h2`
     font-size: 14px;
     padding: 0 16px;
     margin-bottom: 18px;
-  }
-`;
-
-const StyledTimestamp = styled.p`
-  font-size: 11px;
-  margin-left: 0.4rem;
-
-  @media ${DEVICE.laptop} {
-    margin-left: 0.8rem;
   }
 `;

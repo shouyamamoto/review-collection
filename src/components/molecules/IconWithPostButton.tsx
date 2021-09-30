@@ -1,7 +1,7 @@
 import { memo, VFC } from "react";
 import styled from "styled-components";
 import MediaQuery from "react-responsive";
-import { Link } from "react-router-dom";
+import { index as Link } from "../atom/link";
 import { DEVICE } from "../../Themes/Device";
 import { index as Icon } from "../atom/icon/index";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
@@ -25,7 +25,7 @@ export const IconWithPostButton: VFC<Props> = memo(
       <StyledIconArea>
         <Icon src={user.avatar} width="50" height="50" onClick={onClick} />
         <MediaQuery query={`${DEVICE.tabletL}`}>
-          <Link to={`/${user.uid}/draft`}>
+          <Link to={`/articles/new`}>
             <PrimaryButton onClick={onClose}>Add Post</PrimaryButton>
           </Link>
         </MediaQuery>

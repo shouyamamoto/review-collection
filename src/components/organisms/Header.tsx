@@ -1,7 +1,7 @@
 import { VFC, useState, useCallback, memo } from "react";
 import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { auth } from "../../firebase";
 import { Auth } from "./Auth";
@@ -9,6 +9,7 @@ import logo from "../../images/logo.svg";
 
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { IconWithPostButton } from "../molecules/IconWithPostButton";
+import { index as Link } from "../atom/link";
 
 import { DEVICE } from "../../Themes/Device";
 

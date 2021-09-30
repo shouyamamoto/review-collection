@@ -1,7 +1,6 @@
 import { VFC, useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import { db } from "../../firebase";
 import { selectUser } from "../../features/users/userSlice";
@@ -10,6 +9,7 @@ import { DEVICE } from "../../Themes/Device";
 
 import { index as LoadingIcon } from "../atom/loading/index";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
+import { index as Link } from "../atom/link";
 import NonePosts from "../../images/no-post.svg";
 
 type POST = {
@@ -30,7 +30,6 @@ export const UserPost: VFC = () => {
       body: "",
     },
   ]);
-  // const [author, setAuthor] = useState("");
 
   useEffect(() => {
     const unSub = db
@@ -46,8 +45,8 @@ export const UserPost: VFC = () => {
             body: doc.data().body,
           }))
         );
+        setIsLoading(false);
       });
-    setIsLoading(false);
     return () => unSub();
   }, [user.uid]);
 
@@ -55,35 +54,36 @@ export const UserPost: VFC = () => {
     return <LoadingIcon width="50" height="50" />;
   }
 
-  if (!userPosts[0]) {
-    return (
-      <StyledUserPostNone>
-        <img src={NonePosts} alt="" width="400" />
-        <StyledPostPrompt>
-          まだ投稿がありません。
-          <br />
-          レビューしたこと、されたことを書いてみませんか？
-          <Link to={`/${user.uid}/draft`}>
-            <PrimaryButton>Add Post</PrimaryButton>
-          </Link>
-        </StyledPostPrompt>
-      </StyledUserPostNone>
-    );
-  }
-
   return (
-    <StyledUserPost>
-      {userPosts.map((post) => (
-        <Article
-          key={post.id}
-          username={user.username}
-          avatar={user.avatar}
-          title={post.title}
-          body={post.body}
-          timestamp={post.timestamp}
-        />
-      ))}
-    </StyledUserPost>
+    <>
+      {userPosts[0] ? (
+        <StyledUserPost>
+          {userPosts.map((post) => (
+            <Article
+              key={post.id}
+              uid={user.uid}
+              username={user.username}
+              avatar={user.avatar}
+              title={post.title}
+              body={post.body}
+              timestamp={post.timestamp}
+            />
+          ))}
+        </StyledUserPost>
+      ) : (
+        <StyledUserPostNone>
+          <img src={NonePosts} alt="" width="400" />
+          <StyledPostPrompt>
+            まだ投稿がありません。
+            <br />
+            レビューしたこと、されたことを書いてみませんか？
+            <Link to={`/articles/new`}>
+              <PrimaryButton>Add Post</PrimaryButton>
+            </Link>
+          </StyledPostPrompt>
+        </StyledUserPostNone>
+      )}
+    </>
   );
 };
 
