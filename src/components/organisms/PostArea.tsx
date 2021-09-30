@@ -32,7 +32,19 @@ export const PostArea: VFC = () => {
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         })
-        .then(() => {
+        .then((posted) => {
+          db.collection("users")
+            .where("uid", "==", `${user.uid}`)
+            .get()
+            .then((snapshot) =>
+              snapshot.forEach((doc) => {
+                db.collection("users")
+                  .doc(doc.id)
+                  .update({
+                    posts: firebase.firestore.FieldValue.arrayUnion(posted.id),
+                  });
+              })
+            );
           toast.success("記事を投稿しました", {
             icon: "👏",
             style: {

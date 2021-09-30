@@ -3,16 +3,17 @@ import styled from "styled-components";
 
 type Props = {
   src: string;
+  alt?: string;
   width?: string;
   height?: string;
   onClick?: () => void;
 };
 
-export const index: VFC<Props> = ({ src, width, height, onClick }) => {
+export const index: VFC<Props> = ({ src, alt, width, height, onClick }) => {
   return (
     <StyledIcon
       src={src}
-      alt=""
+      alt={alt}
       width={width}
       height={height}
       onClick={onClick}
@@ -22,7 +23,4 @@ export const index: VFC<Props> = ({ src, width, height, onClick }) => {
 
 const StyledIcon = styled.img`
   border-radius: 50%;
-  &:hover {
-    cursor: pointer;
-  }
 `;

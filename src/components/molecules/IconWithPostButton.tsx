@@ -14,9 +14,9 @@ type Props = {
     avatar: string;
   };
   isOpenMenu: boolean;
-  onClick: () => void;
-  onClose: () => void;
-  signOut: () => void;
+  onClick?: () => void;
+  onClose?: () => void;
+  signOut?: () => void;
 };
 
 export const IconWithPostButton: VFC<Props> = memo(

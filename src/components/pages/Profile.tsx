@@ -1,12 +1,15 @@
 import { VFC } from "react";
-import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { COLOR } from "../../Themes/Color";
-import { index as Icon } from "../atom/icon/index";
-import { SocialIcons } from "../molecules/SocialIcons";
-import { DEVICE } from "../../Themes/Device";
 import { Toaster } from "react-hot-toast";
+
+import { selectUser } from "../../features/users/userSlice";
+import { index as Icon } from "../atom/icon/index";
+import { index as Title } from "../atom/title/index";
+import { SocialIcons } from "../molecules/SocialIcons";
+import { UserPost } from "../organisms/UserPost";
+import { COLOR } from "../../Themes/Color";
+import { DEVICE } from "../../Themes/Device";
 
 export const Profile: VFC = () => {
   const user = useSelector(selectUser);
@@ -26,7 +29,12 @@ export const Profile: VFC = () => {
         </StyledProfileInner>
       </StyledProfile>
 
-      <StyledPosts></StyledPosts>
+      <StyledPosts>
+        <StyledPostInner>
+          <Title headline="h2">Articles</Title>
+          <UserPost />
+        </StyledPostInner>
+      </StyledPosts>
 
       <Toaster position="bottom-right" reverseOrder={false} />
     </>
@@ -88,5 +96,29 @@ const StyledName = styled.h1`
 
 const StyledPosts = styled.div`
   background-color: ${COLOR.BACKGROUND};
-  height: 1000px;
+  padding: 40px 0;
+  min-height: 50vh;
+  height: 100%;
+
+  @media ${DEVICE.laptop} {
+    padding: 60px 0;
+  }
+`;
+
+const StyledPostInner = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 24px;
+
+  @media ${DEVICE.mobileL} {
+    max-width: 800px;
+    width: 80vw;
+  }
+
+  @media ${DEVICE.laptop} {
+    width: 60vw;
+    max-width: 1024px;
+    grid-gap: 40px;
+  }
 `;
