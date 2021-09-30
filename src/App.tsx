@@ -201,7 +201,7 @@ const App: React.VFC = () => {
         <Route exact path="/:userId/profile/settings">
           <ProfileEdit />
         </Route>
-        <Route exact path="/:userId/draft">
+        <Route exact path="/articles/new">
           <CreatePost />
         </Route>
       </BrowserRouter>

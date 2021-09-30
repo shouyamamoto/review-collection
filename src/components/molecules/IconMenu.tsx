@@ -11,8 +11,8 @@ type Props = {
     uid: string;
     username: string;
   };
-  onClick: () => void;
-  signOut: () => void;
+  onClick?: () => void;
+  signOut?: () => void;
 };
 
 export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {

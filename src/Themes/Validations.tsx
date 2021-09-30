@@ -14,9 +14,9 @@ export const VALIDATIONS = {
     errorMessage: "※httpまたはhttpsから始まるURLを入力してください。",
   },
   postTitle: {
-    maxLength: 100,
+    maxLength: 50,
     minLength: 2,
-    errorMessage: "※記事のタイトルは2文字以上100文字以下にしてください。",
+    errorMessage: "※記事のタイトルは2文字以上50文字以下にしてください。",
   },
   postText: {
     minLength: 0,
