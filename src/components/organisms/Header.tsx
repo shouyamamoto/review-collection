@@ -62,6 +62,10 @@ const StyledHeaderInner = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media ${DEVICE.laptopL} {
+    max-width: 1200px;
+  }
 `;
 
 const StyledLogo = styled.img`

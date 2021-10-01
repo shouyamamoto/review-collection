@@ -24,7 +24,7 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
         >{`@ ${user.username}`}</StyledProfileLink>
       </StyledMenuItem>
       <StyledMenuItem onClick={onClick}>
-        <StyledProfileLink to={`/${user.uid}/draft`}>
+        <StyledProfileLink to={`/articles/new`}>
           <StyledBsPencil />
           記事を投稿する
         </StyledProfileLink>

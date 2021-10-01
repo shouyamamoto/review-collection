@@ -7,12 +7,12 @@ import { COLOR } from "../../../Themes/Color";
 import { DEVICE } from "../../../Themes/Device";
 
 type Props = {
-  isPreview: boolean;
+  isPreview?: boolean;
   text: string;
 };
 
 type PreviewProps = {
-  isPreview: boolean;
+  isPreview?: boolean;
 };
 
 export const ReactMarkdownArea: VFC<Props> = ({ isPreview, text }) => {
