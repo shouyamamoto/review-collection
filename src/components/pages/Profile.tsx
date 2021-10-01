@@ -56,8 +56,7 @@ const StyledProfileInner = styled.div`
   @media ${DEVICE.tabletL} {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    height: 280px;
+    padding: 60px;
     max-width: 800px;
     width: 80%;
   }

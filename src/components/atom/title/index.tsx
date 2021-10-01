@@ -31,6 +31,10 @@ export const index: VFC<Props> = ({ headline, children }) => {
 
 const StyledH1 = styled.h1`
   font-size: 20px;
+
+  @media ${DEVICE.laptop} {
+    font-size: 24px;
+  }
 `;
 
 const StyledH2 = styled.h2`
