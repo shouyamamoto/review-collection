@@ -6,6 +6,7 @@ import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile";
 import { ProfileEdit } from "./components/pages/ProfileEdit";
 import { CreatePost } from "./components/pages/CreatePost";
+import { SinglePostPage } from "./components/pages/SinglePostPage";
 import { Header } from "./components/organisms/Header";
 import { BrowserRouter, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
@@ -84,12 +85,13 @@ a {
   padding-left: 10px;
 }
 .preview h1 {
+  font-size: 25px;
   border-bottom: 2px solid ${COLOR.BACKGROUND};
   padding: 0.4rem 0;
   margin-top: 2.4rem;
 }
 .preview h2 {
-  border-bottom: 2px solid ${COLOR.BACKGROUND};
+  font-size: 22px;
   padding: 0.4rem 0;
   margin-top: 2rem;
 }
@@ -203,6 +205,9 @@ const App: React.VFC = () => {
         </Route>
         <Route exact path="/articles/new">
           <CreatePost />
+        </Route>
+        <Route exact path="/:userId/articles/:postId">
+          <SinglePostPage />
         </Route>
       </BrowserRouter>
     </>

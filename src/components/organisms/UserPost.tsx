@@ -61,6 +61,7 @@ export const UserPost: VFC = () => {
           {userPosts.map((post) => (
             <Article
               key={post.id}
+              postId={post.id}
               uid={user.uid}
               username={user.username}
               avatar={user.avatar}

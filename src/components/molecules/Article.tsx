@@ -9,6 +9,7 @@ import { NameWithTimestamp } from "./NameWithTimestamp";
 import { DEVICE } from "../../Themes/Device";
 
 type Props = {
+  postId: string;
   uid: string;
   username: string;
   avatar: string;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export const Article: VFC<Props> = ({
+  postId,
   uid,
   username,
   avatar,
@@ -26,13 +28,13 @@ export const Article: VFC<Props> = ({
 }) => {
   return (
     <StyledArticle>
-      <Link to={`/`}>
+      <Link to={`/${uid}/articles/${postId}`}>
         <StyledArticleTitle>{title}</StyledArticleTitle>
       </Link>
 
       <StyledIconWithName>
         <Link to={`/${uid}`}>
-          <Icon src={avatar} alt={username} width="30" height="30" />
+          <Icon src={avatar} alt={username} width="24" height="24" />
         </Link>
         <Link to={`/${uid}`}>
           <NameWithTimestamp

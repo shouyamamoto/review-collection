@@ -1,20 +1,27 @@
 import { VFC } from "react";
-import { selectUser } from "../../features/users/userSlice";
-import { useSelector } from "react-redux";
 import { AiFillGithub, AiOutlineLink } from "react-icons/ai";
 import { FaTwitter } from "react-icons/fa";
 import styled from "styled-components";
+
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
-export const SocialIcons: VFC = () => {
-  const user = useSelector(selectUser);
+type Props = {
+  githubName: string;
+  twitterName: string;
+  blogUrl: string;
+};
 
+export const SocialIcons: VFC<Props> = ({
+  githubName,
+  twitterName,
+  blogUrl,
+}) => {
   return (
     <StyledLinkLists>
       <StyledLinkItems>
         <a
-          href={`https://github.com/${user.githubName}`}
+          href={`https://github.com/${githubName}`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -24,7 +31,7 @@ export const SocialIcons: VFC = () => {
 
       <StyledLinkItems>
         <a
-          href={`https://twitter.com/${user.twitterName}`}
+          href={`https://twitter.com/${twitterName}`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -33,7 +40,7 @@ export const SocialIcons: VFC = () => {
       </StyledLinkItems>
 
       <StyledLinkItems>
-        <a href={`${user.blogUrl}`} target="_blank" rel="noopener noreferrer">
+        <a href={`${blogUrl}`} target="_blank" rel="noopener noreferrer">
           <StyledBlogIcon />
         </a>
       </StyledLinkItems>
