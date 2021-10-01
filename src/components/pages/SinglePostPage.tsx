@@ -8,6 +8,7 @@ import { db } from "../../firebase";
 
 import { index as CodeBlock } from "../atom/code/index";
 import { index as Title } from "../atom/title/index";
+import { index as Loading } from "../atom/loading/index";
 import { Sidebar } from "../organisms/Sidebar";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
@@ -30,6 +31,7 @@ export const SinglePostPage: VFC = () => {
     blogUrl: "",
     comment: "",
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getPostData = async () => {
@@ -61,11 +63,17 @@ export const SinglePostPage: VFC = () => {
               comment: doc.data().comment,
             });
           });
+
+          setIsLoading(false);
         });
       });
     };
     getPostData();
   }, [postId]);
+
+  if (isLoading) {
+    return <Loading width="60" height="60" />;
+  }
 
   return (
     <StyledSinglePostPage>
@@ -106,7 +114,7 @@ const StyledSinglePostPageInner = styled.div`
   @media ${DEVICE.tabletL} {
     width: 95%;
     margin: 0 auto;
-    height: 80vh;
+    min-height: 80vh;
   }
 
   @media ${DEVICE.laptop} {
