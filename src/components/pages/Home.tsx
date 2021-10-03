@@ -87,7 +87,11 @@ export const Home: VFC = memo(() => {
   };
 
   if (isLoading) {
-    return <LoadingIcon width="40" height="40" />;
+    return (
+      <StyledHomeLoadingInner>
+        <LoadingIcon width="40" height="40" />
+      </StyledHomeLoadingInner>
+    );
   }
 
   return (
@@ -130,6 +134,7 @@ const StyledHomePostsInner = styled.div`
   width: 90%;
   margin: 0 auto;
   padding: 40px 0;
+  min-height: 70vh;
 
   @media ${DEVICE.laptop} {
     padding: 60px 0;
@@ -151,4 +156,12 @@ const StyledHomePostsArea = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
     max-width: 1024px;
   }
+`;
+
+const StyledHomeLoadingInner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${COLOR.BACKGROUND};
+  min-height: 90vh;
 `;

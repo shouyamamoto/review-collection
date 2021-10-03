@@ -8,6 +8,7 @@ import { ProfileEdit } from "./components/pages/ProfileEdit";
 import { CreatePost } from "./components/pages/CreatePost";
 import { SinglePostPage } from "./components/pages/SinglePostPage";
 import { Header } from "./components/organisms/Header";
+import { Footer } from "./components/organisms/Footer";
 import { BrowserRouter, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import { COLOR } from "./Themes/Color";
@@ -209,6 +210,7 @@ const App: React.VFC = () => {
         <Route exact path="/:userId/articles/:postId">
           <SinglePostPage />
         </Route>
+        <Footer />
       </BrowserRouter>
     </>
   );

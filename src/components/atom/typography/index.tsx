@@ -3,20 +3,28 @@ import styled from "styled-components";
 
 type Props = {
   size: string;
-  bold?: string;
+  weight?: string;
   margin?: string;
+  color?: string;
   children: React.ReactNode;
 };
 
 type TypoProps = {
   size: string;
-  bold?: string;
+  weight?: string;
   margin?: string;
+  color?: string;
 };
 
-export const index: VFC<Props> = ({ size, bold, margin, children }) => {
+export const index: VFC<Props> = ({
+  size,
+  weight,
+  margin,
+  color,
+  children,
+}) => {
   return (
-    <StyledTypography size={size} bold={bold} margin={margin}>
+    <StyledTypography size={size} weight={weight} margin={margin} color={color}>
       {children}
     </StyledTypography>
   );
@@ -24,6 +32,8 @@ export const index: VFC<Props> = ({ size, bold, margin, children }) => {
 
 const StyledTypography = styled.p<TypoProps>`
   font-size: ${(props) => props.size};
-  font-weight: ${(props) => props.bold};
+  font-weight: ${(props) => props.weight};
   margin: ${(props) => props.margin};
+  color: ${(props) => props.color};
+  font-weight: ${(props) => props.weight};
 `;

@@ -1,5 +1,6 @@
 import React, { VFC } from "react";
 import styled from "styled-components";
+import { COLOR } from "../../../Themes/Color";
 import { DEVICE } from "../../../Themes/Device";
 
 type Props = {
@@ -17,7 +18,7 @@ export const index: VFC<Props> = ({ headline, children }) => {
       case "h3":
         return <h3>{children}</h3>;
       case "h4":
-        return <h4>{children}</h4>;
+        return <StyledH4>{children}</StyledH4>;
       case "h5":
         return <h5>{children}</h5>;
       case "h6":
@@ -33,7 +34,7 @@ const StyledH1 = styled.h1`
   font-size: 20px;
 
   @media ${DEVICE.laptop} {
-    font-size: 32px;
+    font-size: 28px;
   }
 `;
 
@@ -41,6 +42,17 @@ const StyledH2 = styled.h2`
   font-size: 16px;
 
   @media ${DEVICE.laptop} {
-    font-size: 28px;
+    font-size: 26px;
+  }
+`;
+
+const StyledH4 = styled.h4`
+  font-size: 16px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid ${COLOR.BACKGROUND};
+
+  @media ${DEVICE.laptop} {
+    font-size: 16px;
+    border-bottom: none;
   }
 `;
