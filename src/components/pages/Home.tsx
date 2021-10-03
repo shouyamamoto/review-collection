@@ -6,9 +6,11 @@ import styled from "styled-components";
 import { Article } from "../molecules/Article";
 import { db } from "../../firebase";
 import { index as LoadingIcon } from "../atom/loading/index";
+import { index as Title } from "../atom/title/index";
 import { UserNameRegister } from "../organisms/UserNameRegister";
 import { selectUser } from "../../features/users/userSlice";
 import { COLOR } from "../../Themes/Color";
+import { DEVICE } from "../../Themes/Device";
 
 type POST = {
   uid: string;
@@ -42,6 +44,7 @@ export const Home: VFC = memo(() => {
     const getPosts = async () => {
       await db
         .collection("posts")
+        .orderBy("timestamp", "desc")
         .get()
         .then((snapshot) => {
           setPosts(
@@ -88,36 +91,64 @@ export const Home: VFC = memo(() => {
   }
 
   return (
-    <StyledHomePosts>
-      <StyledHomePostsInner>
-        {posts.map((post) => (
-          <Article
-            postId={post.postId}
-            uid={post.uid}
-            username={extraUser(post.uid)!.username}
-            avatar={extraUser(post.uid)!.avatar}
-            title={post.title}
-            body={post.body}
-            timestamp={post.timestamp}
-          />
-        ))}
-        {/* 表示したいのは、ログイン後にuser.displayNameがnullの場合。 */}
-        {user.username === null && <UserNameRegister />}
-        <Toaster position="bottom-right" reverseOrder={false} />
-      </StyledHomePostsInner>
-    </StyledHomePosts>
+    <StyledHome>
+      <StyledHomePosts>
+        <StyledHomePostsInner>
+          <Title headline="h1">Articles</Title>
+          <StyledHomePostsArea>
+            {posts.map((post) => (
+              <Article
+                postId={post.postId}
+                uid={post.uid}
+                username={extraUser(post.uid)!.username}
+                avatar={extraUser(post.uid)!.avatar}
+                title={post.title}
+                body={post.body}
+                timestamp={post.timestamp}
+              />
+            ))}
+          </StyledHomePostsArea>
+        </StyledHomePostsInner>
+      </StyledHomePosts>
+
+      {
+        /* githubで初回サインインするとdisplayNameがないので、ここで登録させる */
+        user.username === null && <UserNameRegister />
+      }
+      <Toaster position="bottom-right" reverseOrder={false} />
+    </StyledHome>
   );
 });
+
+const StyledHome = styled.div``;
 
 const StyledHomePosts = styled.div`
   background-color: ${COLOR.BACKGROUND};
 `;
 
 const StyledHomePostsInner = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  padding: 40px 0;
+
+  @media ${DEVICE.laptop} {
+    padding: 60px 0;
+    max-width: 1024px;
+  }
+`;
+
+const StyledHomePostsArea = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0px 20px;
-  max-width: 1024px;
-  margin: 80px auto;
-  padding: 120px 0;
+  grid-template-columns: 1fr;
+  margin: 40px auto;
+
+  @media ${DEVICE.mobileM} {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media ${DEVICE.laptop} {
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 1024px;
+  }
 `;

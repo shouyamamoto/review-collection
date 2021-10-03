@@ -33,7 +33,7 @@ const StyledH1 = styled.h1`
   font-size: 20px;
 
   @media ${DEVICE.laptop} {
-    font-size: 24px;
+    font-size: 32px;
   }
 `;
 

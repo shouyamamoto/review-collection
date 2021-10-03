@@ -5,7 +5,6 @@ import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 
 import { db } from "../../firebase";
-
 import { index as CodeBlock } from "../atom/code/index";
 import { index as Title } from "../atom/title/index";
 import { index as Loading } from "../atom/loading/index";
