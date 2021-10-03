@@ -8,15 +8,10 @@ import { index as Logo } from "../atom/logo/index";
 import { RegisterButton } from "../atom/button/RegisterButton";
 import { ErrorMsg } from "../atom/text/ErrorMsg";
 import { InputText } from "../molecules/InputText";
+import { VALIDATIONS } from "../../Themes/Validations";
 
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
-
-const userNameValid = {
-  maxLength: 15,
-  minLength: 2,
-  errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
-};
 
 export const UserNameRegister: VFC = () => {
   const [inputUsername, setInputUsername] = useState("");
@@ -58,8 +53,8 @@ export const UserNameRegister: VFC = () => {
 
   const isUserNameValid = useCallback(() => {
     return (
-      inputUsername.length <= userNameValid.maxLength &&
-      inputUsername.length >= userNameValid.minLength
+      inputUsername.length <= VALIDATIONS.username.maxLength &&
+      inputUsername.length >= VALIDATIONS.username.minLength
     );
   }, [inputUsername]);
 
@@ -83,7 +78,7 @@ export const UserNameRegister: VFC = () => {
                   onChange={onChangeUsername}
                 />
                 <ErrorMsg isValid={isUserNameValid}>
-                  {userNameValid.errorMessage}
+                  {VALIDATIONS.username.errorMessage}
                 </ErrorMsg>
               </StyledInputArea>
               <RegisterButton
