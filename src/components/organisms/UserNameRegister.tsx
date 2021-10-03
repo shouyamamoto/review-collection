@@ -13,9 +13,9 @@ import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
 const userNameValid = {
-  maxLength: 15,
+  maxLength: 12,
   minLength: 2,
-  errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
+  errorMessage: "※ユーザー名は2文字以上12文字以下にしてください。",
 };
 
 export const UserNameRegister: VFC = () => {

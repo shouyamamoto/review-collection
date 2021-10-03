@@ -1,8 +1,8 @@
 export const VALIDATIONS = {
   username: {
-    maxLength: 15,
+    maxLength: 12,
     minLength: 2,
-    errorMessage: "※ユーザー名は2文字以上15文字以下にしてください。",
+    errorMessage: "※ユーザー名は2文字以上12文字以下にしてください。",
   },
   comment: {
     maxLength: 100,
