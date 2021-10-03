@@ -1,9 +1,7 @@
 import { VFC, useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 
 import { db } from "../../firebase";
-import { selectUser } from "../../features/users/userSlice";
 import { Article } from "../molecules/Article";
 import { DEVICE } from "../../Themes/Device";
 
@@ -12,6 +10,12 @@ import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { index as Link } from "../atom/link";
 import NonePosts from "../../images/no-post.svg";
 
+type Props = {
+  uid: string;
+  username: string;
+  avatar: string;
+};
+
 type POST = {
   id: string;
   title: string;
@@ -19,8 +23,7 @@ type POST = {
   timestamp: any;
 };
 
-export const UserPost: VFC = () => {
-  const user = useSelector(selectUser);
+export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userPosts, setUserPosts] = useState<POST[]>([
     {
@@ -34,7 +37,7 @@ export const UserPost: VFC = () => {
   useEffect(() => {
     const unSub = db
       .collection("posts")
-      .where("uid", "==", user.uid)
+      .where("uid", "==", uid)
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         setUserPosts(
@@ -48,7 +51,7 @@ export const UserPost: VFC = () => {
         setIsLoading(false);
       });
     return () => unSub();
-  }, [user.uid]);
+  }, [uid]);
 
   if (isLoading) {
     return <LoadingIcon width="50" height="50" />;
@@ -62,9 +65,9 @@ export const UserPost: VFC = () => {
             <Article
               key={post.id}
               postId={post.id}
-              uid={user.uid}
-              username={user.username}
-              avatar={user.avatar}
+              uid={uid}
+              username={username}
+              avatar={avatar}
               title={post.title}
               body={post.body}
               timestamp={post.timestamp}

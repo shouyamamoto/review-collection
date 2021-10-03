@@ -1,18 +1,52 @@
-import { VFC } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect, VFC } from "react";
 import styled from "styled-components";
 import { Toaster } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
-import { selectUser } from "../../features/users/userSlice";
 import { index as Icon } from "../atom/icon/index";
 import { index as Title } from "../atom/title/index";
 import { UserPost } from "../organisms/UserPost";
 import { ProfileArea } from "../organisms/ProfileArea";
+import { db } from "../../firebase";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
 export const Profile: VFC = () => {
-  const user = useSelector(selectUser);
+  const { userId } = useParams<{ userId: string }>();
+  const [user, setUser] = useState({
+    uid: "",
+    username: "",
+    avatar: "",
+    comment: "",
+    twitterName: "",
+    githubName: "",
+    blogUrl: "",
+  });
+
+  useEffect(() => {
+    const getUser = async () => {
+      await db
+        .collection("users")
+        .where("uid", "==", userId)
+        .get()
+        .then((docs) => {
+          if (!docs.empty) {
+            docs.forEach((doc) => {
+              setUser({
+                uid: doc.data().uid,
+                username: doc.data().username,
+                avatar: doc.data().avatar,
+                comment: doc.data().comment,
+                twitterName: doc.data().twitterName,
+                githubName: doc.data().githubName,
+                blogUrl: doc.data().blogUrl,
+              });
+            });
+          }
+        });
+    };
+    getUser();
+  }, [userId]);
 
   return (
     <>
@@ -32,7 +66,11 @@ export const Profile: VFC = () => {
       <StyledPosts>
         <StyledPostInner>
           <Title headline="h2">Articles</Title>
-          <UserPost />
+          <UserPost
+            uid={user.uid}
+            username={user.username}
+            avatar={user.avatar}
+          />
         </StyledPostInner>
       </StyledPosts>
 
@@ -56,8 +94,7 @@ const StyledProfileInner = styled.div`
   @media ${DEVICE.tabletL} {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    height: 280px;
+    padding: 60px;
     max-width: 800px;
     width: 80%;
   }

@@ -5,7 +5,6 @@ import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 
 import { db } from "../../firebase";
-
 import { index as CodeBlock } from "../atom/code/index";
 import { index as Title } from "../atom/title/index";
 import { index as Loading } from "../atom/loading/index";
@@ -153,6 +152,12 @@ const StyledTitleInner = styled.div`
     padding: 40px 0;
     width: 95%;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
+  }
+
+  @media ${DEVICE.laptopL} {
+    padding: 80px 0;
+    width: 100%;
+    max-width: 1200px;
   }
 `;
