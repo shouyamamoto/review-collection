@@ -151,13 +151,14 @@ const StyledTitleInner = styled.div`
 
   @media ${DEVICE.tabletL} {
     padding: 40px 0;
-    width: 70%;
+    width: 95%;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
   }
 
   @media ${DEVICE.laptopL} {
     padding: 80px 0;
-    width: 60%;
+    width: 100%;
+    max-width: 1200px;
   }
 `;
