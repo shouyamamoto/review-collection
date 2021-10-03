@@ -54,7 +54,7 @@ export const Header: VFC = memo(() => {
   );
 });
 
-const StyledHeaderInner = styled.div`
+const StyledHeaderInner = styled.nav`
   width: 90%;
   margin: 0 auto;
   max-width: 900px;

@@ -34,7 +34,7 @@ export const SidebarUserProfile: VFC<Props> = ({
         </Link>
 
         <Link to={`/${uid}`}>
-          <Typography size="0.95rem" bold="bold">
+          <Typography size="0.95rem" weight="bold">
             {username}
           </Typography>
         </Link>
