@@ -34,12 +34,22 @@ export const Footer: VFC = () => {
           <Title headline="h4">Links</Title>
           <StyledUl>
             <StyledLi>
-              <Link to="https://twitter.com/_syoyamamoto_">Twitter</Link>
+              <a
+                href="https://twitter.com/_syoyamamoto_"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Twitter
+              </a>
             </StyledLi>
             <StyledLi>
-              <Link to="https://github.com/shouyamamoto/review-collection">
+              <a
+                href="https://github.com/shouyamamoto/review-collection"
+                target="_blank"
+                rel="noreferrer"
+              >
                 GitHub
-              </Link>
+              </a>
             </StyledLi>
           </StyledUl>
         </div>

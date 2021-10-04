@@ -20,17 +20,13 @@ export const AddImageIcon: VFC<Props> = ({ onChange }) => {
 const StyledLabel = styled.label`
   display: inline-block;
   text-align: center;
-  padding: 5px 0;
   font-size: 12px;
-  margin-right: 20px;
 
   &:hover {
     cursor: pointer;
   }
 
   @media ${DEVICE.laptopL} {
-    margin-right: 0;
-    margin-bottom: 20px;
   }
 `;
 

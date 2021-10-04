@@ -1,18 +1,23 @@
 import { VFC } from "react";
-import { BiRightArrowCircle } from "react-icons/bi";
 import styled from "styled-components";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
+
 import { COLOR } from "../../../Themes/Color";
 import { DEVICE } from "../../../Themes/Device";
 
-type Props = {
-  onClick: () => void;
+export const QuestionIcon: VFC = () => {
+  return (
+    <a
+      href="https://github.com/shouyamamoto/review-collection/#review-collection"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <StyledAiOutlineQuestionCircle />
+    </a>
+  );
 };
 
-export const PreviewIcon: VFC<Props> = ({ onClick }) => {
-  return <StyledBiRightArrowCircle onClick={onClick} />;
-};
-
-const StyledBiRightArrowCircle = styled(BiRightArrowCircle)`
+const StyledAiOutlineQuestionCircle = styled(AiOutlineQuestionCircle)`
   width: 32px;
   height: 32px;
   background-color: ${COLOR.WHITE};
@@ -27,6 +32,5 @@ const StyledBiRightArrowCircle = styled(BiRightArrowCircle)`
   }
 
   @media ${DEVICE.laptopL} {
-    visibility: hidden;
   }
 `;

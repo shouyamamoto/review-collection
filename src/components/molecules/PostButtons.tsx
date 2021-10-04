@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { AddImageIcon } from "../atom/icon/AddImageIcon";
 import { PreviewIcon } from "../atom/icon/PreviewIcon";
+import { QuestionIcon } from "../atom/icon/QuestionIcon";
 import { SendIcon } from "../atom/icon/SendIcon";
 import { isValidPost } from "../../Themes/Validations";
 import { DEVICE } from "../../Themes/Device";
@@ -26,6 +27,7 @@ export const PostButtons: VFC<Props> = ({
     <StyledButtonWrap>
       <PreviewIcon onClick={onClick} />
       <AddImageIcon onChange={onClickAddImage} />
+      <QuestionIcon />
       <SendIcon
         onClick={() => sendPost(title, text)}
         disabled={!isValidPost(title, text)}
@@ -40,7 +42,7 @@ const StyledButtonWrap = styled.div`
   right: 10%;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  gap: 0 20px;
   margin: 0 auto;
   padding: 20px 0;
 
@@ -50,5 +52,6 @@ const StyledButtonWrap = styled.div`
     bottom: auto;
     justify-content: flex-start;
     flex-direction: column;
+    gap: 14px 0;
   }
 `;
