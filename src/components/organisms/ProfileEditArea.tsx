@@ -1,18 +1,17 @@
 import { VFC, useState, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { selectUser, updateUserProfile } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
-import { storage, db } from "../../firebase";
 import firebase from "firebase/app";
+import toast from "react-hot-toast";
+import styled from "styled-components";
 
+import { selectUser, updateUserProfile } from "../../features/users/userSlice";
+import { storage, db } from "../../firebase";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { IconWithLabel } from "../molecules/IconWithLabel";
 import { InputText } from "../molecules/InputText";
 import { InputWithErrorMessage } from "../molecules/InputWithErrorMessage";
 import { TextAreaWithErrorMessage } from "../molecules/TextAreaWithErrorMessage";
-
-import styled from "styled-components";
 import { DEVICE } from "../../Themes/Device";
 import {
   VALIDATIONS,
@@ -68,7 +67,6 @@ export const ProfileEditArea: VFC = () => {
   const [isSend, setIsSend] = useState(false);
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     db.collection("users")
@@ -165,7 +163,12 @@ export const ProfileEditArea: VFC = () => {
         username: username ? username : profile.username,
       })
     );
-    history.push(`/${user.uid}`);
+    toast.success("プロフィールを更新しました", {
+      icon: "👏",
+      style: {
+        borderRadius: "10px",
+      },
+    });
   };
 
   return (
