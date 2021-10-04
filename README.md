@@ -69,11 +69,12 @@
 ## キャプションをつける
 
 ```markdown
-![](https://画像のURL)_キャプション_
+![](https://画像のURL)
+_キャプション_
 ```
 
 ![](https://firebasestorage.googleapis.com/v0/b/review-collection-8edce.appspot.com/o/images%2FE4zZwcd97ePzLPZr_DSCF2230.jpg?alt=media&token=8b1b91eb-3945-40e9-93e5-1014941b5b49)
-_キャプションです_
+_キャプション_
 
 キャプションは、画像投稿のすぐ下の行に`*キャプションです*`のように配置すれば表示することができます。
 
