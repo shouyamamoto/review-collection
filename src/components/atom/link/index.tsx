@@ -1,5 +1,6 @@
 import React, { VFC } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 type Props = {
   to: string;
@@ -7,5 +8,9 @@ type Props = {
 };
 
 export const index: VFC<Props> = ({ to, children }) => {
-  return <Link to={to}>{children}</Link>;
+  return <StyledLink to={to}>{children}</StyledLink>;
 };
+
+const StyledLink = styled(Link)`
+  line-height: 1;
+`;
