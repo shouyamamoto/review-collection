@@ -1,13 +1,13 @@
 import React, { VFC, useState, useCallback } from "react";
-
 import firebase from "firebase/app";
-import { db, storage } from "../../firebase";
-import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 
+import { selectUser } from "../../features/users/userSlice";
+import { db, storage } from "../../firebase";
+import { index as Loading } from "../atom/loading/index";
 import { uniqueFileName } from "../organisms/ProfileEditArea";
 import { PostButtons } from "../molecules/PostButtons";
 import { PostInputArea } from "../molecules/PostInputArea";
@@ -18,6 +18,7 @@ import { DEVICE } from "../../Themes/Device";
 export const PostArea: VFC = () => {
   const user = useSelector(selectUser);
   const history = useHistory();
+  const [isUploading, setIsUpLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [isPreview, setIsPreview] = useState(false);
@@ -73,13 +74,20 @@ export const PostArea: VFC = () => {
 
   const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
+      setIsUpLoading(true);
       const fileName = uniqueFileName(e.target.files![0]);
       const uploadImage = storage
         .ref(`images/${fileName}`)
         .put(e.target.files![0]);
       uploadImage.on(
         firebase.storage.TaskEvent.STATE_CHANGED,
-        () => {},
+        (snapshot) => {
+          const progress: number =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          if (progress === 100) {
+            setIsUpLoading(false);
+          }
+        },
         () => {
           alert("画像が挿入できませんでした。もう一度試してください。");
         },
@@ -117,13 +125,24 @@ export const PostArea: VFC = () => {
           onClickAddImage={onClickAddImage}
         />
       </StyledInner>
+      <StyledUploadIcon>
+        {isUploading && <Loading width="40" height="40" />}
+      </StyledUploadIcon>
     </StyledPostArea>
   );
 };
 
 const StyledPostArea = styled.div`
+  position: relative;
   background-color: ${COLOR.BACKGROUND};
   min-height: 100vh;
+`;
+
+const StyledUploadIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const StyledInner = styled.div`
