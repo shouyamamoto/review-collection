@@ -7,6 +7,7 @@ import { Profile } from "./components/pages/Profile";
 import { ProfileEdit } from "./components/pages/ProfileEdit";
 import { CreatePost } from "./components/pages/CreatePost";
 import { SinglePostPage } from "./components/pages/SinglePostPage";
+import { ArticlesDashboard } from "./components/pages/ArticlesDashboard";
 import { Header } from "./components/organisms/Header";
 import { Footer } from "./components/organisms/Footer";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -206,6 +207,9 @@ const App: React.VFC = () => {
         </Route>
         <Route exact path="/articles/new">
           <CreatePost />
+        </Route>
+        <Route exact path="/articles/dashboard">
+          <ArticlesDashboard />
         </Route>
         <Route exact path="/:userId/articles/:postId">
           <SinglePostPage />
