@@ -38,6 +38,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
     const unSub = db
       .collection("posts")
       .where("uid", "==", uid)
+      .where("status", "==", "release")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         setUserPosts(

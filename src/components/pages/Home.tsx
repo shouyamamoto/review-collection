@@ -44,6 +44,7 @@ export const Home: VFC = memo(() => {
     const getPosts = async () => {
       await db
         .collection("posts")
+        .where("status", "==", "release")
         .orderBy("timestamp", "desc")
         .get()
         .then((snapshot) => {
@@ -102,6 +103,7 @@ export const Home: VFC = memo(() => {
           <StyledHomePostsArea>
             {posts.map((post) => (
               <Article
+                key={post.postId}
                 postId={post.postId}
                 uid={post.uid}
                 username={extraUser(post.uid)!.username}

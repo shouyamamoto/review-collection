@@ -52,4 +52,7 @@ const StyledTextAreaWrap = styled.div`
     justify-content: space-between;
     max-width: 1200px;
   }
+  @media ${DEVICE.desktop} {
+    max-width: 1800px;
+  }
 `;

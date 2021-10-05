@@ -32,20 +32,21 @@ export const PostArea: VFC = () => {
           title: title,
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "release",
         })
         .then((posted) => {
-          db.collection("users")
-            .where("uid", "==", `${user.uid}`)
-            .get()
-            .then((snapshot) =>
-              snapshot.forEach((doc) => {
-                db.collection("users")
-                  .doc(doc.id)
-                  .update({
-                    posts: firebase.firestore.FieldValue.arrayUnion(posted.id),
-                  });
-              })
-            );
+          // db.collection("users")
+          //   .where("uid", "==", `${user.uid}`)
+          //   .get()
+          //   .then((snapshot) =>
+          //     snapshot.forEach((doc) => {
+          //       db.collection("users")
+          //         .doc(doc.id)
+          //         .update({
+          //           posts: firebase.firestore.FieldValue.arrayUnion(posted.id),
+          //         });
+          //     })
+          //   );
           toast.success("記事を投稿しました", {
             icon: "👏",
             style: {
@@ -65,11 +66,31 @@ export const PostArea: VFC = () => {
     [history, user]
   );
 
-  const onChangeInputState = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    setFunction: (e: string) => void
-  ) => {
-    setFunction(e.target.value);
+  const onClickSave = () => {
+    db.collection("posts")
+      .add({
+        uid: user.uid,
+        title: title,
+        body: text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        status: "draft",
+      })
+      .then(() => {
+        toast.success("下書きに追加しました", {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+          },
+        });
+        history.push(`/${user.uid}`);
+      })
+      .catch(() => {
+        toast.error("記事が投稿できませんでした。", {
+          style: {
+            borderRadius: "10px",
+          },
+        });
+      });
   };
 
   const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +118,7 @@ export const PostArea: VFC = () => {
             .child(fileName)
             .getDownloadURL()
             .then((url) => {
-              setText((prevText) => {
+              setText((prevText: string) => {
                 return prevText + `![](${url})`;
               });
               e.target.value = "";
@@ -114,15 +135,20 @@ export const PostArea: VFC = () => {
           title={title}
           text={text}
           isPreview={isPreview}
-          onChangeTitle={(e) => onChangeInputState(e, setTitle)}
-          onChangeText={(e) => onChangeInputState(e, setText)}
+          onChangeTitle={(e) => {
+            setTitle(e.target.value);
+          }}
+          onChangeText={(e) => {
+            setText(e.target.value);
+          }}
         />
         <PostButtons
           title={title}
           text={text}
-          onClick={() => setIsPreview(!isPreview)}
+          onClickPreview={() => setIsPreview(!isPreview)}
           sendPost={sendPost}
           onClickAddImage={onClickAddImage}
+          onClickSave={onClickSave}
         />
       </StyledInner>
       <StyledUploadIcon>
@@ -154,5 +180,9 @@ const StyledInner = styled.div`
   @media ${DEVICE.laptopL} {
     width: 90vw;
     max-width: 1440px;
+  }
+
+  @media ${DEVICE.desktop} {
+    max-width: 2000px;
   }
 `;
