@@ -126,7 +126,7 @@ export const Home: VFC = memo(() => {
   );
 });
 
-const StyledHome = styled.div``;
+const StyledHome = styled.main``;
 
 const StyledHomePosts = styled.div`
   background-color: ${COLOR.BACKGROUND};

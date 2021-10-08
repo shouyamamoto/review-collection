@@ -31,7 +31,7 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
         </StyledProfileLink>
       </StyledMenuItem>
       <StyledMenuItem onClick={onClick}>
-        <StyledProfileLink to={`/articles/dashboard`}>
+        <StyledProfileLink to={`/${user.uid}/dashboard`}>
           <StyledGrNotes />
           記事の管理
         </StyledProfileLink>

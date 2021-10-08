@@ -104,10 +104,10 @@ const StyledUserPost = styled.div`
   }
 
   @media ${DEVICE.laptop} {
-    width: 60vw;
+    width: 100%;
     max-width: 1024px;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 32px 20px;
+    grid-gap: 10px 10px;
   }
 `;
 
@@ -123,7 +123,7 @@ const StyledUserPostNone = styled.div`
   }
 
   @media ${DEVICE.laptop} {
-    width: 60vw;
+    width: 100%;
     max-width: 1024px;
     grid-template-columns: 1fr 1fr;
     grid-gap: 32px 20px;

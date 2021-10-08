@@ -63,6 +63,10 @@ export const Footer: VFC = () => {
 const StyledFooter = styled.footer`
   padding: 80px 0 40px;
   border-top: 1px solid ${COLOR.BACKGROUND};
+
+  @media ${DEVICE.laptop} {
+    padding: 60px 0 20px;
+  }
 `;
 
 const StyledFooterInner = styled.div`

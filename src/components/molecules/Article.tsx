@@ -50,7 +50,6 @@ export const Article: VFC<Props> = ({
 const StyledArticle = styled.article`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
   min-height: 120px;
   background-color: ${COLOR.WHITE};
   padding: 20px 0;

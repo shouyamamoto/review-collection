@@ -102,11 +102,12 @@ export const SinglePostPage: VFC = () => {
   );
 };
 
-const StyledSinglePostPage = styled.div`
+const StyledSinglePostPage = styled.main`
   background-color: ${COLOR.BACKGROUND};
   display: grid;
   grid-template-columns: 100%;
   margin: 0 auto;
+  width: 100%;
 `;
 
 const StyledSinglePostPageInner = styled.div`
@@ -121,7 +122,7 @@ const StyledSinglePostPageInner = styled.div`
     grid-template-columns: 3fr 1fr;
     gap: 0 20px;
     width: 100%;
-    max-width: 1024px;
+    max-width: 900px;
   }
 
   @media ${DEVICE.laptopL} {
