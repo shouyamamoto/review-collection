@@ -7,7 +7,7 @@ import { index as Icon } from "../atom/icon/index";
 import { index as Title } from "../atom/title/index";
 import { UserPost } from "../organisms/UserPost";
 import { ProfileArea } from "../organisms/ProfileArea";
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 

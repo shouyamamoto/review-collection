@@ -1,7 +1,7 @@
 import { VFC, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { Article } from "../molecules/Article";
 import { DEVICE } from "../../Themes/Device";
 

@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 
 import { Article } from "../molecules/Article";
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Title } from "../atom/title/index";
 import { UserNameRegister } from "../organisms/UserNameRegister";

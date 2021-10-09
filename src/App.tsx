@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { db, auth } from "./firebase";
+import { db, auth } from "./libs/firebase";
 import { login, logout } from "./features/users/userSlice";
 import { useDispatch } from "react-redux";
 import { Home } from "./components/pages/Home";

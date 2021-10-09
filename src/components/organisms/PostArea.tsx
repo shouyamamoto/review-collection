@@ -2,16 +2,16 @@ import React, { VFC, useState, useLayoutEffect, useCallback } from "react";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import toast from "react-hot-toast";
 import styled from "styled-components";
 
 import { selectUser } from "../../features/users/userSlice";
-import { db, storage } from "../../firebase";
+import { db, storage } from "../../libs/firebase";
 import { index as Loading } from "../atom/loading/index";
-import { uniqueFileName } from "../organisms/ProfileEditArea";
 import { PostButtons } from "../molecules/PostButtons";
 import { PostInputArea } from "../molecules/PostInputArea";
 
+import { toastHandler } from "../../utils/toast";
+import { uniqueFileName } from "../../utils/uniqueFileName";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
@@ -51,14 +51,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
             status: "release",
           })
           .then(() => {
-            toast.success("記事を更新しました", {
-              icon: "👏",
-              style: {
-                borderRadius: "10px",
-                background: `${COLOR.TOAST}`,
-                color: `${COLOR.WHITE}`,
-              },
-            });
+            toastHandler("success", "記事を更新しました");
             history.push(`/${user.uid}/articles/${editPostData.postId}`);
           });
       } else {
@@ -72,24 +65,11 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
             status: "release",
           })
           .then(() => {
-            toast.success("記事を投稿しました", {
-              icon: "👏",
-              style: {
-                borderRadius: "10px",
-                background: `${COLOR.TOAST}`,
-                color: `${COLOR.WHITE}`,
-              },
-            });
+            toastHandler("success", "記事を投稿しました");
             history.push(`/${user.uid}`);
           })
           .catch(() => {
-            toast.error("記事が投稿できませんでした。", {
-              style: {
-                borderRadius: "10px",
-                background: `${COLOR.TOAST}`,
-                color: `${COLOR.WHITE}`,
-              },
-            });
+            toastHandler("error", "記事を投稿できませんでした");
           });
       }
     },
@@ -108,14 +88,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           status: "draft",
         })
         .then(() => {
-          toast.success("下書きに追加しました", {
-            icon: "👏",
-            style: {
-              borderRadius: "10px",
-              background: `${COLOR.TOAST}`,
-              color: `${COLOR.WHITE}`,
-            },
-          });
+          toastHandler("success", "下書きに追加しました");
           history.push(`/${user.uid}/dashboard`);
         });
     } else {
@@ -128,22 +101,11 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           status: "draft",
         })
         .then(() => {
-          toast.success("下書きに追加しました", {
-            icon: "👏",
-            style: {
-              borderRadius: "10px",
-              background: `${COLOR.TOAST}`,
-              color: `${COLOR.WHITE}`,
-            },
-          });
+          toastHandler("success", "下書きに追加しました");
           history.push(`/${user.uid}/dashboard`);
         })
         .catch(() => {
-          toast.error("記事が投稿できませんでした。", {
-            style: {
-              borderRadius: "10px",
-            },
-          });
+          toastHandler("error", "記事を投稿できませんでした");
         });
     }
   };

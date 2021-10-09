@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import { PostArea } from "../organisms/PostArea";
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 
 export const EditPost: VFC = () => {
   const { postId } = useParams<{ postId: string }>();

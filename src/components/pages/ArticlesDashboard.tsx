@@ -3,10 +3,11 @@ import { useParams, useHistory } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { DEVICE } from "../../Themes/Device";
 import { Tabs } from "../molecules/Tabs";
 import { ArticleDashboard as Articles } from "../organisms/ArticleDashboard";
+import { toastHandler } from "../../utils/toast";
 
 export const ArticlesDashboard: VFC = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -46,7 +47,7 @@ export const ArticlesDashboard: VFC = () => {
   }, [userId]);
 
   // statusの重複を無くして、配列に, tabOrderで並び替える
-  const tabList = () => {
+  const orderedTabList = () => {
     const tabOrder = ["release", "draft"];
     const tabItem = new Set(posts.map(({ status }) => status));
     const tabArray = Array.from(tabItem);
@@ -62,6 +63,7 @@ export const ArticlesDashboard: VFC = () => {
     const result = window.confirm("本当に記事を削除しますか？");
     if (result === true) {
       db.collection("posts").doc(postId).delete();
+      toastHandler("success", "削除しました");
     }
   };
 
@@ -72,7 +74,7 @@ export const ArticlesDashboard: VFC = () => {
   return (
     <StyledArticleDashboard>
       <Tabs
-        tabList={tabList()}
+        tabList={orderedTabList()}
         changeActive={changeActive}
         currentNum={currentNum}
       />
