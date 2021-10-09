@@ -93,34 +93,59 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           });
       }
     },
-    [history, user]
+    [history, user, editPostData?.postId]
   );
 
   const onClickSave = () => {
-    db.collection("posts")
-      .add({
-        uid: user.uid,
-        title: title,
-        body: text,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        status: "draft",
-      })
-      .then(() => {
-        toast.success("下書きに追加しました", {
-          icon: "👏",
-          style: {
-            borderRadius: "10px",
-          },
+    if (editPostData?.postId) {
+      db.collection("posts")
+        .doc(editPostData.postId)
+        .update({
+          uid: user.uid,
+          title: title,
+          body: text,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "draft",
+        })
+        .then(() => {
+          toast.success("下書きに追加しました", {
+            icon: "👏",
+            style: {
+              borderRadius: "10px",
+              background: `${COLOR.TOAST}`,
+              color: `${COLOR.WHITE}`,
+            },
+          });
+          history.push(`/${user.uid}/dashboard`);
         });
-        history.push(`/${user.uid}`);
-      })
-      .catch(() => {
-        toast.error("記事が投稿できませんでした。", {
-          style: {
-            borderRadius: "10px",
-          },
+    } else {
+      db.collection("posts")
+        .add({
+          uid: user.uid,
+          title: title,
+          body: text,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "draft",
+        })
+        .then(() => {
+          toast.success("下書きに追加しました", {
+            icon: "👏",
+            style: {
+              borderRadius: "10px",
+              background: `${COLOR.TOAST}`,
+              color: `${COLOR.WHITE}`,
+            },
+          });
+          history.push(`/${user.uid}/dashboard`);
+        })
+        .catch(() => {
+          toast.error("記事が投稿できませんでした。", {
+            style: {
+              borderRadius: "10px",
+            },
+          });
         });
-      });
+    }
   };
 
   const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {

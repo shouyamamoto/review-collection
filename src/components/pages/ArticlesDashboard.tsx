@@ -1,5 +1,6 @@
 import { VFC, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 
 import { db } from "../../firebase";
@@ -81,6 +82,7 @@ export const ArticlesDashboard: VFC = () => {
         onClickDelete={onClickDelete}
         onClickEdit={onClickEdit}
       />
+      <Toaster position="bottom-right" reverseOrder={false} />
     </StyledArticleDashboard>
   );
 };
