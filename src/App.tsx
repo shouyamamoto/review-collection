@@ -6,6 +6,7 @@ import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile";
 import { ProfileEdit } from "./components/pages/ProfileEdit";
 import { CreatePost } from "./components/pages/CreatePost";
+import { EditPost } from "./components/pages/EditPost";
 import { SinglePostPage } from "./components/pages/SinglePostPage";
 import { ArticlesDashboard } from "./components/pages/ArticlesDashboard";
 import { Header } from "./components/organisms/Header";
@@ -83,6 +84,9 @@ const App: React.VFC = () => {
         </Route>
         <Route exact path="/articles/new">
           <CreatePost />
+        </Route>
+        <Route exact path="/articles/:postId/edit">
+          <EditPost />
         </Route>
         <Route exact path="/:userId/dashboard">
           <ArticlesDashboard />

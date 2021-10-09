@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
+import { Toaster } from "react-hot-toast";
 
 import { db } from "../../firebase";
 import { index as CodeBlock } from "../atom/code/index";
@@ -110,6 +111,7 @@ export const SinglePostPage: VFC = () => {
           comment={author.comment}
         />
       </StyledSinglePostPageInner>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </StyledSinglePostPage>
   );
 };

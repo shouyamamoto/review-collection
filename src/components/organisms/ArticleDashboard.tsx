@@ -19,6 +19,7 @@ type Props = {
     status: string;
   }[];
   onClickDelete: (postId: string) => void;
+  onClickEdit: (postId: string) => void;
 };
 
 type IsActive = {
@@ -29,6 +30,7 @@ export const ArticleDashboard: VFC<Props> = ({
   currentNum,
   posts,
   onClickDelete,
+  onClickEdit,
 }) => {
   return (
     <StyledArticleDashboard>
@@ -42,7 +44,7 @@ export const ArticleDashboard: VFC<Props> = ({
                     <StyledTitleInner>{post.title}</StyledTitleInner>
                   </Link>
                   <StyledIcons>
-                    <StyledBsPencil />
+                    <StyledBsPencil onClick={() => onClickEdit(post.id)} />
                     <StyledRiDeleteBin6Line
                       onClick={() => onClickDelete(post.id)}
                     />
@@ -63,7 +65,7 @@ export const ArticleDashboard: VFC<Props> = ({
                 <StyledTitle>
                   <StyledTitleInner>{post.title}</StyledTitleInner>
                   <StyledIcons>
-                    <StyledBsPencil />
+                    <StyledBsPencil onClick={() => onClickEdit(post.id)} />
                     <StyledRiDeleteBin6Line
                       onClick={() => onClickDelete(post.id)}
                     />

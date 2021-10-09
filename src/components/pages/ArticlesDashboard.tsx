@@ -1,5 +1,5 @@
 import { VFC, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { db } from "../../firebase";
@@ -9,6 +9,7 @@ import { ArticleDashboard as Articles } from "../organisms/ArticleDashboard";
 
 export const ArticlesDashboard: VFC = () => {
   const { userId } = useParams<{ userId: string }>();
+  const history = useHistory();
   const [currentNum, setCurrentNum] = useState(0);
   const [posts, setPosts] = useState([
     {
@@ -63,6 +64,10 @@ export const ArticlesDashboard: VFC = () => {
     }
   };
 
+  const onClickEdit = (postId: string) => {
+    history.push(`/articles/${postId}/edit`);
+  };
+
   return (
     <StyledArticleDashboard>
       <Tabs
@@ -74,6 +79,7 @@ export const ArticlesDashboard: VFC = () => {
         currentNum={currentNum}
         posts={posts}
         onClickDelete={onClickDelete}
+        onClickEdit={onClickEdit}
       />
     </StyledArticleDashboard>
   );

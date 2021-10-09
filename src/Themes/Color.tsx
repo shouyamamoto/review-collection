@@ -9,4 +9,5 @@ export const COLOR = {
   DANGER: "#DA5040",
   CODE: "#DA5040",
   TRANSPARENT: "transparent",
+  TOAST: "#333333",
 };
