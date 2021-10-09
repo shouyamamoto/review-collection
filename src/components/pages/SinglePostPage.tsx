@@ -11,15 +11,24 @@ import { index as Loading } from "../atom/loading/index";
 import { Sidebar } from "../organisms/Sidebar";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
+import { format } from "date-fns";
+
+type Props = {
+  postId: string;
+  uid: string;
+  title: string;
+  body: string;
+  timestamp: any;
+};
 
 export const SinglePostPage: VFC = () => {
   const { postId } = useParams<{ postId: string }>();
-  const [post, setPost] = useState({
+  const [post, setPost] = useState<Props>({
     postId: "",
     uid: "",
     title: "",
     body: "",
-    timestamp: Date,
+    timestamp: "",
   });
   const [author, setAuthor] = useState({
     uid: "",
@@ -42,7 +51,7 @@ export const SinglePostPage: VFC = () => {
             uid: doc?.data()?.uid,
             title: doc?.data()?.title,
             body: doc?.data()?.body,
-            timestamp: doc?.data()?.timestamp.toDate(),
+            timestamp: doc?.data()?.timestamp,
           });
         }
         // else で404に飛ばしたい
@@ -79,6 +88,9 @@ export const SinglePostPage: VFC = () => {
       <StyledTitleWrap>
         <StyledTitleInner>
           <Title headline="h1">{post.title}</Title>
+          <StyledTimestamp>
+            {format(post.timestamp.toDate(), "yyyy-MM-dd")} に公開
+          </StyledTimestamp>
         </StyledTitleInner>
       </StyledTitleWrap>
       <StyledSinglePostPageInner>
@@ -161,4 +173,9 @@ const StyledTitleInner = styled.div`
     width: 100%;
     max-width: 1200px;
   }
+`;
+
+const StyledTimestamp = styled.span`
+  font-size: 12px;
+  color: ${COLOR.GRAY};
 `;

@@ -56,6 +56,13 @@ export const ArticlesDashboard: VFC = () => {
 
   const changeActive = (index: number) => setCurrentNum(index);
 
+  const onClickDelete = (postId: string) => {
+    const result = window.confirm("本当に記事を削除しますか？");
+    if (result === true) {
+      db.collection("posts").doc(postId).delete();
+    }
+  };
+
   return (
     <StyledArticleDashboard>
       <Tabs
@@ -63,7 +70,11 @@ export const ArticlesDashboard: VFC = () => {
         changeActive={changeActive}
         currentNum={currentNum}
       />
-      <Articles currentNum={currentNum} posts={posts} />
+      <Articles
+        currentNum={currentNum}
+        posts={posts}
+        onClickDelete={onClickDelete}
+      />
     </StyledArticleDashboard>
   );
 };

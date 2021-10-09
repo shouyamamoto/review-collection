@@ -2,7 +2,9 @@ import { VFC } from "react";
 import styled from "styled-components";
 import { BsPencil } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { format } from "date-fns";
 
+import { index as Link } from "../atom/link/index";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
@@ -13,16 +15,21 @@ type Props = {
     uid: string;
     title: string;
     body: string;
-    timestamp: string;
+    timestamp: any;
     status: string;
   }[];
+  onClickDelete: (postId: string) => void;
 };
 
 type IsActive = {
   isActive: number;
 };
 
-export const ArticleDashboard: VFC<Props> = ({ currentNum, posts }) => {
+export const ArticleDashboard: VFC<Props> = ({
+  currentNum,
+  posts,
+  onClickDelete,
+}) => {
   return (
     <StyledArticleDashboard>
       <StyledReleaseArticles isActive={currentNum}>
@@ -31,13 +38,19 @@ export const ArticleDashboard: VFC<Props> = ({ currentNum, posts }) => {
             post.status === "release" && (
               <StyledArticle key={post.id}>
                 <StyledTitle>
-                  <StyledTitleInner>{post.title}</StyledTitleInner>
+                  <Link to={`/${post.uid}/articles/${post.id}`}>
+                    <StyledTitleInner>{post.title}</StyledTitleInner>
+                  </Link>
                   <StyledIcons>
-                    <BsPencil />
-                    <RiDeleteBin6Line />
+                    <StyledBsPencil />
+                    <StyledRiDeleteBin6Line
+                      onClick={() => onClickDelete(post.id)}
+                    />
                   </StyledIcons>
                 </StyledTitle>
-                <StyledTimestamp>2021.10.15に公開</StyledTimestamp>
+                <StyledTimestamp>
+                  {format(post.timestamp.toDate(), "yyyy-MM-dd")} に公開
+                </StyledTimestamp>
               </StyledArticle>
             )
         )}
@@ -50,11 +63,15 @@ export const ArticleDashboard: VFC<Props> = ({ currentNum, posts }) => {
                 <StyledTitle>
                   <StyledTitleInner>{post.title}</StyledTitleInner>
                   <StyledIcons>
-                    <BsPencil />
-                    <RiDeleteBin6Line />
+                    <StyledBsPencil />
+                    <StyledRiDeleteBin6Line
+                      onClick={() => onClickDelete(post.id)}
+                    />
                   </StyledIcons>
                 </StyledTitle>
-                <StyledTimestamp>2021.10.15に公開</StyledTimestamp>
+                <StyledTimestamp>
+                  {format(post.timestamp.toDate(), "yyyy-MM-dd")} に下書き保存
+                </StyledTimestamp>
               </StyledArticle>
             )
         )}
@@ -97,16 +114,20 @@ const StyledArticle = styled.li`
 const StyledTitle = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-weight: bold;
 `;
 
 const StyledTitleInner = styled.h2`
   font-size: 14px;
-  width: 70%;
+  width: 100%;
 
   @media ${DEVICE.laptop} {
     font-size: 16px;
-    width: 70%;
+    max-width: 480px;
+  }
+  @media ${DEVICE.laptopL} {
+    max-width: 600px;
   }
 `;
 
@@ -117,6 +138,25 @@ const StyledTimestamp = styled.span`
 
 const StyledIcons = styled.div`
   display: flex;
-  gap: 0 20px;
+  gap: 0 10px;
   padding-left: auto;
+`;
+
+const StyledBsPencil = styled(BsPencil)`
+  padding: 10px;
+  background-color: ${COLOR.BACKGROUND};
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const StyledRiDeleteBin6Line = styled(RiDeleteBin6Line)`
+  padding: 10px;
+  background-color: ${COLOR.BACKGROUND};
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
