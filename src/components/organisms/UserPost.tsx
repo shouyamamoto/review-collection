@@ -1,7 +1,7 @@
 import { VFC, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { Article } from "../molecules/Article";
 import { DEVICE } from "../../Themes/Device";
 
@@ -38,6 +38,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
     const unSub = db
       .collection("posts")
       .where("uid", "==", uid)
+      .where("status", "==", "release")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         setUserPosts(
@@ -103,10 +104,10 @@ const StyledUserPost = styled.div`
   }
 
   @media ${DEVICE.laptop} {
-    width: 60vw;
+    width: 100%;
     max-width: 1024px;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 32px 20px;
+    grid-gap: 10px 10px;
   }
 `;
 
@@ -122,7 +123,7 @@ const StyledUserPostNone = styled.div`
   }
 
   @media ${DEVICE.laptop} {
-    width: 60vw;
+    width: 100%;
     max-width: 1024px;
     grid-template-columns: 1fr 1fr;
     grid-gap: 32px 20px;

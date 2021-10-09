@@ -3,23 +3,33 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
+import { Toaster } from "react-hot-toast";
 
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { index as CodeBlock } from "../atom/code/index";
 import { index as Title } from "../atom/title/index";
 import { index as Loading } from "../atom/loading/index";
 import { Sidebar } from "../organisms/Sidebar";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
+import { format } from "date-fns";
+
+type Props = {
+  postId: string;
+  uid: string;
+  title: string;
+  body: string;
+  timestamp: any;
+};
 
 export const SinglePostPage: VFC = () => {
   const { postId } = useParams<{ postId: string }>();
-  const [post, setPost] = useState({
+  const [post, setPost] = useState<Props>({
     postId: "",
     uid: "",
     title: "",
     body: "",
-    timestamp: Date,
+    timestamp: "",
   });
   const [author, setAuthor] = useState({
     uid: "",
@@ -42,7 +52,7 @@ export const SinglePostPage: VFC = () => {
             uid: doc?.data()?.uid,
             title: doc?.data()?.title,
             body: doc?.data()?.body,
-            timestamp: doc?.data()?.timestamp.toDate(),
+            timestamp: doc?.data()?.timestamp,
           });
         }
         // else で404に飛ばしたい
@@ -79,6 +89,9 @@ export const SinglePostPage: VFC = () => {
       <StyledTitleWrap>
         <StyledTitleInner>
           <Title headline="h1">{post.title}</Title>
+          <StyledTimestamp>
+            {format(post.timestamp.toDate(), "yyyy-MM-dd")} に公開
+          </StyledTimestamp>
         </StyledTitleInner>
       </StyledTitleWrap>
       <StyledSinglePostPageInner>
@@ -98,15 +111,17 @@ export const SinglePostPage: VFC = () => {
           comment={author.comment}
         />
       </StyledSinglePostPageInner>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </StyledSinglePostPage>
   );
 };
 
-const StyledSinglePostPage = styled.div`
+const StyledSinglePostPage = styled.main`
   background-color: ${COLOR.BACKGROUND};
   display: grid;
   grid-template-columns: 100%;
   margin: 0 auto;
+  width: 100%;
 `;
 
 const StyledSinglePostPageInner = styled.div`
@@ -121,7 +136,7 @@ const StyledSinglePostPageInner = styled.div`
     grid-template-columns: 3fr 1fr;
     gap: 0 20px;
     width: 100%;
-    max-width: 1024px;
+    max-width: 900px;
   }
 
   @media ${DEVICE.laptopL} {
@@ -160,4 +175,9 @@ const StyledTitleInner = styled.div`
     width: 100%;
     max-width: 1200px;
   }
+`;
+
+const StyledTimestamp = styled.span`
+  font-size: 12px;
+  color: ${COLOR.GRAY};
 `;

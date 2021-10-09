@@ -1,7 +1,7 @@
 import { VFC, useState, useCallback } from "react";
 import { selectUser, updateUserName } from "../../features/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { auth, db } from "../../firebase";
+import { db, auth } from "../../libs/firebase";
 import styled from "styled-components";
 
 import { index as Logo } from "../atom/logo/index";

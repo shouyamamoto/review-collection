@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { AddImageIcon } from "../atom/icon/AddImageIcon";
 import { PreviewIcon } from "../atom/icon/PreviewIcon";
 import { QuestionIcon } from "../atom/icon/QuestionIcon";
+import { DraftIcon } from "../atom/icon/DraftIcon";
 import { SendIcon } from "../atom/icon/SendIcon";
 import { isValidPost } from "../../Themes/Validations";
 import { DEVICE } from "../../Themes/Device";
@@ -11,7 +12,8 @@ import { DEVICE } from "../../Themes/Device";
 type Props = {
   title: string;
   text: string;
-  onClick: () => void;
+  onClickPreview: () => void;
+  onClickSave: () => void;
   onClickAddImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   sendPost: (title: string, text: string) => Promise<void>;
 };
@@ -19,14 +21,16 @@ type Props = {
 export const PostButtons: VFC<Props> = ({
   title,
   text,
-  onClick,
+  onClickPreview,
+  onClickSave,
   onClickAddImage,
   sendPost,
 }) => {
   return (
     <StyledButtonWrap>
-      <PreviewIcon onClick={onClick} />
+      <PreviewIcon onClick={onClickPreview} />
       <AddImageIcon onChange={onClickAddImage} />
+      <DraftIcon onClick={onClickSave} />
       <QuestionIcon />
       <SendIcon
         onClick={() => sendPost(title, text)}

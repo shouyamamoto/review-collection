@@ -1,21 +1,29 @@
-import React, { VFC, useState, useCallback } from "react";
+import React, { VFC, useState, useLayoutEffect, useCallback } from "react";
 import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import toast from "react-hot-toast";
 import styled from "styled-components";
 
 import { selectUser } from "../../features/users/userSlice";
-import { db, storage } from "../../firebase";
+import { db, storage } from "../../libs/firebase";
 import { index as Loading } from "../atom/loading/index";
-import { uniqueFileName } from "../organisms/ProfileEditArea";
 import { PostButtons } from "../molecules/PostButtons";
 import { PostInputArea } from "../molecules/PostInputArea";
 
+import { toastHandler } from "../../utils/toast";
+import { uniqueFileName } from "../../utils/uniqueFileName";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
-export const PostArea: VFC = () => {
+type Props = {
+  editPostData?: {
+    postId: string;
+    title: string;
+    text: string;
+  };
+};
+
+export const PostArea: VFC<Props> = ({ editPostData }) => {
   const user = useSelector(selectUser);
   const history = useHistory();
   const [isUploading, setIsUpLoading] = useState(false);
@@ -23,53 +31,83 @@ export const PostArea: VFC = () => {
   const [text, setText] = useState("");
   const [isPreview, setIsPreview] = useState(false);
 
+  useLayoutEffect(() => {
+    if (editPostData) {
+      setTitle(editPostData.title);
+      setText(editPostData.text);
+    }
+  }, [editPostData]);
+
   const sendPost = useCallback(
     async (title: string, text: string) => {
-      await db
-        .collection("posts")
+      if (editPostData?.postId) {
+        db.collection("posts")
+          .doc(editPostData.postId)
+          .update({
+            uid: user.uid,
+            title: title,
+            body: text,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: "release",
+          })
+          .then(() => {
+            toastHandler("success", "記事を更新しました");
+            history.push(`/${user.uid}/articles/${editPostData.postId}`);
+          });
+      } else {
+        await db
+          .collection("posts")
+          .add({
+            uid: user.uid,
+            title: title,
+            body: text,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: "release",
+          })
+          .then(() => {
+            toastHandler("success", "記事を投稿しました");
+            history.push(`/${user.uid}`);
+          })
+          .catch(() => {
+            toastHandler("error", "記事を投稿できませんでした");
+          });
+      }
+    },
+    [history, user, editPostData?.postId]
+  );
+
+  const onClickSave = () => {
+    if (editPostData?.postId) {
+      db.collection("posts")
+        .doc(editPostData.postId)
+        .update({
+          uid: user.uid,
+          title: title,
+          body: text,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "draft",
+        })
+        .then(() => {
+          toastHandler("success", "下書きに追加しました");
+          history.push(`/${user.uid}/dashboard`);
+        });
+    } else {
+      db.collection("posts")
         .add({
           uid: user.uid,
           title: title,
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "draft",
         })
-        .then((posted) => {
-          db.collection("users")
-            .where("uid", "==", `${user.uid}`)
-            .get()
-            .then((snapshot) =>
-              snapshot.forEach((doc) => {
-                db.collection("users")
-                  .doc(doc.id)
-                  .update({
-                    posts: firebase.firestore.FieldValue.arrayUnion(posted.id),
-                  });
-              })
-            );
-          toast.success("記事を投稿しました", {
-            icon: "👏",
-            style: {
-              borderRadius: "10px",
-            },
-          });
-          history.push(`/${user.uid}`);
+        .then(() => {
+          toastHandler("success", "下書きに追加しました");
+          history.push(`/${user.uid}/dashboard`);
         })
         .catch(() => {
-          toast.error("記事が投稿できませんでした。", {
-            style: {
-              borderRadius: "10px",
-            },
-          });
+          toastHandler("error", "記事を投稿できませんでした");
         });
-    },
-    [history, user]
-  );
-
-  const onChangeInputState = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    setFunction: (e: string) => void
-  ) => {
-    setFunction(e.target.value);
+    }
   };
 
   const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +135,7 @@ export const PostArea: VFC = () => {
             .child(fileName)
             .getDownloadURL()
             .then((url) => {
-              setText((prevText) => {
+              setText((prevText: string) => {
                 return prevText + `![](${url})`;
               });
               e.target.value = "";
@@ -114,15 +152,20 @@ export const PostArea: VFC = () => {
           title={title}
           text={text}
           isPreview={isPreview}
-          onChangeTitle={(e) => onChangeInputState(e, setTitle)}
-          onChangeText={(e) => onChangeInputState(e, setText)}
+          onChangeTitle={(e) => {
+            setTitle(e.target.value);
+          }}
+          onChangeText={(e) => {
+            setText(e.target.value);
+          }}
         />
         <PostButtons
           title={title}
           text={text}
-          onClick={() => setIsPreview(!isPreview)}
+          onClickPreview={() => setIsPreview(!isPreview)}
           sendPost={sendPost}
           onClickAddImage={onClickAddImage}
+          onClickSave={onClickSave}
         />
       </StyledInner>
       <StyledUploadIcon>
@@ -154,5 +197,9 @@ const StyledInner = styled.div`
   @media ${DEVICE.laptopL} {
     width: 90vw;
     max-width: 1440px;
+  }
+
+  @media ${DEVICE.desktop} {
+    max-width: 2000px;
   }
 `;

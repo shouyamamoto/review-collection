@@ -2,11 +2,10 @@ import { VFC, useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import firebase from "firebase/app";
-import toast from "react-hot-toast";
 import styled from "styled-components";
 
 import { selectUser, updateUserProfile } from "../../features/users/userSlice";
-import { storage, db } from "../../firebase";
+import { db, storage } from "../../libs/firebase";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { IconWithLabel } from "../molecules/IconWithLabel";
 import { InputText } from "../molecules/InputText";
@@ -20,6 +19,8 @@ import {
   isBlogUrlValid,
   isValidProfile,
 } from "../../Themes/Validations";
+import { uniqueFileName } from "../../utils/uniqueFileName";
+import { toastHandler } from "../../utils/toast";
 
 type profile = {
   uid: string;
@@ -29,17 +30,6 @@ type profile = {
   githubName: string;
   twitterName: string;
   blogUrl: string;
-};
-
-// firebaseの使用上、同じファイル名のものがあると、先にあるものが削除されてしまう
-// ファイル名の先頭にランダムな文字を付与することで上記の問題を防ぐための関数
-export const uniqueFileName = (file: any) => {
-  const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const N = 16;
-  const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-    .map((n) => S[n % S.length])
-    .join("");
-  return randomChar + "_" + file.name;
 };
 
 export const ProfileEditArea: VFC = () => {
@@ -163,12 +153,7 @@ export const ProfileEditArea: VFC = () => {
         username: username ? username : profile.username,
       })
     );
-    toast.success("プロフィールを更新しました", {
-      icon: "👏",
-      style: {
-        borderRadius: "10px",
-      },
-    });
+    toastHandler("success", "プロフィールを更新しました");
   };
 
   return (

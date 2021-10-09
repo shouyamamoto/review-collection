@@ -1,15 +1,15 @@
 import { VFC } from "react";
 import { useHistory } from "react-router-dom";
-import { auth, githubProvider, googleProvider } from "../../firebase";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import styled from "styled-components";
+import firebase from "firebase/app";
+
 import { COLOR } from "../../Themes/Color";
 import LoginImg from "../../images/logo.svg";
-import toast from "react-hot-toast";
-import { SignInButton } from "../atom/button/SignInButton";
 import { DEVICE } from "../../Themes/Device";
-import { db } from "../../firebase";
-import firebase from "firebase/app";
+import { SignInButton } from "../atom/button/SignInButton";
+import { toastHandler } from "../../utils/toast";
+import { db, auth, githubProvider, googleProvider } from "../../libs/firebase";
 
 type Props = {
   modalHandler: () => void;
@@ -61,12 +61,7 @@ export const Auth: VFC<Props> = ({ modalHandler }) => {
           });
 
         history.push(`/`);
-        toast.success("Sign In!!", {
-          icon: "👏",
-          style: {
-            borderRadius: "10px",
-          },
-        });
+        toastHandler("success", "Sign In!!");
       })
       .catch((err) => {
         console.log(err);

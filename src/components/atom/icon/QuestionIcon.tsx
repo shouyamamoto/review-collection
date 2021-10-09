@@ -1,30 +1,30 @@
 import { VFC } from "react";
 import styled from "styled-components";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { BsQuestion } from "react-icons/bs";
 
 import { COLOR } from "../../../Themes/Color";
 import { DEVICE } from "../../../Themes/Device";
 
 export const QuestionIcon: VFC = () => {
   return (
-    <a
+    <StyledAnchor
       href="https://github.com/shouyamamoto/review-collection/#review-collection"
       target="_blank"
       rel="noreferrer"
     >
-      <StyledAiOutlineQuestionCircle />
-    </a>
+      <StyledBsQuestion />
+    </StyledAnchor>
   );
 };
 
-const StyledAiOutlineQuestionCircle = styled(AiOutlineQuestionCircle)`
+const StyledBsQuestion = styled(BsQuestion)`
   width: 32px;
   height: 32px;
   background-color: ${COLOR.WHITE};
-  color: ${COLOR.GRAY};
   padding: 10px;
   border-radius: 24px;
   box-shadow: 0 3px 12px -1px #04253f40;
+  transition: color 0.2s;
 
   &:hover {
     cursor: pointer;
@@ -33,4 +33,8 @@ const StyledAiOutlineQuestionCircle = styled(AiOutlineQuestionCircle)`
 
   @media ${DEVICE.laptopL} {
   }
+`;
+
+const StyledAnchor = styled.a`
+  line-height: 1;
 `;

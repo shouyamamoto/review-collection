@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 
 import { Article } from "../molecules/Article";
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Title } from "../atom/title/index";
 import { UserNameRegister } from "../organisms/UserNameRegister";
@@ -44,6 +44,7 @@ export const Home: VFC = memo(() => {
     const getPosts = async () => {
       await db
         .collection("posts")
+        .where("status", "==", "release")
         .orderBy("timestamp", "desc")
         .get()
         .then((snapshot) => {
@@ -102,6 +103,7 @@ export const Home: VFC = memo(() => {
           <StyledHomePostsArea>
             {posts.map((post) => (
               <Article
+                key={post.postId}
                 postId={post.postId}
                 uid={post.uid}
                 username={extraUser(post.uid)!.username}
@@ -124,7 +126,7 @@ export const Home: VFC = memo(() => {
   );
 });
 
-const StyledHome = styled.div``;
+const StyledHome = styled.main``;
 
 const StyledHomePosts = styled.div`
   background-color: ${COLOR.BACKGROUND};

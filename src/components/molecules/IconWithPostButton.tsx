@@ -39,11 +39,11 @@ export const IconWithPostButton: VFC<Props> = memo(
 
 const StyledIconArea = styled.div`
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
 
   @media ${DEVICE.tabletL} {
-    width: 200px;
+    width: 220px;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
   }
 `;

@@ -19,13 +19,14 @@ export const SendIcon: VFC<Props> = ({ onClick, disabled }) => {
 const StyledSendIcon = styled(BiSend)<IconProps>`
   width: 32px;
   height: 32px;
+  color: ${COLOR.WHITE};
+  border-radius: 24px;
+  padding: 10px;
   box-shadow: ${(props) =>
     props.disabled ? "none" : "0 3px 12px -1px #04253f40"};
   background-color: ${(props) =>
     props.disabled ? COLOR.BACKGROUND : COLOR.PRIMARY};
-  color: ${COLOR.WHITE};
-  border-radius: 24px;
-  padding: 10px;
+  pointer-events: ${(props) => (props.disabled ? "none" : "all")};
 
   &:hover {
     cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};

@@ -13,12 +13,12 @@ export const ProfileEdit: VFC = () => {
   );
 };
 
-const StyledProfileEditArea = styled.div`
+const StyledProfileEditArea = styled.main`
   width: 90%;
   margin: 0 auto;
   padding: 40px 0;
 
   @media ${DEVICE.laptop} {
-    padding: 120px 0;
+    padding: 60px 0;
   }
 `;

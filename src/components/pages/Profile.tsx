@@ -7,7 +7,7 @@ import { index as Icon } from "../atom/icon/index";
 import { index as Title } from "../atom/title/index";
 import { UserPost } from "../organisms/UserPost";
 import { ProfileArea } from "../organisms/ProfileArea";
-import { db } from "../../firebase";
+import { db } from "../../libs/firebase";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
@@ -49,7 +49,7 @@ export const Profile: VFC = () => {
   }, [userId]);
 
   return (
-    <>
+    <main>
       <StyledProfile>
         <StyledProfileInner>
           <Icon src={user.avatar} width="120" height="120" />
@@ -75,7 +75,7 @@ export const Profile: VFC = () => {
       </StyledPosts>
 
       <Toaster position="bottom-right" reverseOrder={false} />
-    </>
+    </main>
   );
 };
 
@@ -107,10 +107,9 @@ const StyledPosts = styled.div`
   background-color: ${COLOR.BACKGROUND};
   padding: 40px 0;
   min-height: 50vh;
-  height: 100%;
 
   @media ${DEVICE.laptop} {
-    padding: 60px 0;
+    padding: 60px 0 120px;
   }
 `;
 
@@ -126,7 +125,7 @@ const StyledPostInner = styled.div`
   }
 
   @media ${DEVICE.laptop} {
-    width: 60vw;
+    width: 100%;
     max-width: 1024px;
     grid-gap: 40px;
   }

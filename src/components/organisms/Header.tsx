@@ -3,7 +3,7 @@ import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { auth } from "../../firebase";
+import { auth } from "../../libs/firebase";
 import { Auth } from "./Auth";
 import logo from "../../images/logo.svg";
 

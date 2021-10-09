@@ -1,6 +1,6 @@
 export const COLOR = {
   PRIMARY: "#25bcbf",
-  SECONDARY: "#3177b3",
+  SECONDARY: "#90d7d996",
   ACCENT: "#192a34",
   BACKGROUND: "#f3f4f4",
   WHITE: "#ffffff",
@@ -9,4 +9,5 @@ export const COLOR = {
   DANGER: "#DA5040",
   CODE: "#DA5040",
   TRANSPARENT: "transparent",
+  TOAST: "#333333",
 };

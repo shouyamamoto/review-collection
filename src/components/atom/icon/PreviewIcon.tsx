@@ -16,10 +16,10 @@ const StyledBiRightArrowCircle = styled(BiRightArrowCircle)`
   width: 32px;
   height: 32px;
   background-color: ${COLOR.WHITE};
-  color: ${COLOR.GRAY};
   padding: 10px;
   border-radius: 24px;
   box-shadow: 0 3px 12px -1px #04253f40;
+  transition: color 0.2s;
 
   &:hover {
     cursor: pointer;
