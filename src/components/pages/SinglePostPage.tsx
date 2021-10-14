@@ -1,5 +1,5 @@
 import { VFC, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
@@ -42,6 +42,7 @@ export const SinglePostPage: VFC = () => {
     comment: "",
   });
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const getPostData = async () => {
@@ -108,6 +109,7 @@ export const SinglePostPage: VFC = () => {
           className="preview"
         />
         <Sidebar
+          location={location.pathname}
           uid={author.uid}
           avatar={author.avatar}
           username={author.username}

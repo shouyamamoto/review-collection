@@ -34,7 +34,7 @@ export const SidebarUserProfile: VFC<Props> = ({
         </Link>
 
         <Link to={`/${uid}`}>
-          <Typography size="0.95rem" weight="bold">
+          <Typography size="0.9rem" weight="bold">
             {username}
           </Typography>
         </Link>
@@ -63,7 +63,8 @@ const StyledSidebarUserProfile = styled.div`
 
 const StyledSidebarAuthor = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 14px;
   align-items: center;
   max-width: 220px;
 `;
