@@ -62,6 +62,9 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
             title: title,
             body: text,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            posts: firebase.firestore.FieldValue.arrayUnion(
+              editPostData?.postId
+            ),
             status: "release",
           })
           .then(() => {

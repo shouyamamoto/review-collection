@@ -43,6 +43,7 @@ export const ArticleDashboard: VFC<Props> = ({
                   <Link to={`/${post.uid}/articles/${post.id}`}>
                     <StyledTitleInner>{post.title}</StyledTitleInner>
                   </Link>
+                  {console.log(post.uid)}
                   <StyledIcons>
                     <StyledBsPencil onClick={() => onClickEdit(post.id)} />
                     <StyledRiDeleteBin6Line

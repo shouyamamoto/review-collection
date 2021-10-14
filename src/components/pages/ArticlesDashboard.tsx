@@ -1,5 +1,5 @@
 import { VFC, useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Redirect } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 
@@ -12,8 +12,10 @@ import { toastHandler } from "../../utils/toast";
 import { DEVICE } from "../../Themes/Device";
 import NonePosts from "../../images/no-post.svg";
 import { TAB_LIST } from "../../Themes/TabLists";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 export const ArticlesDashboard: VFC = () => {
+  const { currentUser } = useCurrentUser();
   const { userId } = useParams<{ userId: string }>();
   const history = useHistory();
   const [currentNum, setCurrentNum] = useState(0);
@@ -48,18 +50,7 @@ export const ArticlesDashboard: VFC = () => {
         });
     };
     getPosts();
-  }, [userId]);
-
-  // statusの重複を無くして、配列に, tabOrderで並び替える
-  // const orderedTabList = () => {
-  //   const tabOrder = ["release", "draft"];
-  //   const tabItem = new Set(posts.map(({ status }) => status));
-  //   const tabArray = Array.from(tabItem);
-  //   const orderedTabItem = tabArray.sort((x, y) => {
-  //     return tabOrder.indexOf(x) - tabOrder.indexOf(y);
-  //   });
-  //   return orderedTabItem;
-  // };
+  }, [userId, history]);
 
   const changeActive = (index: number) => setCurrentNum(index);
 
@@ -72,39 +63,44 @@ export const ArticlesDashboard: VFC = () => {
   };
 
   const onClickEdit = (postId: string) => {
-    history.push(`/articles/${postId}/edit`);
+    history.push(`/${userId}/articles/${postId}/edit`);
   };
+
+  if (currentUser.uid !== userId) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <>
-      {posts[0] ? (
-        <StyledArticleDashboard>
-          <Tabs
-            tabList={TAB_LIST}
-            changeActive={changeActive}
-            currentNum={currentNum}
-          />
-          <Articles
-            currentNum={currentNum}
-            posts={posts}
-            onClickDelete={onClickDelete}
-            onClickEdit={onClickEdit}
-          />
-          <Toaster position="bottom-right" reverseOrder={false} />
-        </StyledArticleDashboard>
-      ) : (
-        <StyledUserPostNone>
-          <img src={NonePosts} alt="" width="400" />
-          <StyledPostPrompt>
-            まだ投稿がありません。
-            <br />
-            レビューしたこと、されたことを書いてみませんか？
-            <Link to={`/articles/new`}>
-              <PrimaryButton>Add Post</PrimaryButton>
-            </Link>
-          </StyledPostPrompt>
-        </StyledUserPostNone>
-      )}
+      {currentUser!.uid === userId &&
+        (posts[0] ? (
+          <StyledArticleDashboard>
+            <Tabs
+              tabList={TAB_LIST}
+              changeActive={changeActive}
+              currentNum={currentNum}
+            />
+            <Articles
+              currentNum={currentNum}
+              posts={posts}
+              onClickDelete={onClickDelete}
+              onClickEdit={onClickEdit}
+            />
+            <Toaster position="bottom-right" reverseOrder={false} />
+          </StyledArticleDashboard>
+        ) : (
+          <StyledUserPostNone>
+            <img src={NonePosts} alt="" width="400" />
+            <StyledPostPrompt>
+              まだ投稿がありません。
+              <br />
+              レビューしたこと、されたことを書いてみませんか？
+              <Link to={`/articles/new`}>
+                <PrimaryButton>Add Post</PrimaryButton>
+              </Link>
+            </StyledPostPrompt>
+          </StyledUserPostNone>
+        ))}
     </>
   );
 };

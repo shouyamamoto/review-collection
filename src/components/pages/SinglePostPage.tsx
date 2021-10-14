@@ -4,6 +4,7 @@ import styled from "styled-components";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import { Toaster } from "react-hot-toast";
+import { format } from "date-fns";
 
 import { db } from "../../libs/firebase";
 import { index as CodeBlock } from "../atom/code/index";
@@ -12,7 +13,6 @@ import { index as Loading } from "../atom/loading/index";
 import { Sidebar } from "../organisms/Sidebar";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
-import { format } from "date-fns";
 
 type Props = {
   postId: string;

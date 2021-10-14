@@ -7,6 +7,7 @@ import { Article } from "../molecules/Article";
 import { db } from "../../libs/firebase";
 import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Title } from "../atom/title/index";
+import { index as Link } from "../atom/link/index";
 import { UserNameRegister } from "../organisms/UserNameRegister";
 import { selectUser } from "../../features/users/userSlice";
 import { COLOR } from "../../Themes/Color";
@@ -97,6 +98,9 @@ export const Home: VFC = memo(() => {
 
   return (
     <StyledHome>
+      <Link to="FHDXGhKCaOWFFvIujnZBRoH67EL2/articles/Qehrfhw9TEE5b9MPiLsF/edit">
+        リンク
+      </Link>
       <StyledHomePosts>
         <StyledHomePostsInner>
           <Title headline="h1">Articles</Title>
