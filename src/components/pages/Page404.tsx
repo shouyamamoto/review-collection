@@ -21,8 +21,8 @@ export const Page404: VFC = () => {
         <img
           src={Error404}
           alt="ページが見つかりませんでした。お探しのページは削除されたか、URLが間違っている可能性があります。"
-          width="600px"
-          height="600px"
+          width="auto"
+          height="auto"
         />
       </StyledFigure>
       <PrimaryButton onClick={onClickTop}>トップに戻る</PrimaryButton>
@@ -39,5 +39,6 @@ const Styled404 = styled.div`
 
 const StyledFigure = styled.figure`
   width: 90%;
+  max-width: 600px;
   margin: 0 auto;
 `;
