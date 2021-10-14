@@ -1,7 +1,9 @@
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { BrowserRouter, Route } from "react-router-dom";
+
 import { db, auth } from "./libs/firebase";
 import { login, logout } from "./features/users/userSlice";
-import { useDispatch } from "react-redux";
 import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile";
 import { ProfileEdit } from "./components/pages/ProfileEdit";
@@ -12,7 +14,6 @@ import { ArticlesDashboard } from "./components/pages/ArticlesDashboard";
 import { Header } from "./components/organisms/Header";
 import { Footer } from "./components/organisms/Footer";
 import { GlobalStyle } from "./Themes/GlobalStyle";
-import { BrowserRouter, Route } from "react-router-dom";
 
 const App: React.VFC = () => {
   const dispatch = useDispatch();
@@ -85,7 +86,7 @@ const App: React.VFC = () => {
         <Route exact path="/articles/new">
           <CreatePost />
         </Route>
-        <Route exact path="/articles/:postId/edit">
+        <Route exact path="/:userId/articles/:postId/edit">
           <EditPost />
         </Route>
         <Route exact path="/:userId/dashboard">

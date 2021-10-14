@@ -1,12 +1,14 @@
 import { VFC, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import { PostArea } from "../organisms/PostArea";
 import { db } from "../../libs/firebase";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 export const EditPost: VFC = () => {
-  const { postId } = useParams<{ postId: string }>();
+  const { currentUser } = useCurrentUser();
+  const { userId, postId } = useParams<{ userId: string; postId: string }>();
   const [editPostData, setEditPostData] = useState({
     postId: postId,
     title: "",
@@ -28,6 +30,10 @@ export const EditPost: VFC = () => {
     };
     getEditPostData();
   }, [postId]);
+
+  if (currentUser.uid !== userId) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <main>
