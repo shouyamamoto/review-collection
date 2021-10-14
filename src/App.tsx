@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { db, auth } from "./libs/firebase";
 import { login, logout } from "./features/users/userSlice";
@@ -11,6 +11,7 @@ import { CreatePost } from "./components/pages/CreatePost";
 import { EditPost } from "./components/pages/EditPost";
 import { SinglePostPage } from "./components/pages/SinglePostPage";
 import { ArticlesDashboard } from "./components/pages/ArticlesDashboard";
+import { Page404 } from "./components/pages/Page404";
 import { Header } from "./components/organisms/Header";
 import { Footer } from "./components/organisms/Footer";
 import { GlobalStyle } from "./Themes/GlobalStyle";
@@ -74,27 +75,32 @@ const App: React.VFC = () => {
       <GlobalStyle />
       <BrowserRouter>
         <Header />
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route exact path="/:userId">
-          <Profile />
-        </Route>
-        <Route exact path="/:userId/profile/settings">
-          <ProfileEdit />
-        </Route>
-        <Route exact path="/articles/new">
-          <CreatePost />
-        </Route>
-        <Route exact path="/:userId/articles/:postId/edit">
-          <EditPost />
-        </Route>
-        <Route exact path="/:userId/dashboard">
-          <ArticlesDashboard />
-        </Route>
-        <Route exact path="/:userId/articles/:postId">
-          <SinglePostPage />
-        </Route>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/:userId" component={Profile} />
+          <Route
+            exact
+            path="/:userId/profile/settings"
+            component={ProfileEdit}
+          />
+          <Route exact path="/articles/new" component={CreatePost} />
+          <Route
+            exact
+            path="/:userId/articles/:postId/edit"
+            component={EditPost}
+          />
+          <Route
+            exact
+            path="/:userId/dashboard"
+            component={ArticlesDashboard}
+          />
+          <Route
+            exact
+            path="/:userId/articles/:postId"
+            component={SinglePostPage}
+          />
+          <Route component={Page404} />
+        </Switch>
         <Footer />
       </BrowserRouter>
     </>

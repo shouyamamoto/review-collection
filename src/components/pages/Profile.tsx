@@ -3,16 +3,19 @@ import styled from "styled-components";
 import { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
+import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Icon } from "../atom/icon/index";
 import { index as Title } from "../atom/title/index";
 import { UserPost } from "../organisms/UserPost";
 import { ProfileArea } from "../organisms/ProfileArea";
+import { Page404 } from "../pages/Page404";
 import { db } from "../../libs/firebase";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
 export const Profile: VFC = () => {
   const { userId } = useParams<{ userId: string }>();
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({
     uid: "",
     username: "",
@@ -42,11 +45,26 @@ export const Profile: VFC = () => {
                 blogUrl: doc.data().blogUrl,
               });
             });
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
           }
         });
     };
     getUser();
   }, [userId]);
+
+  if (isLoading) {
+    return (
+      <StyledProfile>
+        <LoadingIcon width="40" height="40" />
+      </StyledProfile>
+    );
+  }
+
+  if (user.uid === "") {
+    return <Page404 />;
+  }
 
   return (
     <main>
@@ -81,6 +99,7 @@ export const Profile: VFC = () => {
 
 const StyledProfile = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
 `;
 

@@ -13,6 +13,7 @@ import { index as Loading } from "../atom/loading/index";
 import { Sidebar } from "../organisms/Sidebar";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
+import { Page404 } from "./Page404";
 
 type Props = {
   postId: string;
@@ -54,8 +55,10 @@ export const SinglePostPage: VFC = () => {
             body: doc?.data()?.body,
             timestamp: doc?.data()?.timestamp,
           });
+        } else {
+          setIsLoading(false);
+          return;
         }
-        // else で404に飛ばしたい
         const user = db
           .collection("users")
           .where("uid", "==", doc?.data()?.uid)
@@ -72,7 +75,6 @@ export const SinglePostPage: VFC = () => {
               comment: doc.data().comment,
             });
           });
-
           setIsLoading(false);
         });
       });
@@ -82,6 +84,10 @@ export const SinglePostPage: VFC = () => {
 
   if (isLoading) {
     return <Loading width="60" height="60" />;
+  }
+
+  if (post.postId === "") {
+    return <Page404 />;
   }
 
   return (
