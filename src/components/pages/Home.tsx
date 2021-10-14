@@ -98,9 +98,6 @@ export const Home: VFC = memo(() => {
 
   return (
     <StyledHome>
-      <Link to="FHDXGhKCaOWFFvIujnZBRoH67EL2/articles/Qehrfhw9TEE5b9MPiLsF/edit">
-        リンク
-      </Link>
       <StyledHomePosts>
         <StyledHomePostsInner>
           <Title headline="h1">Articles</Title>
