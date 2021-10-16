@@ -3,6 +3,7 @@ import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+// import loadImage from "blueimp-load-image";
 
 import { selectUser } from "../../features/users/userSlice";
 import { db, storage } from "../../libs/firebase";
