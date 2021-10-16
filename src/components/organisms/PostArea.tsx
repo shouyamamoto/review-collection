@@ -3,7 +3,6 @@ import firebase from "firebase/app";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-// import loadImage from "blueimp-load-image";
 
 import { selectUser } from "../../features/users/userSlice";
 import { db, storage } from "../../libs/firebase";
@@ -13,6 +12,7 @@ import { PostInputArea } from "../molecules/PostInputArea";
 
 import { toastHandler } from "../../utils/toast";
 import { uniqueFileName } from "../../utils/uniqueFileName";
+import { resizeFile } from "../../utils/resizeFile";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
@@ -111,13 +111,15 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
     }
   };
 
-  const onClickAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onClickAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
+      const { files } = e.target;
       setIsUpLoading(true);
-      const fileName = uniqueFileName(e.target.files![0]);
+      const fileName = uniqueFileName(files![0]);
+      const resizeImage = (await resizeFile(files![0], 1000, 600)) as string;
       const uploadImage = storage
         .ref(`images/${fileName}`)
-        .put(e.target.files![0]);
+        .putString(resizeImage, "data_url");
       uploadImage.on(
         firebase.storage.TaskEvent.STATE_CHANGED,
         (snapshot) => {
