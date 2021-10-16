@@ -23,4 +23,5 @@ export const index: VFC<Props> = ({ src, alt, width, height, onClick }) => {
 
 const StyledIcon = styled.img`
   border-radius: 50%;
+  object-fit: cover;
 `;

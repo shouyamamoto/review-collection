@@ -1,7 +1,6 @@
 import { VFC, useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import firebase from "firebase/app";
 import styled from "styled-components";
 
 import { selectUser, updateUserProfile } from "../../features/users/userSlice";
@@ -21,6 +20,7 @@ import {
 } from "../../Themes/Validations";
 import { uniqueFileName } from "../../utils/uniqueFileName";
 import { toastHandler } from "../../utils/toast";
+import { resizeFile } from "../../utils/resizeFile";
 
 type profile = {
   uid: string;
@@ -34,7 +34,7 @@ type profile = {
 
 export const ProfileEditArea: VFC = () => {
   const user = useSelector(selectUser);
-
+  const [fileName, setFileName] = useState("");
   const [avatar, setAvatar] = useState(user.avatar);
   const [username, setUsername] = useState(user.username ? user.username : "");
   const [comment, setComment] = useState(user.comment ? user.comment : "");
@@ -94,36 +94,21 @@ export const ProfileEditArea: VFC = () => {
     setFunction(e.target.value);
   };
 
-  const onChangeImageHandler = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeIconHandler = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files![0]) {
-        const fileName = uniqueFileName(e.target.files![0]);
-        const uploadAvatar = storage
-          .ref(`avatars/${fileName}`)
-          .put(e.target.files![0]);
-        uploadAvatar.on(
-          firebase.storage.TaskEvent.STATE_CHANGED,
-          () => {},
-          (err) => {
-            alert(err.message);
-          },
-          async () => {
-            await storage
-              .ref("avatars")
-              .child(fileName)
-              .getDownloadURL()
-              .then((url) => {
-                setAvatar(url);
-                e.target.value = "";
-              });
-          }
-        );
+        const { files } = e.target;
+        const reNameFile = uniqueFileName(files![0]);
+        const resizeImage = (await resizeFile(files![0], 200, 200)) as string;
+        setAvatar(resizeImage);
+        setFileName(reNameFile);
       }
     },
     []
   );
 
   const onUpdate = () => {
+    storage.ref(`avatars/${fileName}`).putString(avatar, "data_url");
     db.collection("users")
       .where("uid", "==", `${user.uid}`)
       .get()
@@ -159,7 +144,7 @@ export const ProfileEditArea: VFC = () => {
   return (
     <StyledEditArea>
       <StyledIconArea>
-        <IconWithLabel src={avatar} onChange={onChangeImageHandler} />
+        <IconWithLabel src={avatar} onChange={onChangeIconHandler} />
       </StyledIconArea>
 
       <StyledInputArea>
