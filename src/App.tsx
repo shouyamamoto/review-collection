@@ -46,6 +46,7 @@ const App: React.VFC = () => {
                       githubName: doc.data()!.githubName,
                       twitterName: doc.data()!.twitterName,
                       blogUrl: doc.data()!.blogUrl,
+                      likedPosts: doc.data()!.likedPosts,
                     })
                   );
                 });
@@ -59,6 +60,7 @@ const App: React.VFC = () => {
                   githubName: "",
                   twitterName: "",
                   blogUrl: "",
+                  likedPosts: [],
                 })
               );
             }

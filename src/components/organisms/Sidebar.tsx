@@ -2,12 +2,13 @@ import { VFC } from "react";
 import styled from "styled-components";
 import { TwitterShareButton, TwitterIcon } from "react-share";
 
-import { index as Typography } from "../atom/typography/index";
 import { SidebarUserProfile } from "../molecules/SidebarUserProfile";
 import { DEVICE } from "../../Themes/Device";
-import { COLOR } from "../../Themes/Color";
+import noLike from "../../images/no-like.png";
+import LikedIcon from "../../images/liked.png";
 
 type Props = {
+  postId: string;
   location: string;
   uid: string;
   avatar: string;
@@ -16,9 +17,12 @@ type Props = {
   twitterName: string;
   blogUrl: string;
   comment: string;
+  likedPosts: string[];
+  onClickLike: () => void;
 };
 
 export const Sidebar: VFC<Props> = ({
+  postId,
   location,
   uid,
   avatar,
@@ -27,6 +31,8 @@ export const Sidebar: VFC<Props> = ({
   twitterName,
   blogUrl,
   comment,
+  likedPosts,
+  onClickLike,
 }) => {
   return (
     <StyledSidebar>
@@ -40,16 +46,30 @@ export const Sidebar: VFC<Props> = ({
         comment={comment}
       />
       <StyledSidebarButtons>
-        <Typography size="0.8rem">この記事をシェアする</Typography>
-        <StyledButtons>
-          <TwitterShareButton url={location}>
-            <TwitterIcon size="40" round />
-          </TwitterShareButton>
-        </StyledButtons>
+        <TwitterShareButton url={location}>
+          <TwitterIcon size="40" round />
+        </TwitterShareButton>
+        {likedPosts.includes(postId) ? (
+          <StyledLikeButton onClick={onClickLike} src={LikedIcon} alt="" />
+        ) : (
+          <StyledLikeButton onClick={onClickLike} src={noLike} alt="" />
+        )}
       </StyledSidebarButtons>
     </StyledSidebar>
   );
 };
+
+const StyledLikeButton = styled.img`
+  width: 40px;
+  height: 40px;
+  max-width: 40px;
+  max-height: 40px;
+  margin: 0 auto;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const StyledSidebar = styled.div`
   width: 100%;
@@ -66,18 +86,17 @@ const StyledSidebar = styled.div`
 `;
 
 const StyledSidebarButtons = styled.div`
-  width: 100%;
-  background-color: ${COLOR.WHITE};
+  width: 10%;
   border-radius: 10px;
   display: grid;
   gap: 12px;
-  padding: 20px;
+  padding: 20px 0;
   box-sizing: border-box;
   text-align: center;
 `;
 
-const StyledButtons = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-`;
+// const StyledButtons = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   gap: 20px;
+// `;

@@ -45,7 +45,6 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
         db.collection("posts")
           .doc(editPostData.postId)
           .update({
-            uid: user.uid,
             title: title,
             body: text,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -64,6 +63,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
             body: text,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             status: "release",
+            likedUsers: [],
           })
           .then(() => {
             toastHandler("success", "記事を投稿しました");
@@ -82,7 +82,6 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
       db.collection("posts")
         .doc(editPostData.postId)
         .update({
-          uid: user.uid,
           title: title,
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
