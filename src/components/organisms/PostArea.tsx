@@ -21,6 +21,7 @@ type Props = {
     postId: string;
     title: string;
     text: string;
+    likedUsers?: string[];
   };
 };
 
@@ -86,6 +87,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           status: "draft",
+          likedUsers: editPostData.likedUsers,
         })
         .then(() => {
           toastHandler("success", "下書きに追加しました");

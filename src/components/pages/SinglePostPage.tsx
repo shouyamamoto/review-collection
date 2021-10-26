@@ -28,25 +28,50 @@ type PostType = {
   title: string;
   body: string;
   timestamp: any;
+  likedUsers: string[];
+};
+
+type AuthorType = {
+  uid: string;
+  avatar: string;
+  username: string;
+  githubName: string;
+  twitterName: string;
+  blogUrl: string;
+  comment: string;
+  likedPosts: string[];
 };
 
 export const SinglePostPage: VFC = () => {
   const currentUser = useSelector(selectUser);
-  const user = db
-    .collection("users")
-    .where("uid", "==", currentUser?.uid)
-    .get();
   const dispatch = useDispatch();
   const { postId } = useParams<{ postId: string }>();
+  const location = useLocation();
   const [post, setPost] = useState<PostType>({
     postId: "",
     uid: "",
     title: "",
     body: "",
     timestamp: "",
+    likedUsers: [],
+  });
+  const [author, setAuthor] = useState<AuthorType>({
+    uid: "",
+    avatar: "",
+    username: "",
+    githubName: "",
+    twitterName: "",
+    blogUrl: "",
+    comment: "",
+    likedPosts: [],
   });
   const [isLoading, setIsLoading] = useState(true);
-  const location = useLocation();
+  const [count, setCount] = useState(0);
+
+  const fetchedUser = db
+    .collection("users")
+    .where("uid", "==", currentUser?.uid)
+    .get();
 
   useEffect(() => {
     const getPostData = async () => {
@@ -59,12 +84,31 @@ export const SinglePostPage: VFC = () => {
             title: doc?.data()?.title,
             body: doc?.data()?.body,
             timestamp: doc?.data()?.timestamp,
+            likedUsers: doc?.data()?.likedUsers,
           });
         } else {
           setIsLoading(false);
           return;
         }
-        setIsLoading(false);
+        const user = db
+          .collection("users")
+          .where("uid", "==", doc?.data()?.uid)
+          .get();
+        user.then((snapshot) => {
+          snapshot.forEach((doc) => {
+            setAuthor({
+              uid: doc.data().uid,
+              avatar: doc.data().avatar,
+              username: doc.data().username,
+              githubName: doc.data().githubName,
+              twitterName: doc.data().twitterName,
+              blogUrl: doc.data().blogUrl,
+              comment: doc.data().comment,
+              likedPosts: doc.data().likedPosts,
+            });
+          });
+          setIsLoading(false);
+        });
       });
     };
     getPostData();
@@ -74,12 +118,25 @@ export const SinglePostPage: VFC = () => {
     return currentUser.likedPosts.includes(postId);
   };
 
-  console.log(currentUser.likedPosts);
+  useEffect(() => {
+    setCount(post.likedUsers.length);
+  }, [post.likedUsers.length]);
+
+  // const countLikes = () => {
+  //   return post.likedUsers.length;
+  // };
+
+  const incrementCount = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+  const decrementCount = () => {
+    setCount((prevCount) => prevCount - 1);
+  };
 
   const onClickLike = () => {
     if (hasLikedPosts(postId)) {
       dispatch(removeLikedPosts({ postId }));
-      user.then((snapshot) => {
+      fetchedUser.then((snapshot) => {
         snapshot.forEach((doc) => {
           db.collection("users")
             .doc(doc.id)
@@ -88,9 +145,17 @@ export const SinglePostPage: VFC = () => {
             });
         });
       });
+      db.collection("posts")
+        .doc(postId)
+        .update({
+          likedUsers: firebase.firestore.FieldValue.arrayRemove(
+            currentUser.uid
+          ),
+        });
+      decrementCount();
     } else {
       dispatch(addLikedPosts({ postId }));
-      user.then((snapshot) => {
+      fetchedUser.then((snapshot) => {
         snapshot.forEach((doc) => {
           db.collection("users")
             .doc(doc.id)
@@ -99,6 +164,12 @@ export const SinglePostPage: VFC = () => {
             });
         });
       });
+      db.collection("posts")
+        .doc(postId)
+        .update({
+          likedUsers: firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+        });
+      incrementCount();
     }
   };
 
@@ -130,15 +201,16 @@ export const SinglePostPage: VFC = () => {
         <Sidebar
           postId={postId}
           location={location.pathname}
-          uid={currentUser.uid}
-          avatar={currentUser.avatar}
-          username={currentUser.username}
-          githubName={currentUser.githubName}
-          twitterName={currentUser.twitterName}
-          blogUrl={currentUser.blogUrl}
-          comment={currentUser.comment}
+          uid={author.uid}
+          avatar={author.avatar}
+          username={author.username}
+          githubName={author.githubName}
+          twitterName={author.twitterName}
+          blogUrl={author.blogUrl}
+          comment={author.comment}
           likedPosts={currentUser.likedPosts}
           onClickLike={onClickLike}
+          countLikes={count}
         />
       </StyledSinglePostPageInner>
       <Toaster position="bottom-right" reverseOrder={false} />

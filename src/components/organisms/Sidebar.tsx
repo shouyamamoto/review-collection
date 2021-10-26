@@ -19,6 +19,7 @@ type Props = {
   comment: string;
   likedPosts: string[];
   onClickLike: () => void;
+  countLikes: number;
 };
 
 export const Sidebar: VFC<Props> = ({
@@ -33,6 +34,7 @@ export const Sidebar: VFC<Props> = ({
   comment,
   likedPosts,
   onClickLike,
+  countLikes,
 }) => {
   return (
     <StyledSidebar>
@@ -54,6 +56,7 @@ export const Sidebar: VFC<Props> = ({
         ) : (
           <StyledLikeButton onClick={onClickLike} src={noLike} alt="" />
         )}
+        <p>{countLikes}</p>
       </StyledSidebarButtons>
     </StyledSidebar>
   );
@@ -94,9 +97,3 @@ const StyledSidebarButtons = styled.div`
   box-sizing: border-box;
   text-align: center;
 `;
-
-// const StyledButtons = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   gap: 20px;
-// `;
