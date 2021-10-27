@@ -122,10 +122,6 @@ export const SinglePostPage: VFC = () => {
     setCount(post.likedUsers.length);
   }, [post.likedUsers.length]);
 
-  // const countLikes = () => {
-  //   return post.likedUsers.length;
-  // };
-
   const incrementCount = () => {
     setCount((prevCount) => prevCount + 1);
   };
@@ -199,6 +195,7 @@ export const SinglePostPage: VFC = () => {
           className="preview"
         />
         <Sidebar
+          currentUserId={currentUser.uid}
           postId={postId}
           location={location.pathname}
           uid={author.uid}

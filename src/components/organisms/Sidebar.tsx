@@ -2,12 +2,15 @@ import { VFC } from "react";
 import styled from "styled-components";
 import { TwitterShareButton, TwitterIcon } from "react-share";
 
+import { index as Typography } from "../atom/typography/index";
 import { SidebarUserProfile } from "../molecules/SidebarUserProfile";
 import { DEVICE } from "../../Themes/Device";
 import noLike from "../../images/no-like.png";
 import LikedIcon from "../../images/liked.png";
+import { COLOR } from "../../Themes/Color";
 
 type Props = {
+  currentUserId: string;
   postId: string;
   location: string;
   uid: string;
@@ -23,6 +26,7 @@ type Props = {
 };
 
 export const Sidebar: VFC<Props> = ({
+  currentUserId,
   postId,
   location,
   uid,
@@ -47,17 +51,21 @@ export const Sidebar: VFC<Props> = ({
         blogUrl={blogUrl}
         comment={comment}
       />
-      <StyledSidebarButtons>
-        <TwitterShareButton url={location}>
-          <TwitterIcon size="40" round />
-        </TwitterShareButton>
-        {likedPosts.includes(postId) ? (
-          <StyledLikeButton onClick={onClickLike} src={LikedIcon} alt="" />
-        ) : (
-          <StyledLikeButton onClick={onClickLike} src={noLike} alt="" />
-        )}
-        <p>{countLikes}</p>
-      </StyledSidebarButtons>
+      {currentUserId !== "" && (
+        <StyledSidebarButtons>
+          <TwitterShareButton url={location}>
+            <TwitterIcon size="40" round />
+          </TwitterShareButton>
+          {likedPosts.includes(postId) ? (
+            <StyledLikeButton onClick={onClickLike} src={LikedIcon} alt="" />
+          ) : (
+            <StyledLikeButton onClick={onClickLike} src={noLike} alt="" />
+          )}
+          <Typography size="12px" color={`${COLOR.GRAY}`}>
+            {countLikes}
+          </Typography>
+        </StyledSidebarButtons>
+      )}
     </StyledSidebar>
   );
 };
