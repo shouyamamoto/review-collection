@@ -18,6 +18,7 @@ type POST = {
   title: string;
   body: string;
   timestamp: any;
+  likedUsers: string[];
 };
 
 export const Home: VFC = memo(() => {
@@ -30,6 +31,7 @@ export const Home: VFC = memo(() => {
       timestamp: null,
       title: "",
       body: "",
+      likedUsers: [],
     },
   ]);
   const [users, setUsers] = useState([
@@ -55,6 +57,7 @@ export const Home: VFC = memo(() => {
               timestamp: doc.data().timestamp.toDate(),
               title: doc.data().title,
               body: doc.data().body,
+              likedUsers: doc.data().likedUsers,
             }))
           );
         });
@@ -111,6 +114,7 @@ export const Home: VFC = memo(() => {
                 title={post.title}
                 body={post.body}
                 timestamp={post.timestamp}
+                likedUsers={post.likedUsers}
               />
             ))}
           </StyledHomePostsArea>

@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { format } from "date-fns";
 import { COLOR } from "../../Themes/Color";
 
+import { index as Typography } from "../atom/typography/index";
 import { index as Icon } from "../atom/icon";
 import { index as Link } from "../atom/link";
 import { NameWithTimestamp } from "./NameWithTimestamp";
 import { DEVICE } from "../../Themes/Device";
+import LikedIcon from "../../images/liked.png";
 
 type Props = {
   postId: string;
@@ -16,6 +18,7 @@ type Props = {
   title: string;
   body: string;
   timestamp: any;
+  likedUsers: string[];
 };
 
 export const Article: VFC<Props> = ({
@@ -25,6 +28,7 @@ export const Article: VFC<Props> = ({
   avatar,
   title,
   timestamp,
+  likedUsers,
 }) => {
   return (
     <StyledArticle>
@@ -42,10 +46,30 @@ export const Article: VFC<Props> = ({
             timestamp={timestamp && format(timestamp, "yyyy-MM-dd")}
           />
         </Link>
+        {likedUsers.length > 0 && (
+          <StyledLiked>
+            <StyledLikeButton src={LikedIcon} />
+            <Typography size="12px">{likedUsers.length}</Typography>
+          </StyledLiked>
+        )}
       </StyledIconWithName>
     </StyledArticle>
   );
 };
+
+const StyledLiked = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+`;
+
+const StyledLikeButton = styled.img`
+  width: 16px;
+  height: 16px;
+  max-width: 16px;
+  max-height: 16px;
+  margin-right: 6px;
+`;
 
 const StyledArticle = styled.article`
   display: flex;

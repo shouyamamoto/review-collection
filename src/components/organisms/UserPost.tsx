@@ -21,6 +21,7 @@ type POST = {
   title: string;
   body: string;
   timestamp: any;
+  likedUsers: string[];
 };
 
 export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
@@ -31,6 +32,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
       timestamp: null,
       title: "",
       body: "",
+      likedUsers: [],
     },
   ]);
 
@@ -47,6 +49,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
             timestamp: doc.data().timestamp.toDate(),
             title: doc.data().title,
             body: doc.data().body,
+            likedUsers: doc.data().likedUsers,
           }))
         );
         setIsLoading(false);
@@ -72,6 +75,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
               title={post.title}
               body={post.body}
               timestamp={post.timestamp}
+              likedUsers={post.likedUsers}
             />
           ))}
         </StyledUserPost>
