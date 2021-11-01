@@ -5,7 +5,7 @@ import { DEVICE } from "../../Themes/Device";
 import { index as Typography } from "../atom/typography/index";
 
 type Props = {
-  username: string;
+  username?: string;
   timestamp: string;
 };
 

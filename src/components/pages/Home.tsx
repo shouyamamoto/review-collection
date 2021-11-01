@@ -12,7 +12,7 @@ import { selectUser } from "../../features/users/userSlice";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
-type POST = {
+type PostType = {
   uid: string;
   postId: string;
   title: string;
@@ -21,10 +21,16 @@ type POST = {
   likedUsers: string[];
 };
 
+type UserType = {
+  uid: string;
+  username: string;
+  avatar: string;
+};
+
 export const Home: VFC = memo(() => {
   const user = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState<POST[]>([
+  const [posts, setPosts] = useState<PostType[]>([
     {
       uid: "",
       postId: "",
@@ -34,7 +40,7 @@ export const Home: VFC = memo(() => {
       likedUsers: [],
     },
   ]);
-  const [users, setUsers] = useState([
+  const [users, setUsers] = useState<UserType[]>([
     {
       uid: "",
       username: "",

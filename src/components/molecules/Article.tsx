@@ -13,8 +13,8 @@ import LikedIcon from "../../images/liked.png";
 type Props = {
   postId: string;
   uid: string;
-  username: string;
-  avatar: string;
+  username: string | undefined;
+  avatar: string | undefined;
   title: string;
   body: string;
   timestamp: any;

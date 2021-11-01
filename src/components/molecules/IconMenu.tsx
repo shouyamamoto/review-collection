@@ -4,8 +4,10 @@ import { FiLogOut, FiUserCheck } from "react-icons/fi";
 import { BsPencil } from "react-icons/bs";
 import { GrNotes } from "react-icons/gr";
 import styled from "styled-components";
+
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
+import LikeIcon from "../../images/liked.png";
 
 type Props = {
   user: {
@@ -37,6 +39,12 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
         </StyledProfileLink>
       </StyledMenuItem>
       <StyledMenuItem onClick={onClick}>
+        <StyledProfileLink to={`/${user.uid}/?contents=likes`}>
+          <StyledNoLikedIcon src={LikeIcon} />
+          いいねした記事一覧
+        </StyledProfileLink>
+      </StyledMenuItem>
+      <StyledMenuItem onClick={onClick}>
         <StyledProfileLink to={`/${user.uid}/profile/settings`}>
           <StyledUserEditIcon />
           プロフィール編集
@@ -49,6 +57,11 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
     </StyledMenu>
   );
 };
+
+const StyledNoLikedIcon = styled.img`
+  width: 14px;
+  padding-right: 10px;
+`;
 
 const StyledMenu = styled.ul`
   position: absolute;

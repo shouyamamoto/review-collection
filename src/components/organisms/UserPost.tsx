@@ -16,7 +16,7 @@ type Props = {
   avatar: string;
 };
 
-type POST = {
+type PostType = {
   id: string;
   title: string;
   body: string;
@@ -26,7 +26,7 @@ type POST = {
 
 export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [userPosts, setUserPosts] = useState<POST[]>([
+  const [userPosts, setUserPosts] = useState<PostType[]>([
     {
       id: "",
       timestamp: null,
