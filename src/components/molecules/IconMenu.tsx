@@ -4,6 +4,7 @@ import { FiLogOut, FiUserCheck } from "react-icons/fi";
 import { BsPencil } from "react-icons/bs";
 import { GrNotes } from "react-icons/gr";
 import styled from "styled-components";
+
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
@@ -49,6 +50,11 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
     </StyledMenu>
   );
 };
+
+const StyledNoLikedIcon = styled.img`
+  width: 14px;
+  padding-right: 10px;
+`;
 
 const StyledMenu = styled.ul`
   position: absolute;

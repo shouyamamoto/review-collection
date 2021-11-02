@@ -12,27 +12,35 @@ import { selectUser } from "../../features/users/userSlice";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
-type POST = {
+type PostType = {
   uid: string;
   postId: string;
   title: string;
   body: string;
   timestamp: any;
+  likedUsers: string[];
+};
+
+type UserType = {
+  uid: string;
+  username: string;
+  avatar: string;
 };
 
 export const Home: VFC = memo(() => {
   const user = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState<POST[]>([
+  const [posts, setPosts] = useState<PostType[]>([
     {
       uid: "",
       postId: "",
       timestamp: null,
       title: "",
       body: "",
+      likedUsers: [],
     },
   ]);
-  const [users, setUsers] = useState([
+  const [users, setUsers] = useState<UserType[]>([
     {
       uid: "",
       username: "",
@@ -55,6 +63,7 @@ export const Home: VFC = memo(() => {
               timestamp: doc.data().timestamp.toDate(),
               title: doc.data().title,
               body: doc.data().body,
+              likedUsers: doc.data().likedUsers,
             }))
           );
         });
@@ -111,6 +120,7 @@ export const Home: VFC = memo(() => {
                 title={post.title}
                 body={post.body}
                 timestamp={post.timestamp}
+                likedUsers={post.likedUsers}
               />
             ))}
           </StyledHomePostsArea>

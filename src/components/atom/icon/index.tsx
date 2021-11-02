@@ -2,7 +2,7 @@ import { VFC } from "react";
 import styled from "styled-components";
 
 type Props = {
-  src: string;
+  src?: string;
   alt?: string;
   width?: string;
   height?: string;

@@ -11,11 +11,12 @@ import { DEVICE } from "../../Themes/Device";
 type Props = {
   postId: string;
   uid: string;
-  username: string;
-  avatar: string;
+  username: string | undefined;
+  avatar: string | undefined;
   title: string;
   body: string;
   timestamp: any;
+  likedUsers: string[];
 };
 
 export const Article: VFC<Props> = ({
@@ -25,6 +26,7 @@ export const Article: VFC<Props> = ({
   avatar,
   title,
   timestamp,
+  likedUsers,
 }) => {
   return (
     <StyledArticle>
@@ -34,12 +36,13 @@ export const Article: VFC<Props> = ({
 
       <StyledIconWithName>
         <Link to={`/${uid}`}>
-          <Icon src={avatar} alt={username} width="24" height="24" />
+          <Icon src={avatar} alt={username} width="20" height="20" />
         </Link>
         <Link to={`/${uid}`}>
           <NameWithTimestamp
             username={username}
             timestamp={timestamp && format(timestamp, "yyyy-MM-dd")}
+            likedUsers={likedUsers}
           />
         </Link>
       </StyledIconWithName>
@@ -65,7 +68,7 @@ const StyledArticle = styled.article`
 const StyledIconWithName = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: calc(100% - 20px);
   min-width: 0;
   max-width: 90%;

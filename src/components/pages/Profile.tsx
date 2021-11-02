@@ -1,22 +1,41 @@
 import { useState, useEffect, VFC } from "react";
 import styled from "styled-components";
 import { Toaster } from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Icon } from "../atom/icon/index";
 import { index as Title } from "../atom/title/index";
 import { UserPost } from "../organisms/UserPost";
 import { ProfileArea } from "../organisms/ProfileArea";
+import { LikedPosts } from "../organisms/LikedPosts";
 import { Page404 } from "../pages/Page404";
 import { db } from "../../libs/firebase";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
+type UserType = {
+  uid: string;
+  username: string;
+  avatar: string;
+  comment: string;
+  twitterName: string;
+  githubName: string;
+  blogUrl: string;
+  likedPosts: string[];
+};
+
+type tabProps = {
+  isActive: boolean;
+};
+
 export const Profile: VFC = () => {
   const { userId } = useParams<{ userId: string }>();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({
+  const [currentNum, setCurrentNum] = useState(0);
+  const [user, setUser] = useState<UserType>({
     uid: "",
     username: "",
     avatar: "",
@@ -24,6 +43,7 @@ export const Profile: VFC = () => {
     twitterName: "",
     githubName: "",
     blogUrl: "",
+    likedPosts: [],
   });
 
   useEffect(() => {
@@ -43,6 +63,7 @@ export const Profile: VFC = () => {
                 twitterName: doc.data().twitterName,
                 githubName: doc.data().githubName,
                 blogUrl: doc.data().blogUrl,
+                likedPosts: doc.data().likedPosts,
               });
             });
             setIsLoading(false);
@@ -53,6 +74,21 @@ export const Profile: VFC = () => {
     };
     getUser();
   }, [userId]);
+
+  const tabList = [
+    {
+      name: "Articles",
+      to: `/${user.uid}`,
+    },
+    {
+      name: "Likes",
+      to: `/${user.uid}/?contents=likes`,
+    },
+  ];
+
+  const changeActive = (index: number) => {
+    setCurrentNum(index);
+  };
 
   if (isLoading) {
     return (
@@ -81,14 +117,35 @@ export const Profile: VFC = () => {
         </StyledProfileInner>
       </StyledProfile>
 
+      <StyledProfileNav>
+        {tabList.map((tab, index) => (
+          <StyledLink
+            to={tab.to}
+            isActive={currentNum === index}
+            onClick={() => changeActive(index)}
+          >
+            {tab.name}
+          </StyledLink>
+        ))}
+      </StyledProfileNav>
+
       <StyledPosts>
         <StyledPostInner>
-          <Title headline="h2">Articles</Title>
-          <UserPost
-            uid={user.uid}
-            username={user.username}
-            avatar={user.avatar}
-          />
+          {query.get("contents") === "likes" ? (
+            <>
+              <Title headline="h2">Likes</Title>
+              <LikedPosts likedPosts={user.likedPosts} />
+            </>
+          ) : (
+            <>
+              <Title headline="h2">Articles</Title>
+              <UserPost
+                uid={user.uid}
+                username={user.username}
+                avatar={user.avatar}
+              />
+            </>
+          )}
         </StyledPostInner>
       </StyledPosts>
 
@@ -96,6 +153,26 @@ export const Profile: VFC = () => {
     </main>
   );
 };
+
+const StyledProfileNav = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  gap: 24px;
+
+  @media ${DEVICE.tabletL} {
+    max-width: 1024px;
+    width: 80%;
+  }
+`;
+
+const StyledLink = styled(Link)<tabProps>`
+  font-weight: bold;
+  padding-bottom: 4px;
+  color: ${(props) => (props.isActive ? `${COLOR.BLACK}` : `${COLOR.GRAY}`)};
+  border-bottom: ${(props) =>
+    props.isActive ? `2px solid ${COLOR.BLACK}` : "none"};
+`;
 
 const StyledProfile = styled.div`
   display: flex;

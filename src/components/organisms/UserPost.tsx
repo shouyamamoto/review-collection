@@ -16,21 +16,23 @@ type Props = {
   avatar: string;
 };
 
-type POST = {
+type PostType = {
   id: string;
   title: string;
   body: string;
   timestamp: any;
+  likedUsers: string[];
 };
 
 export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [userPosts, setUserPosts] = useState<POST[]>([
+  const [userPosts, setUserPosts] = useState<PostType[]>([
     {
       id: "",
       timestamp: null,
       title: "",
       body: "",
+      likedUsers: [],
     },
   ]);
 
@@ -47,6 +49,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
             timestamp: doc.data().timestamp.toDate(),
             title: doc.data().title,
             body: doc.data().body,
+            likedUsers: doc.data().likedUsers,
           }))
         );
         setIsLoading(false);
@@ -72,6 +75,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
               title={post.title}
               body={post.body}
               timestamp={post.timestamp}
+              likedUsers={post.likedUsers}
             />
           ))}
         </StyledUserPost>

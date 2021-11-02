@@ -21,6 +21,7 @@ type Props = {
     postId: string;
     title: string;
     text: string;
+    likedUsers?: string[];
   };
 };
 
@@ -45,7 +46,6 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
         db.collection("posts")
           .doc(editPostData.postId)
           .update({
-            uid: user.uid,
             title: title,
             body: text,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -64,6 +64,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
             body: text,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             status: "release",
+            likedUsers: [],
           })
           .then(() => {
             toastHandler("success", "記事を投稿しました");
@@ -82,11 +83,11 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
       db.collection("posts")
         .doc(editPostData.postId)
         .update({
-          uid: user.uid,
           title: title,
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           status: "draft",
+          likedUsers: editPostData.likedUsers,
         })
         .then(() => {
           toastHandler("success", "下書きに追加しました");
