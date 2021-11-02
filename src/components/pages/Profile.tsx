@@ -1,7 +1,7 @@
 import { useState, useEffect, VFC } from "react";
 import styled from "styled-components";
 import { Toaster } from "react-hot-toast";
-import { useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Icon } from "../atom/icon/index";
@@ -25,11 +25,16 @@ type UserType = {
   likedPosts: string[];
 };
 
+type tabProps = {
+  isActive: boolean;
+};
+
 export const Profile: VFC = () => {
   const { userId } = useParams<{ userId: string }>();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentNum, setCurrentNum] = useState(0);
   const [user, setUser] = useState<UserType>({
     uid: "",
     username: "",
@@ -70,6 +75,21 @@ export const Profile: VFC = () => {
     getUser();
   }, [userId]);
 
+  const tabList = [
+    {
+      name: "Articles",
+      to: `/${user.uid}`,
+    },
+    {
+      name: "Likes",
+      to: `/${user.uid}/?contents=likes`,
+    },
+  ];
+
+  const changeActive = (index: number) => {
+    setCurrentNum(index);
+  };
+
   if (isLoading) {
     return (
       <StyledProfile>
@@ -97,6 +117,18 @@ export const Profile: VFC = () => {
         </StyledProfileInner>
       </StyledProfile>
 
+      <StyledProfileNav>
+        {tabList.map((tab, index) => (
+          <StyledLink
+            to={tab.to}
+            isActive={currentNum === index}
+            onClick={() => changeActive(index)}
+          >
+            {tab.name}
+          </StyledLink>
+        ))}
+      </StyledProfileNav>
+
       <StyledPosts>
         <StyledPostInner>
           {query.get("contents") === "likes" ? (
@@ -121,6 +153,26 @@ export const Profile: VFC = () => {
     </main>
   );
 };
+
+const StyledProfileNav = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  gap: 24px;
+
+  @media ${DEVICE.tabletL} {
+    max-width: 1024px;
+    width: 80%;
+  }
+`;
+
+const StyledLink = styled(Link)<tabProps>`
+  font-weight: bold;
+  padding-bottom: 4px;
+  color: ${(props) => (props.isActive ? `${COLOR.BLACK}` : `${COLOR.GRAY}`)};
+  border-bottom: ${(props) =>
+    props.isActive ? `2px solid ${COLOR.BLACK}` : "none"};
+`;
 
 const StyledProfile = styled.div`
   display: flex;

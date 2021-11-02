@@ -3,12 +3,10 @@ import styled from "styled-components";
 import { format } from "date-fns";
 import { COLOR } from "../../Themes/Color";
 
-import { index as Typography } from "../atom/typography/index";
 import { index as Icon } from "../atom/icon";
 import { index as Link } from "../atom/link";
 import { NameWithTimestamp } from "./NameWithTimestamp";
 import { DEVICE } from "../../Themes/Device";
-import LikedIcon from "../../images/liked.png";
 
 type Props = {
   postId: string;
@@ -38,38 +36,19 @@ export const Article: VFC<Props> = ({
 
       <StyledIconWithName>
         <Link to={`/${uid}`}>
-          <Icon src={avatar} alt={username} width="24" height="24" />
+          <Icon src={avatar} alt={username} width="20" height="20" />
         </Link>
         <Link to={`/${uid}`}>
           <NameWithTimestamp
             username={username}
             timestamp={timestamp && format(timestamp, "yyyy-MM-dd")}
+            likedUsers={likedUsers}
           />
         </Link>
-        {likedUsers.length > 0 && (
-          <StyledLiked>
-            <StyledLikeButton src={LikedIcon} />
-            <Typography size="12px">{likedUsers.length}</Typography>
-          </StyledLiked>
-        )}
       </StyledIconWithName>
     </StyledArticle>
   );
 };
-
-const StyledLiked = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-`;
-
-const StyledLikeButton = styled.img`
-  width: 16px;
-  height: 16px;
-  max-width: 16px;
-  max-height: 16px;
-  margin-right: 6px;
-`;
 
 const StyledArticle = styled.article`
   display: flex;
@@ -89,7 +68,7 @@ const StyledArticle = styled.article`
 const StyledIconWithName = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: calc(100% - 20px);
   min-width: 0;
   max-width: 90%;

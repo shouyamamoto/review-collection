@@ -1,6 +1,7 @@
 import { VFC, useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { index as LoadingIcon } from "../atom/loading/index";
 import { Article } from "../molecules/Article";
 import { db } from "../../libs/firebase";
 import { DEVICE } from "../../Themes/Device";
@@ -25,6 +26,7 @@ type UserType = {
 };
 
 export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<PostType[]>([
     {
       id: "",
@@ -62,9 +64,7 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
           ]);
         });
     });
-  }, []);
 
-  useEffect(() => {
     const getUsers = async () => {
       await db
         .collection("users")
@@ -80,6 +80,7 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
         });
     };
     getUsers();
+    setIsLoading(false);
   }, []);
 
   const extraUser = (
@@ -88,8 +89,12 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
     return users.find((user) => postUid === user.uid);
   };
 
+  if (isLoading) {
+    return <LoadingIcon width="50" height="50" />;
+  }
+
   return (
-    <StyledUserPost>
+    <StyledLikedPost>
       {posts.map(
         (post) =>
           post.id !== "" && (
@@ -106,11 +111,11 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
             />
           )
       )}
-    </StyledUserPost>
+    </StyledLikedPost>
   );
 };
 
-const StyledUserPost = styled.div`
+const StyledLikedPost = styled.div`
   width: 100%;
   margin: 0 auto;
   display: grid;

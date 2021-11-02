@@ -7,7 +7,6 @@ import styled from "styled-components";
 
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
-import LikeIcon from "../../images/liked.png";
 
 type Props = {
   user: {
@@ -36,12 +35,6 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
         <StyledProfileLink to={`/${user.uid}/dashboard`}>
           <StyledGrNotes />
           記事の管理
-        </StyledProfileLink>
-      </StyledMenuItem>
-      <StyledMenuItem onClick={onClick}>
-        <StyledProfileLink to={`/${user.uid}/?contents=likes`}>
-          <StyledNoLikedIcon src={LikeIcon} />
-          いいねした記事一覧
         </StyledProfileLink>
       </StyledMenuItem>
       <StyledMenuItem onClick={onClick}>
