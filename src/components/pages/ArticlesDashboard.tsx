@@ -2,6 +2,7 @@ import { VFC, useState, useEffect } from "react";
 import { useParams, useHistory, Redirect } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
+import firebase from "firebase";
 
 import { index as Link } from "../atom/link";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
@@ -14,12 +15,22 @@ import NonePosts from "../../images/no-post.svg";
 import { TAB_LIST } from "../../Themes/TabLists";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
+type PostType = {
+  id: string;
+  uid: string;
+  title: string;
+  body: string;
+  timestamp: any;
+  status: string;
+  likedUsers: string[];
+};
+
 export const ArticlesDashboard: VFC = () => {
   const { currentUser } = useCurrentUser();
   const { userId } = useParams<{ userId: string }>();
   const history = useHistory();
   const [currentNum, setCurrentNum] = useState(0);
-  const [posts, setPosts] = useState([
+  const [posts, setPosts] = useState<PostType[]>([
     {
       id: "",
       uid: "",
@@ -27,6 +38,7 @@ export const ArticlesDashboard: VFC = () => {
       body: "",
       timestamp: "",
       status: "",
+      likedUsers: [],
     },
   ]);
 
@@ -45,6 +57,7 @@ export const ArticlesDashboard: VFC = () => {
               body: doc.data().body,
               status: doc.data().status,
               timestamp: doc.data().timestamp,
+              likedUsers: doc.data().likedUsers,
             }))
           );
         });
@@ -57,7 +70,33 @@ export const ArticlesDashboard: VFC = () => {
   const onClickDelete = (postId: string) => {
     const result = window.confirm("本当に記事を削除しますか？");
     if (result === true) {
-      db.collection("posts").doc(postId).delete();
+      const postRef = db.collection("posts").doc(postId);
+      const likedUsers = postRef.get().then((doc) => {
+        if (doc.exists) {
+          return doc.data()!.likedUsers;
+        }
+      });
+      likedUsers.then(async (userIds) => {
+        if (userIds.length === 0) return;
+        userIds.forEach((userId: string) => {
+          db.collection("users")
+            .where("uid", "==", userId)
+            .get()
+            .then((snapshot) => {
+              snapshot.forEach((doc) => {
+                db.collection("users")
+                  .doc(doc.id)
+                  .update({
+                    likedPosts:
+                      firebase.firestore.FieldValue.arrayRemove(postId),
+                  });
+              });
+            })
+            .then(() => {
+              db.collection("posts").doc(postId).delete();
+            });
+        });
+      });
       toastHandler("success", "削除しました");
     }
   };
