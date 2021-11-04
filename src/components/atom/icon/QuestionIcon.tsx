@@ -5,14 +5,22 @@ import { BsQuestion } from "react-icons/bs";
 import { COLOR } from "../../../Themes/Color";
 import { DEVICE } from "../../../Themes/Device";
 
-export const QuestionIcon: VFC = () => {
+type Props = {
+  onMouseEnter: (target: string) => void;
+  isShow: boolean;
+};
+
+export const QuestionIcon: VFC<Props> = ({ isShow, onMouseEnter }) => {
   return (
     <StyledAnchor
       href="https://github.com/shouyamamoto/review-collection/#review-collection"
       target="_blank"
       rel="noreferrer"
+      onMouseEnter={() => onMouseEnter("writing")}
+      onMouseLeave={() => onMouseEnter("writing")}
     >
       <StyledBsQuestion />
+      {isShow && <StyledLinkText>書き方</StyledLinkText>}
     </StyledAnchor>
   );
 };
@@ -36,5 +44,21 @@ const StyledBsQuestion = styled(BsQuestion)`
 `;
 
 const StyledAnchor = styled.a`
+  position: relative;
   line-height: 1;
+`;
+
+const StyledLinkText = styled.p`
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: ${COLOR.GRAY};
+  color: ${COLOR.WHITE};
+  font-size: 12px;
+  text-align: center;
+  border-radius: 4px;
+  padding: 2px 20px;
+  width: 100%;
+  z-index: 1;
 `;

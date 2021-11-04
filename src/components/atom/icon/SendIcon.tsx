@@ -6,15 +6,34 @@ import { COLOR } from "../../../Themes/Color";
 type Props = {
   onClick: () => void;
   disabled: boolean;
+  onMouseEnter: (target: string) => void;
+  isShow: boolean;
 };
 
 type IconProps = {
   disabled: boolean;
 };
 
-export const SendIcon: VFC<Props> = ({ onClick, disabled }) => {
-  return <StyledSendIcon onClick={onClick} disabled={disabled} />;
+export const SendIcon: VFC<Props> = ({
+  onClick,
+  disabled,
+  isShow,
+  onMouseEnter,
+}) => {
+  return (
+    <StyledIconArea
+      onMouseEnter={() => onMouseEnter("send")}
+      onMouseLeave={() => onMouseEnter("send")}
+    >
+      <StyledSendIcon onClick={onClick} disabled={disabled} />
+      {isShow && <StyledLinkText>投稿する</StyledLinkText>}
+    </StyledIconArea>
+  );
 };
+
+const StyledIconArea = styled.div`
+  position: relative;
+`;
 
 const StyledSendIcon = styled(BiSend)<IconProps>`
   width: 32px;
@@ -31,4 +50,19 @@ const StyledSendIcon = styled(BiSend)<IconProps>`
   &:hover {
     cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
+`;
+
+const StyledLinkText = styled.p`
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: ${COLOR.GRAY};
+  color: ${COLOR.WHITE};
+  font-size: 12px;
+  text-align: center;
+  border-radius: 4px;
+  padding: 2px 20px;
+  width: 100%;
+  z-index: 1;
 `;
