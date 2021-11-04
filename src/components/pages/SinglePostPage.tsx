@@ -29,6 +29,7 @@ type PostType = {
   body: string;
   timestamp: any;
   likedUsers: string[];
+  labels: string[];
 };
 
 type AuthorType = {
@@ -54,6 +55,7 @@ export const SinglePostPage: VFC = () => {
     body: "",
     timestamp: "",
     likedUsers: [],
+    labels: [],
   });
   const [author, setAuthor] = useState<AuthorType>({
     uid: "",
@@ -90,6 +92,7 @@ export const SinglePostPage: VFC = () => {
             body: doc?.data()?.body,
             timestamp: doc?.data()?.timestamp,
             likedUsers: doc?.data()?.likedUsers,
+            labels: doc?.data()?.labels,
           });
         } else {
           setIsLoading(false);
@@ -202,12 +205,14 @@ export const SinglePostPage: VFC = () => {
         </StyledTitleInner>
       </StyledTitleWrap>
       <StyledSinglePostPageInner>
-        <StyledReactMarkdown
-          remarkPlugins={[gfm]}
-          children={post.body}
-          components={{ code: CodeBlock }}
-          className="preview"
-        />
+        <StyledMarkdownContainer>
+          <StyledReactMarkdown
+            remarkPlugins={[gfm]}
+            children={post.body}
+            components={{ code: CodeBlock }}
+            className="preview"
+          />
+        </StyledMarkdownContainer>
         <Sidebar
           currentUserId={currentUser.uid}
           postId={postId}
@@ -220,6 +225,7 @@ export const SinglePostPage: VFC = () => {
           blogUrl={author.blogUrl}
           comment={author.comment}
           likedPosts={currentUser.likedPosts}
+          labels={post.labels}
           onClickLike={onClickLike}
           countLikes={count}
           onMouseEnter={onMouseEnter}
@@ -259,6 +265,14 @@ const StyledSinglePostPageInner = styled.div`
   }
 `;
 
+const StyledMarkdownContainer = styled.div`
+  padding: 0 14px;
+
+  @media ${DEVICE.tabletL} {
+    padding: 0;
+  }
+`;
+
 const StyledReactMarkdown = styled(ReactMarkdown)`
   padding: 60px 14px;
   border-bottom: 1px solid ${COLOR.BACKGROUND};
@@ -281,6 +295,7 @@ const StyledTitleInner = styled.div`
   @media ${DEVICE.tabletL} {
     padding: 40px 0;
     width: 95%;
+    max-width: 900px;
     margin: 0 auto;
     text-align: left;
   }

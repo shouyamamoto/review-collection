@@ -6,13 +6,21 @@ import { PostArea } from "../organisms/PostArea";
 import { db } from "../../libs/firebase";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
+type EditPostType = {
+  postId: string;
+  title: string;
+  text: string;
+  labels: string[];
+};
+
 export const EditPost: VFC = () => {
   const { currentUser } = useCurrentUser();
   const { userId, postId } = useParams<{ userId: string; postId: string }>();
-  const [editPostData, setEditPostData] = useState({
+  const [editPostData, setEditPostData] = useState<EditPostType>({
     postId: postId,
     title: "",
     text: "",
+    labels: [],
   });
 
   useEffect(() => {
@@ -24,6 +32,7 @@ export const EditPost: VFC = () => {
             postId: postId,
             title: doc!.data()!.title,
             text: doc!.data()!.body,
+            labels: doc!.data()!.labels,
           });
         }
       });

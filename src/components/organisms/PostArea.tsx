@@ -13,6 +13,7 @@ import { PostInputArea } from "../molecules/PostInputArea";
 import { toastHandler } from "../../utils/toast";
 import { uniqueFileName } from "../../utils/uniqueFileName";
 import { resizeFile } from "../../utils/resizeFile";
+import { checkLabelTextLength } from "../../Themes/Validations";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
@@ -22,6 +23,7 @@ type Props = {
     title: string;
     text: string;
     likedUsers?: string[];
+    labels: string[];
   };
 };
 
@@ -32,6 +34,8 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [isPreview, setIsPreview] = useState(false);
+  const [addLabel, setAddLabel] = useState("");
+  const [labels, setLabels] = useState<string[]>([]);
   const [isShow, setIsShow] = useState({
     preview: false,
     image: false,
@@ -44,6 +48,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
     if (editPostData) {
       setTitle(editPostData.title);
       setText(editPostData.text);
+      setLabels(editPostData.labels);
     }
   }, [editPostData]);
 
@@ -57,6 +62,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
             body: text,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             status: "release",
+            labels: labels,
           })
           .then(() => {
             toastHandler("success", "記事を更新しました");
@@ -72,6 +78,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             status: "release",
             likedUsers: [],
+            labels: labels,
           })
           .then(() => {
             toastHandler("success", "記事を投稿しました");
@@ -82,7 +89,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           });
       }
     },
-    [history, user, editPostData?.postId]
+    [history, user, editPostData?.postId, labels]
   );
 
   const onClickSave = () => {
@@ -94,7 +101,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           status: "draft",
-          likedUsers: editPostData.likedUsers,
+          labels: labels,
         })
         .then(() => {
           toastHandler("success", "下書きに追加しました");
@@ -108,6 +115,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           status: "draft",
+          labels: labels,
         })
         .then(() => {
           toastHandler("success", "下書きに追加しました");
@@ -156,6 +164,19 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
     }
   };
 
+  const addToLabel = () => {
+    setAddLabel("");
+    setLabels((prevLabels) => {
+      return [...prevLabels, addLabel];
+    });
+  };
+
+  const removeLabel = (targetLabel: string) => {
+    setLabels((prevLabels) => {
+      return prevLabels.filter((label) => label !== targetLabel);
+    });
+  };
+
   const onMouseEnter = (target: string) => {
     setIsShow({
       ...isShow,
@@ -180,6 +201,15 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           onChangeText={(e) => {
             setText(e.target.value);
           }}
+          onChangeLabel={(e) => {
+            const newLabel = e.target.value;
+            if (!checkLabelTextLength(newLabel)) return;
+            setAddLabel(e.target.value);
+          }}
+          addToLabel={addToLabel}
+          removeLabel={removeLabel}
+          addLabel={addLabel}
+          labels={labels}
         />
         <PostButtons
           title={title}

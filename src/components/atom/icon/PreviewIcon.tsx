@@ -56,6 +56,6 @@ const StyledBiRightArrowCircle = styled(BiRightArrowCircle)`
   }
 
   @media ${DEVICE.laptopL} {
-    visibility: hidden;
+    display: none;
   }
 `;

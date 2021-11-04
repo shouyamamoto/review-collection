@@ -22,6 +22,10 @@ export const VALIDATIONS = {
     minLength: 0,
     errorMessage: "※記事の内容を入力してください。",
   },
+  labelSpecifications: {
+    maxTextLength: 12,
+    maxLength: 5,
+  },
 };
 
 export const isPostTitleValid = (title: string) => {
@@ -67,4 +71,12 @@ export const isValidProfile = (
     isCommentValid(comment) &&
     isBlogUrlValid(blogUrl)
   );
+};
+
+export const checkLabelLength = (labels: string[]) => {
+  return labels.length < VALIDATIONS.labelSpecifications.maxLength;
+};
+
+export const checkLabelTextLength = (label: string) => {
+  return label.length <= VALIDATIONS.labelSpecifications.maxTextLength;
 };
