@@ -46,24 +46,27 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
   ]);
 
   useEffect(() => {
-    likedPosts.forEach((postId) => {
-      db.collection("posts")
-        .doc(postId)
-        .get()
-        .then((doc) => {
-          setPosts((prevPosts) => [
-            ...prevPosts,
-            {
-              id: doc.id,
-              uid: doc.data()!.uid,
-              title: doc.data()!.title,
-              body: doc.data()!.body,
-              timestamp: doc.data()!.timestamp.toDate(),
-              likedUsers: doc.data()!.likedUsers,
-            },
-          ]);
-        });
-    });
+    likedPosts.length !== 0 &&
+      likedPosts.forEach((postId) => {
+        db.collection("posts")
+          .doc(postId)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              setPosts((prevPosts) => [
+                ...prevPosts,
+                {
+                  id: doc.id,
+                  uid: doc.data()!.uid,
+                  title: doc.data()!.title,
+                  body: doc.data()!.body,
+                  timestamp: doc.data()!.timestamp.toDate(),
+                  likedUsers: doc.data()!.likedUsers,
+                },
+              ]);
+            }
+          });
+      });
 
     const getUsers = async () => {
       await db
