@@ -17,17 +17,20 @@ type Props = {
   onClick?: () => void;
   onClose?: () => void;
   signOut?: () => void;
+  pathname?: string;
 };
 
 export const IconWithPostButton: VFC<Props> = memo(
-  ({ user, isOpenMenu, onClick, onClose, signOut }) => {
+  ({ user, isOpenMenu, onClick, onClose, signOut, pathname }) => {
     return (
       <StyledIconArea>
         <Icon src={user.avatar} width="50" height="50" onClick={onClick} />
         <MediaQuery query={`${DEVICE.tabletL}`}>
-          <Link to={`/articles/new`}>
-            <PrimaryButton onClick={onClose}>Add Post</PrimaryButton>
-          </Link>
+          {pathname !== "/articles/new" && (
+            <Link to={`/articles/new`}>
+              <PrimaryButton onClick={onClose}>Add Post</PrimaryButton>
+            </Link>
+          )}
         </MediaQuery>
         {isOpenMenu && (
           <IconMenu user={user} onClick={onClick} signOut={signOut} />

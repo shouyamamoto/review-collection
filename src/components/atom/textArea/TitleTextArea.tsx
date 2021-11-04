@@ -1,6 +1,8 @@
 import { VFC } from "react";
 import styled from "styled-components";
+
 import { COLOR } from "../../../Themes/Color";
+import { DEVICE } from "../../../Themes/Device";
 import { index } from "./index";
 
 type Props = {
@@ -24,6 +26,7 @@ export const TitleTextArea: VFC<Props> = ({
 };
 
 const StyledTitle = styled(index)`
+  width: 100%;
   line-height: 1.8;
   font-weight: bold;
   margin-bottom: 20px;
@@ -32,4 +35,8 @@ const StyledTitle = styled(index)`
   font-size: 20px;
   height: 40px;
   border: none;
+
+  @media ${DEVICE.laptopL} {
+    max-width: 80%;
+  }
 `;

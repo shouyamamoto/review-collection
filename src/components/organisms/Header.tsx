@@ -1,7 +1,7 @@
 import { VFC, useState, useCallback, memo } from "react";
 import { selectUser } from "../../features/users/userSlice";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { auth } from "../../libs/firebase";
 import { Auth } from "./Auth";
@@ -17,6 +17,7 @@ export const Header: VFC = memo(() => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const history = useHistory();
+  const location = useLocation();
   const user = useSelector(selectUser);
 
   const signOut = useCallback(async () => {
@@ -43,6 +44,7 @@ export const Header: VFC = memo(() => {
               onClick={onClickMenuHandler}
               onClose={onClickCloseMenu}
               signOut={signOut}
+              pathname={location.pathname}
             />
           ) : (
             <PrimaryButton onClick={onClickModalHandler}>Sign In</PrimaryButton>

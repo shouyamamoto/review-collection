@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { TwitterShareButton, TwitterIcon } from "react-share";
 
 import { index as Typography } from "../atom/typography/index";
+import { SidebarLabels } from "../molecules/SidebarLabels";
 import { SidebarUserProfile } from "../molecules/SidebarUserProfile";
 import { DEVICE } from "../../Themes/Device";
 import noLike from "../../images/no-like.png";
@@ -21,6 +22,7 @@ type Props = {
   blogUrl: string;
   comment: string;
   likedPosts: string[];
+  labels: string[];
   onClickLike: () => void;
   countLikes: number;
   onMouseEnter: (target: string) => void;
@@ -43,6 +45,7 @@ export const Sidebar: VFC<Props> = ({
   blogUrl,
   comment,
   likedPosts,
+  labels,
   onClickLike,
   countLikes,
   onMouseEnter,
@@ -50,6 +53,7 @@ export const Sidebar: VFC<Props> = ({
 }) => {
   return (
     <StyledSidebar>
+      <SidebarLabels labels={labels} />
       <SidebarUserProfile
         uid={uid}
         avatar={avatar}
