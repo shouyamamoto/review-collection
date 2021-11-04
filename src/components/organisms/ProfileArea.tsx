@@ -11,6 +11,12 @@ type Props = {
   githubName: string;
   twitterName: string;
   blogUrl: string;
+  onMouseEnter: (target: string) => void;
+  isShow: {
+    github: boolean;
+    twitter: boolean;
+    blogUrl: boolean;
+  };
 };
 
 export const ProfileArea: VFC<Props> = ({
@@ -19,6 +25,8 @@ export const ProfileArea: VFC<Props> = ({
   githubName,
   twitterName,
   blogUrl,
+  onMouseEnter,
+  isShow,
 }) => {
   return (
     <StyledProfileDesc>
@@ -30,6 +38,8 @@ export const ProfileArea: VFC<Props> = ({
         githubName={githubName}
         twitterName={twitterName}
         blogUrl={blogUrl}
+        onMouseEnter={onMouseEnter}
+        isShow={isShow}
       />
     </StyledProfileDesc>
   );

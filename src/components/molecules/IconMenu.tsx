@@ -51,11 +51,6 @@ export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
   );
 };
 
-const StyledNoLikedIcon = styled.img`
-  width: 14px;
-  padding-right: 10px;
-`;
-
 const StyledMenu = styled.ul`
   position: absolute;
   top: 60px;

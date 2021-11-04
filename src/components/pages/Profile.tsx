@@ -45,6 +45,11 @@ export const Profile: VFC = () => {
     blogUrl: "",
     likedPosts: [],
   });
+  const [isShow, setIsShow] = useState({
+    github: false,
+    twitter: false,
+    blogUrl: false,
+  });
 
   useEffect(() => {
     const getUser = async () => {
@@ -90,6 +95,15 @@ export const Profile: VFC = () => {
     setCurrentNum(index);
   };
 
+  const onMouseEnter = (target: string) => {
+    setIsShow({
+      ...isShow,
+      github: target === "github" && !isShow.github,
+      twitter: target === "twitter" && !isShow.twitter,
+      blogUrl: target === "blogUrl" && !isShow.blogUrl,
+    });
+  };
+
   if (isLoading) {
     return (
       <StyledProfile>
@@ -113,6 +127,8 @@ export const Profile: VFC = () => {
             githubName={user.githubName}
             twitterName={user.twitterName}
             blogUrl={user.blogUrl}
+            onMouseEnter={onMouseEnter}
+            isShow={isShow}
           />
         </StyledProfileInner>
       </StyledProfile>

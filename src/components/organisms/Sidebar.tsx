@@ -23,6 +23,12 @@ type Props = {
   likedPosts: string[];
   onClickLike: () => void;
   countLikes: number;
+  onMouseEnter: (target: string) => void;
+  isShow: {
+    github: boolean;
+    twitter: boolean;
+    blogUrl: boolean;
+  };
 };
 
 export const Sidebar: VFC<Props> = ({
@@ -39,6 +45,8 @@ export const Sidebar: VFC<Props> = ({
   likedPosts,
   onClickLike,
   countLikes,
+  onMouseEnter,
+  isShow,
 }) => {
   return (
     <StyledSidebar>
@@ -50,6 +58,8 @@ export const Sidebar: VFC<Props> = ({
         twitterName={twitterName}
         blogUrl={blogUrl}
         comment={comment}
+        onMouseEnter={onMouseEnter}
+        isShow={isShow}
       />
       {currentUserId !== "" && (
         <StyledSidebarButtons>
