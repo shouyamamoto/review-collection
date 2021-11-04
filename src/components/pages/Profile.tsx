@@ -2,7 +2,9 @@ import { useState, useEffect, VFC } from "react";
 import styled from "styled-components";
 import { Toaster } from "react-hot-toast";
 import { Link, useParams, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+import { selectUser } from "../../features/users/userSlice";
 import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Icon } from "../atom/icon/index";
 import { index as Title } from "../atom/title/index";
@@ -30,6 +32,7 @@ type tabProps = {
 };
 
 export const Profile: VFC = () => {
+  const currentUser = useSelector(selectUser);
   const { userId } = useParams<{ userId: string }>();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
@@ -140,7 +143,8 @@ export const Profile: VFC = () => {
             isActive={currentNum === index}
             onClick={() => changeActive(index)}
           >
-            {tab.name}
+            {tab.name === "Articles" && tab.name}
+            {tab.name === "Likes" && currentUser.uid === user.uid && tab.name}
           </StyledLink>
         ))}
       </StyledProfileNav>
