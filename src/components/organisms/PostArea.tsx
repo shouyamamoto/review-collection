@@ -32,6 +32,13 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [isPreview, setIsPreview] = useState(false);
+  const [isShow, setIsShow] = useState({
+    preview: false,
+    image: false,
+    draft: false,
+    writing: false,
+    send: false,
+  });
 
   useLayoutEffect(() => {
     if (editPostData) {
@@ -149,6 +156,17 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
     }
   };
 
+  const onMouseEnter = (target: string) => {
+    setIsShow({
+      ...isShow,
+      preview: target === "preview" && !isShow.preview,
+      image: target === "image" && !isShow.image,
+      draft: target === "draft" && !isShow.draft,
+      writing: target === "writing" && !isShow.writing,
+      send: target === "send" && !isShow.send,
+    });
+  };
+
   return (
     <StyledPostArea>
       <StyledInner>
@@ -170,6 +188,8 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           sendPost={sendPost}
           onClickAddImage={onClickAddImage}
           onClickSave={onClickSave}
+          onMouseEnter={onMouseEnter}
+          isShow={isShow}
         />
       </StyledInner>
       <StyledUploadIcon>

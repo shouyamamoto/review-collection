@@ -16,6 +16,14 @@ type Props = {
   onClickSave: () => void;
   onClickAddImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   sendPost: (title: string, text: string) => Promise<void>;
+  onMouseEnter: (target: string) => void;
+  isShow: {
+    preview: boolean;
+    image: boolean;
+    draft: boolean;
+    writing: boolean;
+    send: boolean;
+  };
 };
 
 export const PostButtons: VFC<Props> = ({
@@ -25,16 +33,32 @@ export const PostButtons: VFC<Props> = ({
   onClickSave,
   onClickAddImage,
   sendPost,
+  onMouseEnter,
+  isShow,
 }) => {
   return (
     <StyledButtonWrap>
-      <PreviewIcon onClick={onClickPreview} />
-      <AddImageIcon onChange={onClickAddImage} />
-      <DraftIcon onClick={onClickSave} />
-      <QuestionIcon />
+      <PreviewIcon
+        onClick={onClickPreview}
+        isShow={isShow.preview}
+        onMouseEnter={onMouseEnter}
+      />
+      <AddImageIcon
+        onChange={onClickAddImage}
+        isShow={isShow.image}
+        onMouseEnter={onMouseEnter}
+      />
+      <DraftIcon
+        onClick={onClickSave}
+        isShow={isShow.draft}
+        onMouseEnter={onMouseEnter}
+      />
+      <QuestionIcon isShow={isShow.writing} onMouseEnter={onMouseEnter} />
       <SendIcon
         onClick={() => sendPost(title, text)}
         disabled={!isValidPost(title, text)}
+        isShow={isShow.send}
+        onMouseEnter={onMouseEnter}
       />
     </StyledButtonWrap>
   );

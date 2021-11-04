@@ -6,11 +6,40 @@ import { DEVICE } from "../../../Themes/Device";
 
 type Props = {
   onClick: () => void;
+  onMouseEnter: (target: string) => void;
+  isShow: boolean;
 };
 
-export const PreviewIcon: VFC<Props> = ({ onClick }) => {
-  return <StyledBiRightArrowCircle onClick={onClick} />;
+export const PreviewIcon: VFC<Props> = ({ onClick, onMouseEnter, isShow }) => {
+  return (
+    <StyledIconArea
+      onMouseEnter={() => onMouseEnter("preview")}
+      onMouseLeave={() => onMouseEnter("preview")}
+    >
+      <StyledBiRightArrowCircle onClick={onClick} />
+      {isShow && <StyledLinkText>プレビュー</StyledLinkText>}
+    </StyledIconArea>
+  );
 };
+
+const StyledIconArea = styled.div`
+  position: relative;
+`;
+
+const StyledLinkText = styled.p`
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: ${COLOR.GRAY};
+  color: ${COLOR.WHITE};
+  font-size: 12px;
+  text-align: center;
+  border-radius: 4px;
+  padding: 2px 20px;
+  width: 140%;
+  z-index: 1;
+`;
 
 const StyledBiRightArrowCircle = styled(BiRightArrowCircle)`
   width: 32px;
