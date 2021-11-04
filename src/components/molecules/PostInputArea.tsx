@@ -5,6 +5,8 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { MarkdownTextArea } from "../atom/textArea/MarkdownTextArea";
 import { ReactMarkdownArea } from "../atom/reactMarkdown/index";
 import { TitleTextArea } from "../atom/textArea/TitleTextArea";
+
+import { checkLabelLength } from "../../Themes/Validations";
 import { DEVICE } from "../../Themes/Device";
 import { COLOR } from "../../Themes/Color";
 
@@ -17,7 +19,6 @@ type Props = {
   onChangeLabel: (e: React.ChangeEvent<HTMLInputElement>) => void;
   addToLabel: () => void;
   removeLabel: (targetLabel: string) => void;
-  checkLabelLength: () => boolean;
   addLabel: string;
   labels: string[];
 };
@@ -32,7 +33,6 @@ export const PostInputArea: VFC<Props> = ({
   addToLabel,
   addLabel,
   removeLabel,
-  checkLabelLength,
   labels,
 }) => {
   return (
@@ -47,7 +47,7 @@ export const PostInputArea: VFC<Props> = ({
           value={addLabel}
           onChange={onChangeLabel}
           placeholder={
-            checkLabelLength()
+            checkLabelLength(labels)
               ? "ラベルを5つまで追加できます（最大12文字）"
               : "これ以上追加できません"
           }
@@ -57,7 +57,7 @@ export const PostInputArea: VFC<Props> = ({
               addToLabel();
             }
           }}
-          disabled={checkLabelLength() ? false : true}
+          disabled={checkLabelLength(labels) ? false : true}
         />
       </StyledInputLabelArea>
       <StyledLabels>

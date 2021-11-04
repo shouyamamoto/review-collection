@@ -13,6 +13,7 @@ import { PostInputArea } from "../molecules/PostInputArea";
 import { toastHandler } from "../../utils/toast";
 import { uniqueFileName } from "../../utils/uniqueFileName";
 import { resizeFile } from "../../utils/resizeFile";
+import { checkLabelTextLength } from "../../Themes/Validations";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 
@@ -24,11 +25,6 @@ type Props = {
     likedUsers?: string[];
     labels: string[];
   };
-};
-
-const labelSpecifications = {
-  maxTextLength: 12,
-  maxLength: 5,
 };
 
 export const PostArea: VFC<Props> = ({ editPostData }) => {
@@ -192,14 +188,6 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
     });
   };
 
-  const checkLabelLength = () => {
-    return labels.length < labelSpecifications.maxLength;
-  };
-
-  const checkLabelTextLength = (label: string) => {
-    return label.length <= labelSpecifications.maxTextLength;
-  };
-
   return (
     <StyledPostArea>
       <StyledInner>
@@ -220,7 +208,6 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           }}
           addToLabel={addToLabel}
           removeLabel={removeLabel}
-          checkLabelLength={checkLabelLength}
           addLabel={addLabel}
           labels={labels}
         />
