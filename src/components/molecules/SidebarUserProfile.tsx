@@ -15,6 +15,12 @@ type Props = {
   twitterName: string;
   blogUrl: string;
   comment: string;
+  onMouseEnter: (target: string) => void;
+  isShow: {
+    github: boolean;
+    twitter: boolean;
+    blogUrl: boolean;
+  };
 };
 
 export const SidebarUserProfile: VFC<Props> = ({
@@ -25,6 +31,8 @@ export const SidebarUserProfile: VFC<Props> = ({
   twitterName,
   blogUrl,
   comment,
+  onMouseEnter,
+  isShow,
 }) => {
   return (
     <StyledSidebarUserProfile>
@@ -46,6 +54,8 @@ export const SidebarUserProfile: VFC<Props> = ({
         githubName={githubName}
         twitterName={twitterName}
         blogUrl={blogUrl}
+        onMouseEnter={onMouseEnter}
+        isShow={isShow}
       />
     </StyledSidebarUserProfile>
   );

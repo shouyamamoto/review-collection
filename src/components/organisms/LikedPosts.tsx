@@ -81,7 +81,7 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
     };
     getUsers();
     setIsLoading(false);
-  }, []);
+  }, [likedPosts]);
 
   const extraUser = (
     postUid: string

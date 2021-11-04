@@ -67,6 +67,11 @@ export const SinglePostPage: VFC = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
+  const [isShow, setIsShow] = useState({
+    github: false,
+    twitter: false,
+    blogUrl: false,
+  });
 
   const fetchedUser = db
     .collection("users")
@@ -169,6 +174,15 @@ export const SinglePostPage: VFC = () => {
     }
   };
 
+  const onMouseEnter = (target: string) => {
+    setIsShow({
+      ...isShow,
+      github: target === "github" && !isShow.github,
+      twitter: target === "twitter" && !isShow.twitter,
+      blogUrl: target === "blogUrl" && !isShow.blogUrl,
+    });
+  };
+
   if (isLoading) {
     return <Loading width="60" height="60" />;
   }
@@ -208,6 +222,8 @@ export const SinglePostPage: VFC = () => {
           likedPosts={currentUser.likedPosts}
           onClickLike={onClickLike}
           countLikes={count}
+          onMouseEnter={onMouseEnter}
+          isShow={isShow}
         />
       </StyledSinglePostPageInner>
       <Toaster position="bottom-right" reverseOrder={false} />
