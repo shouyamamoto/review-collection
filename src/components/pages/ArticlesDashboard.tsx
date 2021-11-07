@@ -2,7 +2,7 @@ import { VFC, useState, useEffect } from "react";
 import { useParams, useHistory, Redirect } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 import { index as Link } from "../atom/link";
 import { PrimaryButton } from "../atom/button/PrimaryButton";

@@ -20,6 +20,7 @@ type PostType = {
   body: string;
   timestamp: any;
   likedUsers: string[];
+  labels: string[];
 };
 
 type UserType = {
@@ -31,43 +32,20 @@ type UserType = {
 export const Home: VFC = memo(() => {
   const user = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState<PostType[]>([
-    {
-      uid: "",
-      postId: "",
-      timestamp: null,
-      title: "",
-      body: "",
-      likedUsers: [],
-    },
-  ]);
-  const [users, setUsers] = useState<UserType[]>([
-    {
-      uid: "",
-      username: "",
-      avatar: "",
-    },
-  ]);
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [users, setUsers] = useState<UserType[]>([]);
   const [oldestId, setOldestId] = useState("");
   const [lastDate, setLastDate] = useState("");
 
   useEffect(() => {
     getPosts();
-    getUsers();
     getLast();
+    getUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getLast = async () => {
-    const res = await db
-      .collection("posts")
-      .orderBy("timestamp", "asc")
-      .limit(1)
-      .get();
-    setOldestId(res.docs[0].id);
-  };
-
   const getPosts = async () => {
-    let fetchPosts = db
+    let fetchPosts = await db
       .collection("posts")
       .where("status", "==", "release")
       .orderBy("timestamp", "desc");
@@ -92,6 +70,7 @@ export const Home: VFC = memo(() => {
           title: doc.data().title,
           body: doc.data().body,
           likedUsers: doc.data().likedUsers,
+          labels: doc.data().labels,
         },
       ],
       posts
@@ -102,20 +81,29 @@ export const Home: VFC = memo(() => {
   };
 
   const getUsers = async () => {
-    await db
-      .collection("users")
-      .get()
-      .then((snapshot) => {
-        setUsers(
-          snapshot.docs.map((doc) => ({
-            uid: doc.data().uid,
-            username: doc.data().username,
-            avatar: doc.data().avatar,
-          }))
-        );
+    const fetchUsers = await db.collection("users");
+    const res = await fetchUsers.get();
 
-        setIsLoading(false);
-      });
+    const userData = res.docs.reduce(
+      (acc, doc) => [
+        ...acc,
+        {
+          uid: doc.data().uid,
+          username: doc.data().username,
+          avatar: doc.data().avatar,
+        },
+      ],
+      users
+    );
+
+    setUsers(userData);
+    setIsLoading(false);
+  };
+
+  const getLast = async () => {
+    const fetchPosts = await db.collection("posts").orderBy("timestamp", "asc");
+    const res = await fetchPosts.limit(1).get();
+    setOldestId(res.docs[0].id);
   };
 
   const extraUser = (
@@ -141,27 +129,23 @@ export const Home: VFC = memo(() => {
             pageStart={0}
             loadMore={getPosts}
             hasMore={oldestId !== posts[posts.length - 1].postId}
-            initialLoad={false}
             loader={<LoadingIcon width="40" height="40" />}
-            key={0}
           >
             <StyledHomePostsArea>
-              {posts.map(
-                (post) =>
-                  post.postId !== "" && (
-                    <Article
-                      key={post.postId}
-                      postId={post.postId}
-                      uid={post.uid}
-                      username={extraUser(post.uid)!.username}
-                      avatar={extraUser(post.uid)!.avatar}
-                      title={post.title}
-                      body={post.body}
-                      timestamp={post.timestamp}
-                      likedUsers={post.likedUsers}
-                    />
-                  )
-              )}
+              {posts.map((post) => (
+                <Article
+                  key={post.postId}
+                  postId={post.postId}
+                  uid={post.uid}
+                  username={extraUser(post.uid)!.username}
+                  avatar={extraUser(post.uid)!.avatar}
+                  title={post.title}
+                  body={post.body}
+                  timestamp={post.timestamp}
+                  likedUsers={post.likedUsers}
+                  labels={post.labels}
+                />
+              ))}
             </StyledHomePostsArea>
           </InfiniteScroll>
         </StyledHomePostsInner>
