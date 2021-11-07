@@ -17,6 +17,7 @@ type PostType = {
   body: string;
   timestamp: any;
   likedUsers: string[];
+  labels: string[];
 };
 
 type UserType = {
@@ -35,6 +36,7 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
       body: "",
       timestamp: null,
       likedUsers: [],
+      labels: [],
     },
   ]);
   const [users, setUsers] = useState<UserType[]>([
@@ -62,6 +64,7 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
                   body: doc.data()!.body,
                   timestamp: doc.data()!.timestamp.toDate(),
                   likedUsers: doc.data()!.likedUsers,
+                  labels: doc.data()!.labels,
                 },
               ]);
             }
@@ -111,6 +114,7 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
               uid={post.uid}
               username={extraUser(post.uid)?.username}
               avatar={extraUser(post.uid)?.avatar}
+              labels={post.labels}
             />
           )
       )}

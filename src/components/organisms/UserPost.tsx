@@ -22,6 +22,7 @@ type PostType = {
   body: string;
   timestamp: any;
   likedUsers: string[];
+  labels: string[];
 };
 
 export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
@@ -33,6 +34,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
       title: "",
       body: "",
       likedUsers: [],
+      labels: [],
     },
   ]);
 
@@ -50,6 +52,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
             title: doc.data().title,
             body: doc.data().body,
             likedUsers: doc.data().likedUsers,
+            labels: doc.data().labels,
           }))
         );
         setIsLoading(false);
@@ -76,6 +79,7 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
               body={post.body}
               timestamp={post.timestamp}
               likedUsers={post.likedUsers}
+              labels={post.labels}
             />
           ))}
         </StyledUserPost>

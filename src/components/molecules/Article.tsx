@@ -17,6 +17,7 @@ type Props = {
   body: string;
   timestamp: any;
   likedUsers: string[];
+  labels: string[];
 };
 
 export const Article: VFC<Props> = ({
@@ -27,13 +28,18 @@ export const Article: VFC<Props> = ({
   title,
   timestamp,
   likedUsers,
+  labels,
 }) => {
   return (
     <StyledArticle>
       <Link to={`/${uid}/articles/${postId}`}>
         <StyledArticleTitle>{title}</StyledArticleTitle>
       </Link>
-
+      <StyledLabels>
+        {labels.map((label, index) => (
+          <>{index < 2 && <StyledLabel key={index}>{label}</StyledLabel>} </>
+        ))}
+      </StyledLabels>
       <StyledIconWithName>
         <Link to={`/${uid}`}>
           <Icon src={avatar} alt={username} width="20" height="20" />
@@ -93,4 +99,26 @@ const StyledArticleTitle = styled.p`
     padding: 0 16px;
     margin-bottom: 18px;
   }
+`;
+
+const StyledLabels = styled.ul`
+  width: 90%;
+  margin: 0 auto 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: ${COLOR.WHITE};
+  border-radius: 10px;
+  gap: 4px;
+  box-sizing: border-box;
+`;
+
+const StyledLabel = styled.li`
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  text-align: center;
+  background-color: ${COLOR.BACKGROUND};
+  color: ${COLOR.BLACK};
+  padding: 4px;
+  border-radius: 4px;
 `;
