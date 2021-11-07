@@ -2,6 +2,7 @@ import { VFC, useState, useEffect, memo } from "react";
 import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
+import InfiniteScroll from "react-infinite-scroller";
 
 import { Article } from "../molecules/Article";
 import { db } from "../../libs/firebase";
@@ -47,48 +48,75 @@ export const Home: VFC = memo(() => {
       avatar: "",
     },
   ]);
+  const [oldestId, setOldestId] = useState("");
+  const [lastDate, setLastDate] = useState("");
 
   useEffect(() => {
-    const getPosts = async () => {
-      await db
-        .collection("posts")
-        .where("status", "==", "release")
-        .orderBy("timestamp", "desc")
-        .get()
-        .then((snapshot) => {
-          setPosts(
-            snapshot.docs.map((doc) => ({
-              postId: doc.id,
-              uid: doc.data().uid,
-              timestamp: doc.data().timestamp.toDate(),
-              title: doc.data().title,
-              body: doc.data().body,
-              likedUsers: doc.data().likedUsers,
-            }))
-          );
-        });
-    };
-
-    const getUsers = async () => {
-      await db
-        .collection("users")
-        .get()
-        .then((snapshot) => {
-          setUsers(
-            snapshot.docs.map((doc) => ({
-              uid: doc.data().uid,
-              username: doc.data().username,
-              avatar: doc.data().avatar,
-            }))
-          );
-
-          setIsLoading(false);
-        });
-    };
-
     getPosts();
     getUsers();
+    getLast();
   }, []);
+
+  const getLast = async () => {
+    const res = await db
+      .collection("posts")
+      .orderBy("timestamp", "asc")
+      .limit(1)
+      .get();
+    setOldestId(res.docs[0].id);
+  };
+
+  const getPosts = async () => {
+    let fetchPosts = db
+      .collection("posts")
+      .where("status", "==", "release")
+      .orderBy("timestamp", "desc");
+
+    if (lastDate) {
+      // リストの最後のidと全てのリストの最後のidが同じ場合は追加読み込みしない
+      if (oldestId === posts[posts.length - 1].postId) {
+        return;
+      }
+      fetchPosts = fetchPosts.startAfter(lastDate);
+    }
+
+    const res = await fetchPosts.limit(18).get();
+
+    const postsData = res.docs.reduce(
+      (acc: any, doc: any) => [
+        ...acc,
+        {
+          postId: doc.id,
+          uid: doc.data().uid,
+          timestamp: doc.data().timestamp.toDate(),
+          title: doc.data().title,
+          body: doc.data().body,
+          likedUsers: doc.data().likedUsers,
+        },
+      ],
+      posts
+    );
+
+    setPosts(postsData);
+    setLastDate(res.docs[res.docs.length - 1].data().timestamp.toDate());
+  };
+
+  const getUsers = async () => {
+    await db
+      .collection("users")
+      .get()
+      .then((snapshot) => {
+        setUsers(
+          snapshot.docs.map((doc) => ({
+            uid: doc.data().uid,
+            username: doc.data().username,
+            avatar: doc.data().avatar,
+          }))
+        );
+
+        setIsLoading(false);
+      });
+  };
 
   const extraUser = (
     postUid: string
@@ -109,21 +137,33 @@ export const Home: VFC = memo(() => {
       <StyledHomePosts>
         <StyledHomePostsInner>
           <Title headline="h1">Articles</Title>
-          <StyledHomePostsArea>
-            {posts.map((post) => (
-              <Article
-                key={post.postId}
-                postId={post.postId}
-                uid={post.uid}
-                username={extraUser(post.uid)!.username}
-                avatar={extraUser(post.uid)!.avatar}
-                title={post.title}
-                body={post.body}
-                timestamp={post.timestamp}
-                likedUsers={post.likedUsers}
-              />
-            ))}
-          </StyledHomePostsArea>
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={getPosts}
+            hasMore={oldestId !== posts[posts.length - 1].postId}
+            initialLoad={false}
+            loader={<LoadingIcon width="40" height="40" />}
+            key={0}
+          >
+            <StyledHomePostsArea>
+              {posts.map(
+                (post) =>
+                  post.postId !== "" && (
+                    <Article
+                      key={post.postId}
+                      postId={post.postId}
+                      uid={post.uid}
+                      username={extraUser(post.uid)!.username}
+                      avatar={extraUser(post.uid)!.avatar}
+                      title={post.title}
+                      body={post.body}
+                      timestamp={post.timestamp}
+                      likedUsers={post.likedUsers}
+                    />
+                  )
+              )}
+            </StyledHomePostsArea>
+          </InfiniteScroll>
         </StyledHomePostsInner>
       </StyledHomePosts>
 
@@ -154,7 +194,7 @@ const StyledHomePostsInner = styled.div`
   }
 `;
 
-const StyledHomePostsArea = styled.div`
+const StyledHomePostsArea = styled.ul`
   display: grid;
   grid-template-columns: 1fr;
   margin: 40px auto;
