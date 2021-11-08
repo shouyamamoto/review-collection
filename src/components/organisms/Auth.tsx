@@ -19,11 +19,9 @@ const createUsersCollection = (user: firebase.User | null) => {
   db.collection("users").add({
     uid: user!.uid,
     username: user!.displayName,
-    comment: "",
     avatar: user!.photoURL,
-    followingUserIds: [],
-    followedUserIds: [],
-    posts: [],
+    comment: "",
+    likedPosts: [],
     githubName: "",
     twitterName: "",
     blogUrl: "",
@@ -40,26 +38,22 @@ export const Auth: VFC<Props> = ({ modalHandler }) => {
   ) => {
     auth
       .signInWithPopup(provider)
-      .then(({ user }) => {
+      .then(async ({ user }) => {
         modalHandler();
         // もしサインインしたユーザのidをもつコレクションが存在しなければusersコレクションに追加する
         let userId = "";
-        db.collection("users")
-          .where("uid", "==", `${user?.uid}`)
-          .get()
-          .then((snapShot) => {
-            snapShot.forEach((doc) => {
-              if (doc.id) {
-                userId = doc.id;
-              }
-            });
-          })
-          .then(() => {
-            if (!userId) {
-              createUsersCollection(user);
-            }
-          });
-
+        const fetchUser = await db
+          .collection("users")
+          .where("uid", "==", `${user?.uid}`);
+        const res = await fetchUser.get();
+        res.forEach((doc) => {
+          if (doc.id) {
+            userId = doc.id;
+          }
+        });
+        if (!userId) {
+          createUsersCollection(user);
+        }
         history.push(`/`);
         toastHandler("success", "Sign In!!");
       })

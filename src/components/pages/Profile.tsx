@@ -56,29 +56,27 @@ export const Profile: VFC = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      await db
+      const fetchUsers = await db
         .collection("users")
-        .where("uid", "==", userId)
-        .get()
-        .then((docs) => {
-          if (!docs.empty) {
-            docs.forEach((doc) => {
-              setUser({
-                uid: doc.data().uid,
-                username: doc.data().username,
-                avatar: doc.data().avatar,
-                comment: doc.data().comment,
-                twitterName: doc.data().twitterName,
-                githubName: doc.data().githubName,
-                blogUrl: doc.data().blogUrl,
-                likedPosts: doc.data().likedPosts,
-              });
-            });
-            setIsLoading(false);
-          } else {
-            setIsLoading(false);
-          }
+        .where("uid", "==", userId);
+      const res = await fetchUsers.get();
+      if (!res.empty) {
+        res.forEach((doc) => {
+          setUser({
+            uid: doc.data().uid,
+            username: doc.data().username,
+            avatar: doc.data().avatar,
+            comment: doc.data().comment,
+            twitterName: doc.data().twitterName,
+            githubName: doc.data().githubName,
+            blogUrl: doc.data().blogUrl,
+            likedPosts: doc.data().likedPosts,
+          });
         });
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
     };
     getUser();
   }, [userId]);
@@ -139,6 +137,7 @@ export const Profile: VFC = () => {
       <StyledProfileNav>
         {tabList.map((tab, index) => (
           <StyledLink
+            key={tab.to}
             to={tab.to}
             isActive={currentNum === index}
             onClick={() => changeActive(index)}
@@ -237,6 +236,9 @@ const StyledPostInner = styled.div`
 
   @media ${DEVICE.mobileL} {
     max-width: 800px;
+    width: 90%;
+  }
+  @media ${DEVICE.tablet} {
     width: 80vw;
   }
 

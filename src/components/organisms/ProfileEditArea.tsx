@@ -59,22 +59,7 @@ export const ProfileEditArea: VFC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    db.collection("users")
-      .where("uid", "==", `${user.uid}`)
-      .get()
-      .then((snapshot) =>
-        snapshot.forEach((doc) => {
-          setProfile({
-            uid: doc.data().uid,
-            avatar: doc.data().avatar,
-            username: doc.data().username,
-            comment: doc.data().comment,
-            githubName: doc.data().githubName,
-            twitterName: doc.data().twitterName,
-            blogUrl: doc.data().blogUrl,
-          });
-        })
-      );
+    getUser(user.uid);
   }, [user.uid]);
 
   useEffect(() => {
@@ -83,7 +68,25 @@ export const ProfileEditArea: VFC = () => {
     } else {
       setIsSend(false);
     }
-  }, [username, comment, blogUrl]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getUser = async (uid: string) => {
+    const fetchUser = await db.collection("users").where("uid", "==", `${uid}`);
+    const res = await fetchUser.get();
+    res.forEach((doc) => {
+      setProfile({
+        uid: doc.data().uid,
+        avatar: doc.data().avatar,
+        username: doc.data().username,
+        comment: doc.data().comment,
+        githubName: doc.data().githubName,
+        twitterName: doc.data().twitterName,
+        blogUrl: doc.data().blogUrl,
+      });
+    });
+  };
 
   const onChangeInputState = (
     e:
@@ -107,25 +110,24 @@ export const ProfileEditArea: VFC = () => {
     []
   );
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
     storage.ref(`avatars/${fileName}`).putString(avatar, "data_url");
-    db.collection("users")
-      .where("uid", "==", `${user.uid}`)
-      .get()
-      .then((snapshot) =>
-        snapshot.forEach((doc) => {
-          db.collection("users")
-            .doc(doc.id)
-            .update({
-              avatar: avatar ? avatar : profile.avatar,
-              blogUrl: blogUrl,
-              comment: comment,
-              githubName: githubName,
-              twitterName: twitterName,
-              username: username ? username : profile.username,
-            });
-        })
-      );
+    const fetchUser = await db
+      .collection("users")
+      .where("uid", "==", `${user.uid}`);
+    const res = await fetchUser.get();
+    res.forEach((doc) => {
+      db.collection("users")
+        .doc(doc.id)
+        .update({
+          avatar: avatar ? avatar : profile.avatar,
+          blogUrl: blogUrl,
+          comment: comment,
+          githubName: githubName,
+          twitterName: twitterName,
+          username: username ? username : profile.username,
+        });
+    });
 
     dispatch(
       updateUserProfile({
@@ -165,7 +167,6 @@ export const ProfileEditArea: VFC = () => {
             placeholder={profile.comment}
             text="自己紹介"
             inputValue={comment}
-            defaultValue={profile.comment}
             onChange={(e) => onChangeInputState(e, setComment)}
             isValid={() => isCommentValid(comment)}
             errorMessage={VALIDATIONS.comment.errorMessage}

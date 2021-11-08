@@ -76,27 +76,27 @@ export const ArticlesDashboard: VFC = () => {
           return doc.data()!.likedUsers;
         }
       });
-      likedUsers.then(async (userIds) => {
-        if (userIds.length === 0) return;
-        userIds.forEach((userId: string) => {
-          db.collection("users")
-            .where("uid", "==", userId)
-            .get()
-            .then((snapshot) => {
-              snapshot.forEach((doc) => {
-                db.collection("users")
-                  .doc(doc.id)
-                  .update({
-                    likedPosts:
-                      firebase.firestore.FieldValue.arrayRemove(postId),
-                  });
-              });
-            })
-            .then(() => {
-              db.collection("posts").doc(postId).delete();
+      likedUsers
+        .then(async (userIds) => {
+          if (userIds.length === 0) return;
+          userIds.forEach(async (userId: string) => {
+            const fetchUsers = await db
+              .collection("users")
+              .where("uid", "==", userId);
+            const res = await fetchUsers.get();
+            res.forEach(async (doc) => {
+              await db
+                .collection("users")
+                .doc(doc.id)
+                .update({
+                  likedPosts: firebase.firestore.FieldValue.arrayRemove(postId),
+                });
             });
+          });
+        })
+        .then(() => {
+          db.collection("posts").doc(postId).delete();
         });
-      });
       toastHandler("success", "削除しました");
     }
   };

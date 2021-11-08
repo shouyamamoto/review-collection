@@ -28,66 +28,52 @@ type UserType = {
 
 export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState<PostType[]>([
-    {
-      id: "",
-      uid: "",
-      title: "",
-      body: "",
-      timestamp: null,
-      likedUsers: [],
-      labels: [],
-    },
-  ]);
-  const [users, setUsers] = useState<UserType[]>([
-    {
-      uid: "",
-      username: "",
-      avatar: "",
-    },
-  ]);
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [users, setUsers] = useState<UserType[]>([]);
 
   useEffect(() => {
-    likedPosts.length !== 0 &&
-      likedPosts.forEach((postId) => {
-        db.collection("posts")
-          .doc(postId)
-          .get()
-          .then((doc) => {
-            if (doc.exists) {
-              setPosts((prevPosts) => [
-                ...prevPosts,
-                {
-                  id: doc.id,
-                  uid: doc.data()!.uid,
-                  title: doc.data()!.title,
-                  body: doc.data()!.body,
-                  timestamp: doc.data()!.timestamp.toDate(),
-                  likedUsers: doc.data()!.likedUsers,
-                  labels: doc.data()!.labels,
-                },
-              ]);
-            }
-          });
-      });
-
-    const getUsers = async () => {
-      await db
-        .collection("users")
-        .get()
-        .then((snapshot) => {
-          setUsers(
-            snapshot.docs.map((doc) => ({
-              uid: doc.data().uid,
-              username: doc.data().username,
-              avatar: doc.data().avatar,
-            }))
-          );
-        });
-    };
+    getLikedPosts();
     getUsers();
     setIsLoading(false);
-  }, [likedPosts]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getLikedPosts = () => {
+    likedPosts.forEach(async (postId) => {
+      const fetchPost = await db.collection("posts").doc(postId);
+      const res = await fetchPost.get();
+      if (res.exists) {
+        setPosts((prevPosts) => [
+          ...prevPosts,
+          {
+            id: res.id,
+            uid: res.data()!.uid,
+            title: res.data()!.title,
+            body: res.data()!.body,
+            timestamp: res.data()!.timestamp.toDate(),
+            likedUsers: res.data()!.likedUsers,
+            labels: res.data()!.labels,
+          },
+        ]);
+      }
+    });
+  };
+
+  const getUsers = async () => {
+    const fetchUsers = await db.collection("users");
+    const res = await fetchUsers.get();
+    res.forEach((doc) => {
+      setUsers((prevUsers) => [
+        ...prevUsers,
+        {
+          uid: doc.data().uid,
+          username: doc.data().username,
+          avatar: doc.data().avatar,
+        },
+      ]);
+    });
+  };
 
   const extraUser = (
     postUid: string
@@ -101,23 +87,20 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
 
   return (
     <StyledLikedPost>
-      {posts.map(
-        (post) =>
-          post.id !== "" && (
-            <Article
-              key={post.id}
-              title={post.title}
-              postId={post.id}
-              body={post.body}
-              timestamp={post.timestamp}
-              likedUsers={post.likedUsers}
-              uid={post.uid}
-              username={extraUser(post.uid)?.username}
-              avatar={extraUser(post.uid)?.avatar}
-              labels={post.labels}
-            />
-          )
-      )}
+      {posts.map((post) => (
+        <Article
+          key={post.id}
+          title={post.title}
+          postId={post.id}
+          body={post.body}
+          timestamp={post.timestamp}
+          likedUsers={post.likedUsers}
+          uid={post.uid}
+          username={extraUser(post.uid)?.username}
+          avatar={extraUser(post.uid)?.avatar}
+          labels={post.labels}
+        />
+      ))}
     </StyledLikedPost>
   );
 };
