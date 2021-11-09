@@ -25,8 +25,9 @@ export const EditPost: VFC = () => {
 
   useEffect(() => {
     const getEditPostData = async () => {
-      const docRef = await db.collection("posts").doc(postId);
-      await docRef.get().then((doc) => {
+      const fetchPost = await db.collection("posts").doc(postId);
+      const res = fetchPost.get();
+      res.then((doc) => {
         if (doc.exists) {
           setEditPostData({
             postId: postId,

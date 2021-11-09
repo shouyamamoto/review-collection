@@ -6,7 +6,6 @@ type Props = {
   placeholder: string;
   text: string;
   inputValue: string;
-  defaultValue: string;
   onChange: (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -20,7 +19,6 @@ export const TextAreaWithErrorMessage: VFC<Props> = ({
   placeholder,
   text,
   inputValue,
-  defaultValue,
   onChange,
   isValid,
   errorMessage,
@@ -31,7 +29,6 @@ export const TextAreaWithErrorMessage: VFC<Props> = ({
         placeholder={placeholder}
         text={text}
         inputValue={inputValue}
-        // defaultValue={defaultValue}
         onChange={onChange}
       />
       <ErrorMsg isValid={isValid}>{errorMessage}</ErrorMsg>
