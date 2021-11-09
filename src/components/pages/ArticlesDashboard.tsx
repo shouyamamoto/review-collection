@@ -30,40 +30,37 @@ export const ArticlesDashboard: VFC = () => {
   const { userId } = useParams<{ userId: string }>();
   const history = useHistory();
   const [currentNum, setCurrentNum] = useState(0);
-  const [posts, setPosts] = useState<PostType[]>([
-    {
-      id: "",
-      uid: "",
-      title: "",
-      body: "",
-      timestamp: "",
-      status: "",
-      likedUsers: [],
-    },
-  ]);
+  const [posts, setPosts] = useState<PostType[]>([]);
 
   useEffect(() => {
-    const getPosts = async () => {
-      await db
-        .collection("posts")
-        .where("uid", "==", userId)
-        .orderBy("timestamp", "desc")
-        .onSnapshot((snapshot) => {
-          setPosts(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              uid: doc.data().uid,
-              title: doc.data().title,
-              body: doc.data().body,
-              status: doc.data().status,
-              timestamp: doc.data().timestamp,
-              likedUsers: doc.data().likedUsers,
-            }))
-          );
-        });
-    };
     getPosts();
   }, [userId, history]);
+
+  const getPosts = async () => {
+    const fetchUserPosts = await db
+      .collection("posts")
+      .where("uid", "==", userId)
+      .orderBy("timestamp", "desc");
+    fetchUserPosts.onSnapshot((snapshot) => {
+      const postData = snapshot.docs.reduce(
+        (acc: any, doc: any) => [
+          ...acc,
+          {
+            id: doc.id,
+            uid: doc.data().uid,
+            title: doc.data().title,
+            body: doc.data().body,
+            status: doc.data().status,
+            timestamp: doc.data().timestamp,
+            likedUsers: doc.data().likedUsers,
+          },
+        ],
+        posts
+      );
+
+      setPosts(postData);
+    });
+  };
 
   const changeActive = (index: number) => setCurrentNum(index);
 
