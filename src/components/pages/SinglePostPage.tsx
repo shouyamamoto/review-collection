@@ -6,7 +6,6 @@ import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import { Toaster } from "react-hot-toast";
 import { format } from "date-fns";
-import { BiSend } from "react-icons/bi";
 
 import firebase from "firebase";
 import { db } from "../../libs/firebase";
@@ -18,8 +17,8 @@ import {
 import { index as CodeBlock } from "../atom/code/index";
 import { index as Title } from "../atom/title/index";
 import { index as Loading } from "../atom/loading/index";
-import { index as TextArea } from "../atom/textArea/index";
 import { Sidebar } from "../organisms/Sidebar";
+import { CommentInputArea } from "../organisms/CommentInputArea";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 import { Page404 } from "./Page404";
@@ -304,20 +303,13 @@ export const SinglePostPage: VFC = () => {
               ))}
             </StyledCommentInner>
           </StyledCommentWrap>
-          <form onSubmit={newComment}>
-            <div>
-              <StyledTextArea
-                value={comment}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                  setComment(e.target.value);
-                }}
-                placeholder="記事についてコメントしてみましょう"
-              />
-              <button type="submit">
-                <BiSend />
-              </button>
-            </div>
-          </form>
+          <CommentInputArea
+            newComment={newComment}
+            comment={comment}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              setComment(e.target.value);
+            }}
+          />
         </StyledCommentArea>
       </StyledSinglePostPageInner>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -331,6 +323,7 @@ const StyledSinglePostPage = styled.main`
   grid-template-columns: 100%;
   margin: 0 auto;
   width: 100%;
+  padding: 40px 0;
 `;
 
 const StyledSinglePostPageInner = styled.div`
@@ -439,20 +432,4 @@ const StyledComment = styled.div`
 
 const StyledText = styled.p`
   font-size: 15px;
-`;
-
-const StyledTextArea = styled(TextArea)`
-  min-height: 240px;
-  width: calc(100% - 28px);
-  margin: 0 auto;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  line-height: 1.8;
-  padding: 20px 14px;
-
-  @media ${DEVICE.tabletL} {
-    width: 100%;
-    padding: 28px;
-  }
 `;
