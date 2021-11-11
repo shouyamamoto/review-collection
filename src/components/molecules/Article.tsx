@@ -11,8 +11,8 @@ import { DEVICE } from "../../Themes/Device";
 type Props = {
   postId: string;
   uid: string;
-  username: string | undefined;
-  avatar: string | undefined;
+  username: string;
+  avatar: string;
   title: string;
   body: string;
   timestamp: any;

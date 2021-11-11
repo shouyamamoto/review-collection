@@ -66,7 +66,9 @@ export const Home: VFC = memo(() => {
         {
           postId: doc.id,
           uid: doc.data().uid,
-          timestamp: doc.data().timestamp.toDate(),
+          timestamp: doc
+            .data({ serverTimestamps: "estimate" })
+            .timestamp.toDate(),
           title: doc.data().title,
           body: doc.data().body,
           likedUsers: doc.data().likedUsers,

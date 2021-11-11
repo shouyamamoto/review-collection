@@ -35,7 +35,6 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
     getLikedPosts();
     getUsers();
     setIsLoading(false);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -51,7 +50,9 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
             uid: res.data()!.uid,
             title: res.data()!.title,
             body: res.data()!.body,
-            timestamp: res.data()!.timestamp.toDate(),
+            timestamp: res
+              .data({ serverTimestamps: "estimate" })!
+              .timestamp.toDate(),
             likedUsers: res.data()!.likedUsers,
             labels: res.data()!.labels,
           },
@@ -96,8 +97,8 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
           timestamp={post.timestamp}
           likedUsers={post.likedUsers}
           uid={post.uid}
-          username={extraUser(post.uid)?.username}
-          avatar={extraUser(post.uid)?.avatar}
+          username={extraUser(post.uid)!.username}
+          avatar={extraUser(post.uid)!.avatar}
           labels={post.labels}
         />
       ))}

@@ -70,7 +70,7 @@ export const Sidebar: VFC<Props> = ({
           <TwitterShareButton url={location}>
             <TwitterIcon size="40" round />
           </TwitterShareButton>
-          {likedPosts.includes(postId) ? (
+          {likedPosts && likedPosts.includes(postId) ? (
             <StyledLikeButton onClick={onClickLike} src={LikedIcon} alt="" />
           ) : (
             <StyledLikeButton onClick={onClickLike} src={noLike} alt="" />

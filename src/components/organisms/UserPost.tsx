@@ -48,7 +48,9 @@ export const UserPost: VFC<Props> = ({ uid, username, avatar }) => {
         setUserPosts(
           snapshot.docs.map((doc) => ({
             id: doc.id,
-            timestamp: doc.data().timestamp.toDate(),
+            timestamp: doc
+              .data({ serverTimestamps: "estimate" })
+              .timestamp.toDate(),
             title: doc.data().title,
             body: doc.data().body,
             likedUsers: doc.data().likedUsers,
