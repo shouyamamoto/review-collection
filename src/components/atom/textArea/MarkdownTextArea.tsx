@@ -1,7 +1,7 @@
-import { VFC } from "react";
+import React, { VFC } from "react";
 import styled from "styled-components";
 
-import { index } from "../textArea/index";
+import { index as TextArea } from "../textArea/index";
 import { COLOR } from "../../../Themes/Color";
 import { DEVICE } from "../../../Themes/Device";
 
@@ -9,10 +9,6 @@ type Props = {
   placeholder?: string;
   inputValue: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  isPreview: boolean;
-};
-
-type PreviewProps = {
   isPreview: boolean;
 };
 
@@ -24,7 +20,7 @@ export const MarkdownTextArea: VFC<Props> = ({
 }) => {
   return (
     <StyledTextArea
-      onChange={(e) => onChange(e)}
+      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onChange(e)}
       value={inputValue}
       placeholder={placeholder}
       isPreview={isPreview}
@@ -32,7 +28,9 @@ export const MarkdownTextArea: VFC<Props> = ({
   );
 };
 
-const StyledTextArea = styled(index)<PreviewProps>`
+const StyledTextArea = styled(({ isPreview, ...props }) => (
+  <TextArea {...props} />
+))`
   min-height: 50vh;
   min-width: 90vw;
   border: none;

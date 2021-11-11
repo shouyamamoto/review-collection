@@ -27,10 +27,6 @@ type UserType = {
   likedPosts: string[];
 };
 
-type tabProps = {
-  isActive: boolean;
-};
-
 export const Profile: VFC = () => {
   const currentUser = useSelector(selectUser);
   const { userId } = useParams<{ userId: string }>();
@@ -185,7 +181,7 @@ const StyledProfileNav = styled.div`
   }
 `;
 
-const StyledLink = styled(Link)<tabProps>`
+const StyledLink = styled(({ isActive, ...props }) => <Link {...props} />)`
   font-weight: bold;
   padding-bottom: 4px;
   color: ${(props) => (props.isActive ? `${COLOR.BLACK}` : `${COLOR.GRAY}`)};

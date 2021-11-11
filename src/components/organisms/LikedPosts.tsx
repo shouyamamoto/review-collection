@@ -29,7 +29,13 @@ type UserType = {
 export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [users, setUsers] = useState<UserType[]>([
+    {
+      uid: "",
+      username: "",
+      avatar: "",
+    },
+  ]);
 
   useEffect(() => {
     getLikedPosts();
@@ -88,20 +94,23 @@ export const LikedPosts: VFC<Props> = ({ likedPosts }) => {
 
   return (
     <StyledLikedPost>
-      {posts.map((post) => (
-        <Article
-          key={post.id}
-          title={post.title}
-          postId={post.id}
-          body={post.body}
-          timestamp={post.timestamp}
-          likedUsers={post.likedUsers}
-          uid={post.uid}
-          username={extraUser(post.uid)!.username}
-          avatar={extraUser(post.uid)!.avatar}
-          labels={post.labels}
-        />
-      ))}
+      {posts.map(
+        (post) =>
+          extraUser(post.uid) && (
+            <Article
+              key={post.id}
+              title={post.title}
+              postId={post.id}
+              body={post.body}
+              timestamp={post.timestamp}
+              likedUsers={post.likedUsers}
+              uid={post.uid}
+              username={extraUser(post.uid)!.username}
+              avatar={extraUser(post.uid)!.avatar}
+              labels={post.labels}
+            />
+          )
+      )}
     </StyledLikedPost>
   );
 };
