@@ -11,16 +11,18 @@ import LikedIcon from "../../images/liked.png";
 import { COLOR } from "../../Themes/Color";
 
 type Props = {
+  author: {
+    uid: string;
+    avatar: string;
+    username: string;
+    githubName: string;
+    twitterName: string;
+    blogUrl: string;
+    comment: string;
+  };
   currentUserId: string;
   postId: string;
   location: string;
-  uid: string;
-  avatar: string;
-  username: string;
-  githubName: string;
-  twitterName: string;
-  blogUrl: string;
-  comment: string;
   likedPosts: string[];
   labels: string[];
   onClickLike: () => void;
@@ -34,16 +36,10 @@ type Props = {
 };
 
 export const Sidebar: VFC<Props> = ({
+  author,
   currentUserId,
   postId,
   location,
-  uid,
-  avatar,
-  username,
-  githubName,
-  twitterName,
-  blogUrl,
-  comment,
   likedPosts,
   labels,
   onClickLike,
@@ -55,13 +51,13 @@ export const Sidebar: VFC<Props> = ({
     <StyledSidebar>
       <SidebarLabels labels={labels} />
       <SidebarUserProfile
-        uid={uid}
-        avatar={avatar}
-        username={username}
-        githubName={githubName}
-        twitterName={twitterName}
-        blogUrl={blogUrl}
-        comment={comment}
+        uid={author.uid}
+        avatar={author.avatar}
+        username={author.username}
+        githubName={author.githubName}
+        twitterName={author.twitterName}
+        blogUrl={author.blogUrl}
+        comment={author.comment}
         onMouseEnter={onMouseEnter}
         isShow={isShow}
       />

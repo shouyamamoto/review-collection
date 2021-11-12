@@ -1,4 +1,4 @@
-import React, { VFC, useState, useEffect } from "react";
+import { VFC, useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -19,10 +19,10 @@ import { index as Title } from "../atom/title/index";
 import { index as Loading } from "../atom/loading/index";
 import { Sidebar } from "../organisms/Sidebar";
 import { CommentInputArea } from "../organisms/CommentInputArea";
+import { CommentOutputArea } from "../organisms/CommentOutputArea";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 import { Page404 } from "./Page404";
-import { IconWithName } from "../molecules/IconWithName";
 
 type PostType = {
   postId: string;
@@ -84,16 +84,7 @@ export const SinglePostPage: VFC = () => {
     twitter: false,
     blogUrl: false,
   });
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState<Comment[]>([
-    {
-      id: "",
-      avatar: "",
-      text: "",
-      timestamp: null,
-      username: "",
-    },
-  ]);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   const fetchedUser = db
     .collection("users")
@@ -226,17 +217,6 @@ export const SinglePostPage: VFC = () => {
     });
   };
 
-  const newComment = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    db.collection("posts").doc(postId).collection("comment").add({
-      avatar: currentUser.avatar,
-      text: comment,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      username: currentUser.username,
-    });
-    setComment("");
-  };
-
   if (isLoading) {
     return <Loading width="60" height="60" />;
   }
@@ -265,16 +245,10 @@ export const SinglePostPage: VFC = () => {
           />
         </StyledMarkdownContainer>
         <Sidebar
+          author={author}
           currentUserId={currentUser.uid}
           postId={postId}
           location={location.pathname}
-          uid={author.uid}
-          avatar={author.avatar}
-          username={author.username}
-          githubName={author.githubName}
-          twitterName={author.twitterName}
-          blogUrl={author.blogUrl}
-          comment={author.comment}
           likedPosts={currentUser.likedPosts}
           labels={post.labels}
           onClickLike={onClickLike}
@@ -283,32 +257,11 @@ export const SinglePostPage: VFC = () => {
           isShow={isShow}
         />
         <StyledCommentArea>
-          <StyledCommentWrap>
-            <StyledCommentInner>
-              <Title headline="h3">Comment</Title>
-              {comments.map((comment) => (
-                <StyledComment key={comment.id}>
-                  <IconWithName
-                    src={comment.avatar}
-                    alt={comment.username}
-                    width="30"
-                    height="30"
-                    username={comment.username}
-                  />
-                  <StyledTimestamp>
-                    {format(comment.timestamp, "yyyy-MM-dd")}
-                  </StyledTimestamp>
-                  <StyledText>{comment.text}</StyledText>
-                </StyledComment>
-              ))}
-            </StyledCommentInner>
-          </StyledCommentWrap>
+          <CommentOutputArea comments={comments} />
           <CommentInputArea
-            newComment={newComment}
-            comment={comment}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              setComment(e.target.value);
-            }}
+            postId={postId}
+            avatar={currentUser.avatar}
+            username={currentUser.username}
           />
         </StyledCommentArea>
       </StyledSinglePostPageInner>
@@ -324,6 +277,10 @@ const StyledSinglePostPage = styled.main`
   margin: 0 auto;
   width: 100%;
   padding: 40px 0;
+
+  @media ${DEVICE.tabletL} {
+    padding: 0 0 40px;
+  }
 `;
 
 const StyledSinglePostPageInner = styled.div`
@@ -397,39 +354,4 @@ const StyledCommentArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-`;
-
-const StyledCommentWrap = styled.div`
-  padding: 0 14px;
-
-  @media ${DEVICE.tabletL} {
-    padding: 0;
-  }
-`;
-
-const StyledCommentInner = styled.div`
-  background-color: ${COLOR.WHITE};
-  padding: 40px 20px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  display: grid;
-  gap: 40px;
-
-  @media ${DEVICE.tabletL} {
-    padding: 40px;
-  }
-`;
-
-const StyledComment = styled.div`
-  display: grid;
-  gap: 10px;
-  padding-bottom: 32px;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid ${COLOR.BACKGROUND};
-  }
-`;
-
-const StyledText = styled.p`
-  font-size: 15px;
 `;

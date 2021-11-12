@@ -1,24 +1,41 @@
-import { VFC, memo } from "react";
+import { VFC, useState, memo } from "react";
 import styled from "styled-components";
-import { DEVICE } from "../../Themes/Device";
+import { db } from "../../libs/firebase";
+import firebase from "firebase";
 
+import { DEVICE } from "../../Themes/Device";
 import { index as TextArea } from "../atom/textArea/index";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 
 type Props = {
-  newComment: (e: React.FormEvent<HTMLFormElement>) => void;
-  comment: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  postId: string;
+  avatar: string;
+  username: string;
 };
 
 export const CommentInputArea: VFC<Props> = memo(
-  ({ newComment, comment, onChange }) => {
+  ({ postId, avatar, username }) => {
+    const [comment, setComment] = useState("");
+
+    const newComment = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      db.collection("posts").doc(postId).collection("comment").add({
+        avatar: avatar,
+        text: comment,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        username: username,
+      });
+      setComment("");
+    };
+
     return (
       <form onSubmit={newComment}>
         <StyledCommentInputArea>
           <StyledTextArea
             value={comment}
-            onChange={onChange}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              setComment(e.target.value);
+            }}
             placeholder="記事についてコメントしてみましょう"
           />
           <PrimaryButton type="submit">投稿</PrimaryButton>
