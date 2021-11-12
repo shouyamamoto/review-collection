@@ -80,18 +80,6 @@ export const Sidebar: VFC<Props> = ({
   );
 };
 
-const StyledLikeButton = styled.img`
-  width: 40px;
-  height: 40px;
-  max-width: 40px;
-  max-height: 40px;
-  margin: 0 auto;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 const StyledSidebar = styled.div`
   width: 100%;
   margin: 0 auto;
@@ -104,6 +92,11 @@ const StyledSidebar = styled.div`
   @media ${DEVICE.tabletL} {
     padding: 0;
   }
+  @media ${DEVICE.laptop} {
+    position: sticky;
+    height: 100vh;
+    top: 60px;
+  }
 `;
 
 const StyledSidebarButtons = styled.div`
@@ -114,4 +107,16 @@ const StyledSidebarButtons = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   text-align: center;
+`;
+
+const StyledLikeButton = styled.img`
+  width: 40px;
+  height: 40px;
+  max-width: 40px;
+  max-height: 40px;
+  margin: 0 auto;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
