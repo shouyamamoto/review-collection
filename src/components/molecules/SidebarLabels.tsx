@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { index as Typography } from "../atom/typography/index";
 import { COLOR } from "../../Themes/Color";
+import { DEVICE } from "../../Themes/Device";
 
 type Props = {
   labels: string[];
@@ -35,6 +36,13 @@ const StyledSidebarLabels = styled.div`
   gap: 12px;
   padding: 20px;
   box-sizing: border-box;
+
+  @media ${DEVICE.tablet} {
+    padding: 20px 100px;
+  }
+  @media ${DEVICE.laptop} {
+    padding: 20px;
+  }
 `;
 
 const StyledLabels = styled.ul`
