@@ -183,10 +183,10 @@ const StyledHomePostsArea = styled.ul`
   display: grid;
   grid-template-columns: 1fr;
   margin: 40px auto;
+  gap: 10px;
 
   @media ${DEVICE.mobileM} {
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
   }
 
   @media ${DEVICE.laptop} {

@@ -66,14 +66,16 @@ export const Sidebar: VFC<Props> = ({
           <TwitterShareButton url={location}>
             <TwitterIcon size="40" round />
           </TwitterShareButton>
-          {likedPosts && likedPosts.includes(postId) ? (
-            <StyledLikeButton onClick={onClickLike} src={LikedIcon} alt="" />
-          ) : (
-            <StyledLikeButton onClick={onClickLike} src={noLike} alt="" />
-          )}
-          <Typography size="12px" color={`${COLOR.GRAY}`}>
-            {countLikes}
-          </Typography>
+          <StyledLikeIconWrap>
+            {likedPosts && likedPosts.includes(postId) ? (
+              <StyledLikeButton onClick={onClickLike} src={LikedIcon} alt="" />
+            ) : (
+              <StyledLikeButton onClick={onClickLike} src={noLike} alt="" />
+            )}
+            <Typography size="12px" color={`${COLOR.GRAY}`}>
+              {countLikes}
+            </Typography>
+          </StyledLikeIconWrap>
         </StyledSidebarButtons>
       )}
     </StyledSidebar>
@@ -102,8 +104,9 @@ const StyledSidebar = styled.div`
 const StyledSidebarButtons = styled.div`
   width: 10%;
   border-radius: 10px;
-  display: grid;
-  gap: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
   padding: 20px 0;
   box-sizing: border-box;
   text-align: center;
@@ -119,4 +122,9 @@ const StyledLikeButton = styled.img`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StyledLikeIconWrap = styled.div`
+  display: grid;
+  gap: 2px;
 `;
