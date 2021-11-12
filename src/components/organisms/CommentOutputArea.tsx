@@ -1,7 +1,6 @@
 import { VFC, memo } from "react";
 import styled from "styled-components";
 import { format } from "date-fns";
-import { BsPencil } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useSelector } from "react-redux";
 

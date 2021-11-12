@@ -1,4 +1,4 @@
-import { VFC, useState, useEffect } from "react";
+import { VFC, useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -57,6 +57,7 @@ type Comment = {
 export const SinglePostPage: VFC = () => {
   const currentUser = useSelector(selectUser);
   const dispatch = useDispatch();
+  const element = useRef<any>(null);
   const { postId } = useParams<{ postId: string }>();
   const location = useLocation();
   const [post, setPost] = useState<PostType>({
@@ -238,7 +239,7 @@ export const SinglePostPage: VFC = () => {
         </StyledTitleInner>
       </StyledTitleWrap>
       <StyledSinglePostPageInner>
-        <StyledMarkdownContainer>
+        <StyledMarkdownContainer ref={element}>
           <StyledReactMarkdown
             remarkPlugins={[gfm]}
             children={post.body}
