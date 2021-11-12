@@ -1,16 +1,23 @@
 import { VFC, memo } from "react";
 import styled from "styled-components";
 import { format } from "date-fns";
+import { BsPencil } from "react-icons/bs";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
 import { index as Typography } from "../atom/typography/index";
 import { index as Title } from "../atom/title/index";
 import { IconWithName } from "../molecules/IconWithName";
+import { db } from "../../libs/firebase";
 import { DEVICE } from "../../Themes/Device";
 import { COLOR } from "../../Themes/Color";
+import { selectUser } from "../../features/users/userSlice";
 
 type Props = {
+  postId: string;
   comments: {
     id: string;
+    uid: string;
     avatar: string;
     text: string;
     timestamp: any;
@@ -18,20 +25,41 @@ type Props = {
   }[];
 };
 
-export const CommentOutputArea: VFC<Props> = memo(({ comments }) => {
+export const CommentOutputArea: VFC<Props> = memo(({ postId, comments }) => {
+  const currentUser = useSelector(selectUser);
+
+  const onClickDelete = (commentId: string) => {
+    const result = window.confirm("本当に削除しますか?");
+    if (result === true) {
+      db.collection("posts")
+        .doc(postId)
+        .collection("comment")
+        .doc(commentId)
+        .delete();
+    }
+  };
   return (
     <StyledCommentWrap>
       <StyledCommentInner>
         <Title headline="h3">Comment</Title>
         {comments.map((comment) => (
           <StyledComment key={comment.id}>
-            <IconWithName
-              src={comment.avatar}
-              alt={comment.username}
-              width="30"
-              height="30"
-              username={comment.username}
-            />
+            <StyledNameWithIcons>
+              <IconWithName
+                src={comment.avatar}
+                alt={comment.username}
+                width="30"
+                height="30"
+                username={comment.username}
+              />
+              {comment.uid === currentUser.uid && (
+                <StyledIcons>
+                  <StyledRiDeleteBin6Line
+                    onClick={() => onClickDelete(comment.id)}
+                  />
+                </StyledIcons>
+              )}
+            </StyledNameWithIcons>
             <StyledTimestamp>
               {format(comment.timestamp, "yyyy-MM-dd")}
             </StyledTimestamp>
@@ -77,4 +105,33 @@ const StyledComment = styled.div`
 const StyledTimestamp = styled.span`
   font-size: 12px;
   color: ${COLOR.GRAY};
+`;
+
+const StyledRiDeleteBin6Line = styled(RiDeleteBin6Line)`
+  padding: 10px;
+  background-color: ${COLOR.BACKGROUND};
+  border-radius: 50%;
+  font-size: 12px;
+  transition: all 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${COLOR.GRAY};
+    color: ${COLOR.WHITE};
+  }
+
+  @media ${DEVICE.tabletL} {
+    font-size: 16px;
+  }
+`;
+
+const StyledNameWithIcons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  }
+`;
+
+const StyledIcons = styled.div`
+  display: flex;
+  gap: 10px;
 `;

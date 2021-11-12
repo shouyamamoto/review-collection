@@ -47,6 +47,7 @@ type AuthorType = {
 
 type Comment = {
   id: string;
+  uid: string;
   avatar: string;
   text: string;
   timestamp: any;
@@ -139,6 +140,7 @@ export const SinglePostPage: VFC = () => {
         setComments(
           snapshot.docs.map((doc) => ({
             id: doc.id,
+            uid: doc.data().uid,
             avatar: doc.data().avatar,
             text: doc.data().text,
             timestamp: doc
@@ -257,8 +259,9 @@ export const SinglePostPage: VFC = () => {
           isShow={isShow}
         />
         <StyledCommentArea>
-          <CommentOutputArea comments={comments} />
+          <CommentOutputArea postId={postId} comments={comments} />
           <CommentInputArea
+            uid={currentUser.uid}
             postId={postId}
             avatar={currentUser.avatar}
             username={currentUser.username}

@@ -8,18 +8,20 @@ import { index as TextArea } from "../atom/textArea/index";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 
 type Props = {
+  uid: string;
   postId: string;
   avatar: string;
   username: string;
 };
 
 export const CommentInputArea: VFC<Props> = memo(
-  ({ postId, avatar, username }) => {
+  ({ postId, uid, avatar, username }) => {
     const [comment, setComment] = useState("");
 
     const newComment = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       db.collection("posts").doc(postId).collection("comment").add({
+        uid: uid,
         avatar: avatar,
         text: comment,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -38,7 +40,9 @@ export const CommentInputArea: VFC<Props> = memo(
             }}
             placeholder="記事についてコメントしてみましょう"
           />
-          <PrimaryButton type="submit">投稿</PrimaryButton>
+          <StyledButtonWrap>
+            <PrimaryButton type="submit">投稿</PrimaryButton>
+          </StyledButtonWrap>
         </StyledCommentInputArea>
       </form>
     );
@@ -62,5 +66,13 @@ const StyledTextArea = styled(TextArea)`
   @media ${DEVICE.tabletL} {
     width: 100%;
     padding: 28px;
+  }
+`;
+
+const StyledButtonWrap = styled.div`
+  padding: 0 14px;
+
+  @media ${DEVICE.tabletL} {
+    padding: 0;
   }
 `;
