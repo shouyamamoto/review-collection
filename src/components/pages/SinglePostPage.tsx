@@ -18,6 +18,8 @@ import { index as CodeBlock } from "../atom/code/index";
 import { index as Title } from "../atom/title/index";
 import { index as Loading } from "../atom/loading/index";
 import { Sidebar } from "../organisms/Sidebar";
+import { CommentInputArea } from "../organisms/CommentInputArea";
+import { CommentOutputArea } from "../organisms/CommentOutputArea";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 import { Page404 } from "./Page404";
@@ -41,6 +43,15 @@ type AuthorType = {
   blogUrl: string;
   comment: string;
   likedPosts: string[];
+};
+
+type Comment = {
+  id: string;
+  uid: string;
+  avatar: string;
+  text: string;
+  timestamp: any;
+  username: string;
 };
 
 export const SinglePostPage: VFC = () => {
@@ -74,6 +85,7 @@ export const SinglePostPage: VFC = () => {
     twitter: false,
     blogUrl: false,
   });
+  const [comments, setComments] = useState<Comment[]>([]);
 
   const fetchedUser = db
     .collection("users")
@@ -83,52 +95,73 @@ export const SinglePostPage: VFC = () => {
   useEffect(() => {
     const getPostData = async () => {
       const postData = await db.collection("posts").doc(postId);
-      postData.get().then((doc) => {
-        if (doc.exists) {
-          setPost({
-            postId: doc.id,
-            uid: doc?.data()?.uid,
-            title: doc?.data()?.title,
-            body: doc?.data()?.body,
-            timestamp: doc?.data()?.timestamp,
-            likedUsers: doc?.data()?.likedUsers,
-            labels: doc?.data()?.labels,
-          });
-        } else {
-          setIsLoading(false);
-          return;
-        }
-        const user = db
-          .collection("users")
-          .where("uid", "==", doc?.data()?.uid)
-          .get();
-        user.then((snapshot) => {
-          snapshot.forEach((doc) => {
-            setAuthor({
-              uid: doc.data().uid,
-              avatar: doc.data().avatar,
-              username: doc.data().username,
-              githubName: doc.data().githubName,
-              twitterName: doc.data().twitterName,
-              blogUrl: doc.data().blogUrl,
-              comment: doc.data().comment,
-              likedPosts: doc.data().likedPosts,
-            });
-          });
-          setIsLoading(false);
+      const doc = await postData.get();
+      if (doc.exists) {
+        setPost({
+          postId: doc.id,
+          uid: doc.data()!.uid,
+          title: doc.data()!.title,
+          body: doc.data()!.body,
+          timestamp: doc.data()!.timestamp.toDate(),
+          likedUsers: doc.data()!.likedUsers,
+          labels: doc.data()!.labels,
+        });
+      }
+
+      const fetchUser = await db
+        .collection("users")
+        .where("uid", "==", doc.data()!.uid);
+      const res = await fetchUser.get();
+      res.forEach((doc) => {
+        setAuthor({
+          uid: doc.data().uid,
+          avatar: doc.data().avatar,
+          username: doc.data().username,
+          githubName: doc.data().githubName,
+          twitterName: doc.data().twitterName,
+          blogUrl: doc.data().blogUrl,
+          comment: doc.data().comment,
+          likedPosts: doc.data().likedPosts,
         });
       });
+
+      setIsLoading(false);
     };
     getPostData();
   }, [postId]);
 
-  const hasLikedPosts = (postId: string) => {
-    return currentUser.likedPosts.includes(postId);
-  };
+  useEffect(() => {
+    const unSub = db
+      .collection("posts")
+      .doc(postId)
+      .collection("comment")
+      .orderBy("timestamp", "asc")
+      .onSnapshot((snapshot) => {
+        setComments(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            uid: doc.data().uid,
+            avatar: doc.data().avatar,
+            text: doc.data().text,
+            timestamp: doc
+              .data({ serverTimestamps: "estimate" })
+              .timestamp.toDate(),
+            username: doc.data().username,
+          }))
+        );
+      });
+    return () => {
+      unSub();
+    };
+  }, [postId]);
 
   useEffect(() => {
     setCount(post.likedUsers.length);
   }, [post.likedUsers.length]);
+
+  const hasLikedPosts = (postId: string) => {
+    return currentUser.likedPosts.includes(postId);
+  };
 
   const incrementCount = () => {
     setCount((prevCount) => prevCount + 1);
@@ -200,7 +233,7 @@ export const SinglePostPage: VFC = () => {
         <StyledTitleInner>
           <Title headline="h1">{post.title}</Title>
           <StyledTimestamp>
-            {format(post.timestamp.toDate(), "yyyy-MM-dd")} に公開
+            {format(post.timestamp, "yyyy-MM-dd")} に公開
           </StyledTimestamp>
         </StyledTitleInner>
       </StyledTitleWrap>
@@ -214,16 +247,10 @@ export const SinglePostPage: VFC = () => {
           />
         </StyledMarkdownContainer>
         <Sidebar
+          author={author}
           currentUserId={currentUser.uid}
           postId={postId}
           location={location.pathname}
-          uid={author.uid}
-          avatar={author.avatar}
-          username={author.username}
-          githubName={author.githubName}
-          twitterName={author.twitterName}
-          blogUrl={author.blogUrl}
-          comment={author.comment}
           likedPosts={currentUser.likedPosts}
           labels={post.labels}
           onClickLike={onClickLike}
@@ -231,6 +258,15 @@ export const SinglePostPage: VFC = () => {
           onMouseEnter={onMouseEnter}
           isShow={isShow}
         />
+        <StyledCommentArea>
+          <CommentOutputArea postId={postId} comments={comments} />
+          <CommentInputArea
+            uid={currentUser.uid}
+            postId={postId}
+            avatar={currentUser.avatar}
+            username={currentUser.username}
+          />
+        </StyledCommentArea>
       </StyledSinglePostPageInner>
       <Toaster position="bottom-right" reverseOrder={false} />
     </StyledSinglePostPage>
@@ -243,6 +279,11 @@ const StyledSinglePostPage = styled.main`
   grid-template-columns: 100%;
   margin: 0 auto;
   width: 100%;
+  padding: 40px 0;
+
+  @media ${DEVICE.tabletL} {
+    padding: 0 0 40px;
+  }
 `;
 
 const StyledSinglePostPageInner = styled.div`
@@ -278,10 +319,10 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
   border-bottom: 1px solid ${COLOR.BACKGROUND};
   background-color: ${COLOR.WHITE};
   margin-bottom: 40px;
+  border-radius: 10px;
 
   @media ${DEVICE.tabletL} {
     padding: 60px 40px;
-    border-radius: 10px;
   }
 `;
 
@@ -310,4 +351,10 @@ const StyledTitleInner = styled.div`
 const StyledTimestamp = styled.span`
   font-size: 12px;
   color: ${COLOR.GRAY};
+`;
+
+const StyledCommentArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;

@@ -7,17 +7,22 @@ type Props = {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
 };
 
 export const PrimaryButton: VFC<Props> = memo(
-  ({ onClick, disabled, children }) => {
+  ({ onClick, disabled, children, type }) => {
     return (
-      <StyledBtn onClick={onClick} disabled={disabled}>
+      <StyledBtn onClick={onClick} disabled={disabled} type={type}>
         {children}
       </StyledBtn>
     );
   }
 );
+
+PrimaryButton.defaultProps = {
+  type: "button",
+};
 
 const StyledBtn = styled(StyledButton)`
   background-color: ${(props) =>

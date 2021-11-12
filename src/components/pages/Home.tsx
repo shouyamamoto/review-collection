@@ -34,8 +34,8 @@ export const Home: VFC = memo(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [users, setUsers] = useState<UserType[]>([]);
-  const [oldestId, setOldestId] = useState("");
-  const [lastDate, setLastDate] = useState("");
+  const [oldestId, setOldestId] = useState<string | null>(null);
+  const [lastDate, setLastDate] = useState<string | null>(null);
 
   useEffect(() => {
     getPosts();
@@ -57,7 +57,6 @@ export const Home: VFC = memo(() => {
       }
       fetchPosts = fetchPosts.startAfter(lastDate);
     }
-
     const res = await fetchPosts.limit(18).get();
 
     const postsData = res.docs.reduce(
@@ -66,7 +65,9 @@ export const Home: VFC = memo(() => {
         {
           postId: doc.id,
           uid: doc.data().uid,
-          timestamp: doc.data().timestamp.toDate(),
+          timestamp: doc
+            .data({ serverTimestamps: "estimate" })
+            .timestamp.toDate(),
           title: doc.data().title,
           body: doc.data().body,
           likedUsers: doc.data().likedUsers,

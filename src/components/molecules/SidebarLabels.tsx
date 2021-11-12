@@ -17,8 +17,8 @@ export const SidebarLabels: VFC<Props> = ({ labels }) => {
             Topics
           </Typography>
           <StyledLabels>
-            {labels.map((label) => (
-              <StyledLabel>{label}</StyledLabel>
+            {labels.map((label, index) => (
+              <StyledLabel key={index}>{label}</StyledLabel>
             ))}
           </StyledLabels>
         </StyledSidebarLabels>

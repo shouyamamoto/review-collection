@@ -16,7 +16,7 @@ export const index: VFC<Props> = ({ headline, children }) => {
       case "h2":
         return <StyledH2>{children}</StyledH2>;
       case "h3":
-        return <h3>{children}</h3>;
+        return <StyledH3>{children}</StyledH3>;
       case "h4":
         return <StyledH4>{children}</StyledH4>;
       case "h5":
@@ -39,10 +39,18 @@ const StyledH1 = styled.h1`
 `;
 
 const StyledH2 = styled.h2`
-  font-size: 16px;
+  font-size: 18px;
 
   @media ${DEVICE.laptop} {
     font-size: 26px;
+  }
+`;
+
+const StyledH3 = styled.h3`
+  font-size: 18px;
+
+  @media ${DEVICE.laptop} {
+    font-size: 20px;
   }
 `;
 

@@ -34,7 +34,8 @@ export const ArticlesDashboard: VFC = () => {
 
   useEffect(() => {
     getPosts();
-  }, [userId, history]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getPosts = async () => {
     const fetchUserPosts = await db
@@ -51,7 +52,7 @@ export const ArticlesDashboard: VFC = () => {
             title: doc.data().title,
             body: doc.data().body,
             status: doc.data().status,
-            timestamp: doc.data().timestamp,
+            timestamp: doc.data({ serverTimestamps: "estimate" }).timestamp,
             likedUsers: doc.data().likedUsers,
           },
         ],

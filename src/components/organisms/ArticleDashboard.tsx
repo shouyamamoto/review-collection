@@ -148,17 +148,23 @@ const StyledBsPencil = styled(BsPencil)`
   padding: 10px;
   background-color: ${COLOR.BACKGROUND};
   border-radius: 50%;
+  transition: all 0.3s;
 
   &:hover {
     cursor: pointer;
+    background-color: ${COLOR.GRAY};
+    color: ${COLOR.WHITE};
   }
 `;
 const StyledRiDeleteBin6Line = styled(RiDeleteBin6Line)`
   padding: 10px;
   background-color: ${COLOR.BACKGROUND};
   border-radius: 50%;
+  transition: all 0.3s;
 
   &:hover {
     cursor: pointer;
-  }
+    background-color: ${COLOR.GRAY};
+    color: ${COLOR.WHITE};
+  }v
 `;
