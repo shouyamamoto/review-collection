@@ -1,107 +1,27 @@
-import { VFC, useState, useEffect } from "react";
-import { useParams, useHistory, Redirect } from "react-router-dom";
+import { VFC } from "react";
+import { Redirect } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
-import firebase from "firebase/app";
 
 import { index as Link } from "../atom/link";
 import { PrimaryButton } from "../atom/button/PrimaryButton";
 import { Tabs } from "../molecules/Tabs";
 import { ArticleDashboard as Articles } from "../organisms/ArticleDashboard";
-import { db } from "../../libs/firebase";
-import { toastHandler } from "../../utils/toast";
 import { DEVICE } from "../../Themes/Device";
 import NonePosts from "../../images/no-post.svg";
 import { TAB_LIST } from "../../Themes/TabLists";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-
-type PostType = {
-  id: string;
-  uid: string;
-  title: string;
-  body: string;
-  timestamp: any;
-  status: string;
-  likedUsers: string[];
-};
+import { useArticleDashboard } from "../../hooks/ArticlesDashboard/useArticleDashboard";
 
 export const ArticlesDashboard: VFC = () => {
-  const { currentUser } = useCurrentUser();
-  const { userId } = useParams<{ userId: string }>();
-  const history = useHistory();
-  const [currentNum, setCurrentNum] = useState(0);
-  const [posts, setPosts] = useState<PostType[]>([]);
-
-  useEffect(() => {
-    getPosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const getPosts = async () => {
-    const fetchUserPosts = await db
-      .collection("posts")
-      .where("uid", "==", userId)
-      .orderBy("timestamp", "desc");
-    fetchUserPosts.onSnapshot((snapshot) => {
-      const postData = snapshot.docs.reduce(
-        (acc: any, doc: any) => [
-          ...acc,
-          {
-            id: doc.id,
-            uid: doc.data().uid,
-            title: doc.data().title,
-            body: doc.data().body,
-            status: doc.data().status,
-            timestamp: doc.data({ serverTimestamps: "estimate" }).timestamp,
-            likedUsers: doc.data().likedUsers,
-          },
-        ],
-        posts
-      );
-
-      setPosts(postData);
-    });
-  };
-
-  const changeActive = (index: number) => setCurrentNum(index);
-
-  const onClickDelete = (postId: string) => {
-    const result = window.confirm("本当に記事を削除しますか？");
-    if (result === true) {
-      const postRef = db.collection("posts").doc(postId);
-      const likedUsers = postRef.get().then((doc) => {
-        if (doc.exists) {
-          return doc.data()!.likedUsers;
-        }
-      });
-      likedUsers
-        .then(async (userIds) => {
-          if (userIds.length === 0) return;
-          userIds.forEach(async (userId: string) => {
-            const fetchUsers = await db
-              .collection("users")
-              .where("uid", "==", userId);
-            const res = await fetchUsers.get();
-            res.forEach(async (doc) => {
-              await db
-                .collection("users")
-                .doc(doc.id)
-                .update({
-                  likedPosts: firebase.firestore.FieldValue.arrayRemove(postId),
-                });
-            });
-          });
-        })
-        .then(() => {
-          db.collection("posts").doc(postId).delete();
-        });
-      toastHandler("success", "削除しました");
-    }
-  };
-
-  const onClickEdit = (postId: string) => {
-    history.push(`/${userId}/articles/${postId}/edit`);
-  };
+  const {
+    currentUser,
+    userId,
+    currentNum,
+    posts,
+    changeActive,
+    onClickDelete,
+    onClickEdit,
+  } = useArticleDashboard();
 
   if (currentUser.uid !== userId) {
     return <Redirect to="/" />;
