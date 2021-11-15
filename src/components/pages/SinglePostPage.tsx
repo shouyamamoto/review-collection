@@ -1,6 +1,6 @@
 import { VFC, useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
@@ -12,7 +12,6 @@ import { db } from "../../libs/firebase";
 import {
   addLikedPosts,
   removeLikedPosts,
-  selectUser,
 } from "../../features/users/userSlice";
 import { index as CodeBlock } from "../atom/code/index";
 import { index as Title } from "../atom/title/index";
@@ -23,6 +22,7 @@ import { CommentOutputArea } from "../organisms/CommentOutputArea";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
 import { Page404 } from "./Page404";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 type PostType = {
   postId: string;
@@ -55,7 +55,7 @@ type Comment = {
 };
 
 export const SinglePostPage: VFC = () => {
-  const currentUser = useSelector(selectUser);
+  const { currentUser } = useCurrentUser();
   const dispatch = useDispatch();
   const element = useRef<any>(null);
   const { postId } = useParams<{ postId: string }>();

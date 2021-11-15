@@ -1,5 +1,4 @@
 import { VFC, useState, useEffect, memo } from "react";
-import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
@@ -9,9 +8,9 @@ import { db } from "../../libs/firebase";
 import { index as LoadingIcon } from "../atom/loading/index";
 import { index as Title } from "../atom/title/index";
 import { UserNameRegister } from "../organisms/UserNameRegister";
-import { selectUser } from "../../features/users/userSlice";
 import { COLOR } from "../../Themes/Color";
 import { DEVICE } from "../../Themes/Device";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 type PostType = {
   uid: string;
@@ -30,7 +29,7 @@ type UserType = {
 };
 
 export const Home: VFC = memo(() => {
-  const user = useSelector(selectUser);
+  const { currentUser } = useCurrentUser();
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [users, setUsers] = useState<UserType[]>([]);
@@ -154,7 +153,7 @@ export const Home: VFC = memo(() => {
 
       {
         /* githubで初回サインインするとdisplayNameがないので、ここで登録させる */
-        user.username === null && <UserNameRegister />
+        currentUser.username === null && <UserNameRegister />
       }
       <Toaster position="bottom-right" reverseOrder={false} />
     </StyledHome>

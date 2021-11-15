@@ -2,7 +2,6 @@ import { VFC, memo } from "react";
 import styled from "styled-components";
 import { format } from "date-fns";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useSelector } from "react-redux";
 
 import { index as Typography } from "../atom/typography/index";
 import { index as Title } from "../atom/title/index";
@@ -10,7 +9,7 @@ import { IconWithName } from "../molecules/IconWithName";
 import { db } from "../../libs/firebase";
 import { DEVICE } from "../../Themes/Device";
 import { COLOR } from "../../Themes/Color";
-import { selectUser } from "../../features/users/userSlice";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 type Props = {
   postId: string;
@@ -25,7 +24,7 @@ type Props = {
 };
 
 export const CommentOutputArea: VFC<Props> = memo(({ postId, comments }) => {
-  const currentUser = useSelector(selectUser);
+  const { currentUser } = useCurrentUser();
 
   const onClickDelete = (commentId: string) => {
     const result = window.confirm("本当に削除しますか?");
