@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
+import { VFC } from "react";
 import { useParams } from "react-router";
-import { db } from "../../libs/firebase";
-import { useCurrentUser } from "../useCurrentUser";
+import { Redirect } from "react-router-dom";
+
+import { db } from "../../../libs/firebase";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
+import { Presenter } from "./Presenter";
 
 type EditPostType = {
   postId: string;
@@ -10,7 +14,7 @@ type EditPostType = {
   labels: string[];
 };
 
-export const useEditPost = () => {
+export const EditPost: VFC = () => {
   const { currentUser } = useCurrentUser();
   const { userId, postId } = useParams<{ userId: string; postId: string }>();
   const [editPostData, setEditPostData] = useState<EditPostType>({
@@ -38,5 +42,9 @@ export const useEditPost = () => {
     getEditPostData();
   }, [postId]);
 
-  return { currentUser, userId, editPostData };
+  if (currentUser.uid !== userId) {
+    return <Redirect to="/" />;
+  }
+
+  return <Presenter editPostData={editPostData} />;
 };

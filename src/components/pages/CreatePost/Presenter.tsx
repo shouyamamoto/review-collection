@@ -1,8 +1,8 @@
 import { VFC } from "react";
-import { PostArea } from "../organisms/PostArea";
 import { Toaster } from "react-hot-toast";
+import { PostArea } from "../../organisms/PostArea";
 
-export const CreatePost: VFC = () => {
+export const Presenter: VFC = () => {
   return (
     <main>
       <PostArea />

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import firebase from "firebase/app";
 import { useHistory, useParams } from "react-router";
 
-import { db } from "../../libs/firebase";
-import { toastHandler } from "../../utils/toast";
-import { useCurrentUser } from "../useCurrentUser";
+import { db } from "../../../libs/firebase";
+import { toastHandler } from "../../../utils/toast";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
+import { Presenter } from "./Presenter";
 
 type PostType = {
   id: string;
@@ -16,7 +17,7 @@ type PostType = {
   likedUsers: string[];
 };
 
-export const useArticleDashboard = () => {
+export const ArticlesDashboard = () => {
   const { currentUser } = useCurrentUser();
   const { userId } = useParams<{ userId: string }>();
   const history = useHistory();
@@ -94,14 +95,15 @@ export const useArticleDashboard = () => {
     history.push(`/${userId}/articles/${postId}/edit`);
   };
 
-  return {
-    currentUser,
-    userId,
-    history,
-    currentNum,
-    posts,
-    changeActive,
-    onClickDelete,
-    onClickEdit,
-  };
+  return (
+    <Presenter
+      currentUser={currentUser}
+      userId={userId}
+      currentNum={currentNum}
+      posts={posts}
+      changeActive={changeActive}
+      onClickDelete={onClickDelete}
+      onClickEdit={onClickEdit}
+    />
+  );
 };
