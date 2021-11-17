@@ -1,24 +1,23 @@
 import { VFC, useState, useCallback, memo } from "react";
-import { selectUser } from "../../features/users/userSlice";
-import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import styled from "styled-components";
-import { auth } from "../../libs/firebase";
-import { Auth } from "./Auth";
-import logo from "../../images/logo.svg";
 
-import { PrimaryButton } from "../atom/button/PrimaryButton";
-import { IconWithPostButton } from "../molecules/IconWithPostButton";
-import { index as Link } from "../atom/link";
+import { auth } from "../../../libs/firebase";
+import { Auth } from "../Auth/Auth";
+import logo from "../../../images/logo.svg";
 
-import { DEVICE } from "../../Themes/Device";
+import { PrimaryButton } from "../../atom/button/PrimaryButton";
+import { IconWithPostButton } from "../../molecules/IconWithPostButton";
+import { index as Link } from "../../atom/link";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
+
+import { StyledHeaderInner, StyledLogo } from "./Styles";
 
 export const Header: VFC = memo(() => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  const user = useSelector(selectUser);
+  const { currentUser } = useCurrentUser();
 
   const signOut = useCallback(async () => {
     setIsOpenMenu(false);
@@ -37,9 +36,9 @@ export const Header: VFC = memo(() => {
           <Link to="/">
             <StyledLogo src={logo} alt="" onClick={onClickCloseMenu} />
           </Link>
-          {user.uid ? (
+          {currentUser.uid ? (
             <IconWithPostButton
-              user={user}
+              user={currentUser}
               isOpenMenu={isOpenMenu}
               onClick={onClickMenuHandler}
               onClose={onClickCloseMenu}
@@ -55,25 +54,3 @@ export const Header: VFC = memo(() => {
     </>
   );
 });
-
-const StyledHeaderInner = styled.nav`
-  width: 90%;
-  margin: 0 auto;
-  max-width: 900px;
-  padding: 24px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  @media ${DEVICE.laptopL} {
-    max-width: 1200px;
-  }
-`;
-
-const StyledLogo = styled.img`
-  width: 200px;
-
-  @media ${DEVICE.laptop} {
-    width: 240px;
-  }
-`;

@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { index as Link } from "../../atom/link";
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
 import { Tabs } from "../../molecules/Tabs";
-import { ArticleDashboard as Articles } from "../../organisms/ArticleDashboard";
+import { ArticleDashboard as Articles } from "../../organisms/ArticleDashboard/ArticleDashboard";
 import NonePosts from "../../../images/no-post.svg";
 import { TAB_LIST } from "../../../Themes/TabLists";
 import {

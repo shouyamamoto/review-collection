@@ -6,9 +6,9 @@ import { format } from "date-fns";
 import { index as CodeBlock } from "../../atom/code/index";
 import { index as Title } from "../../atom/title/index";
 import { index as Loading } from "../../atom/loading/index";
-import { Sidebar } from "../../organisms/Sidebar";
-import { CommentInputArea } from "../../organisms/CommentInputArea";
-import { CommentOutputArea } from "../../organisms/CommentOutputArea";
+import { Sidebar } from "../../organisms/Sidebar/Sidebar";
+import { CommentInputArea } from "../../organisms/CommentInputArea/CommentInputArea";
+import { CommentOutputArea } from "../../organisms/CommentOutputArea/CommentOutputArea";
 import { Page404 } from "../Page404/Page404";
 
 import {

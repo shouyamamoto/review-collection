@@ -1,9 +1,9 @@
 import { VFC } from "react";
-import styled from "styled-components";
-import { DEVICE } from "../../Themes/Device";
 
-import { index as Typography } from "../atom/typography/index";
-import { SocialIcons } from "../molecules/SocialIcons";
+import { index as Typography } from "../../atom/typography/index";
+import { SocialIcons } from "../../molecules/SocialIcons";
+
+import { StyledProfileDesc, StyledName } from "./Styles";
 
 type Props = {
   username: string;
@@ -19,7 +19,7 @@ type Props = {
   };
 };
 
-export const ProfileArea: VFC<Props> = ({
+export const Presenter: VFC<Props> = ({
   username,
   comment,
   githubName,
@@ -44,21 +44,3 @@ export const ProfileArea: VFC<Props> = ({
     </StyledProfileDesc>
   );
 };
-
-const StyledProfileDesc = styled.div`
-  margin: 14px 0;
-  @media ${DEVICE.tabletL} {
-    width: 75%;
-    max-width: 900px;
-  }
-`;
-
-const StyledName = styled.h1`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
-
-  @media ${DEVICE.laptop} {
-    font-size: 24px;
-  }
-`;

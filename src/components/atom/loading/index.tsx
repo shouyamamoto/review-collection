@@ -8,7 +8,6 @@ type Props = {
 };
 
 export const index: VFC<Props> = ({ width, height }) => {
-  // return <StyledLoadingIcon src={LoadingIcon} width={width} height={height} />;
   return (
     <StyledLoader>
       <svg

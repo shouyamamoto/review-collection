@@ -1,21 +1,15 @@
 import React, { VFC, useState, useLayoutEffect, useCallback } from "react";
 import firebase from "firebase/app";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 
-import { selectUser } from "../../features/users/userSlice";
-import { db, storage } from "../../libs/firebase";
-import { index as Loading } from "../atom/loading/index";
-import { PostButtons } from "../molecules/PostButtons";
-import { PostInputArea } from "../molecules/PostInputArea";
+import { db, storage } from "../../../libs/firebase";
 
-import { toastHandler } from "../../utils/toast";
-import { uniqueFileName } from "../../utils/uniqueFileName";
-import { resizeFile } from "../../utils/resizeFile";
-import { checkLabelTextLength } from "../../Themes/Validations";
-import { COLOR } from "../../Themes/Color";
-import { DEVICE } from "../../Themes/Device";
+import { toastHandler } from "../../../utils/toast";
+import { uniqueFileName } from "../../../utils/uniqueFileName";
+import { resizeFile } from "../../../utils/resizeFile";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
+
+import { Presenter } from "./Presenter";
 
 type Props = {
   editPostData?: {
@@ -28,7 +22,7 @@ type Props = {
 };
 
 export const PostArea: VFC<Props> = ({ editPostData }) => {
-  const user = useSelector(selectUser);
+  const { currentUser } = useCurrentUser();
   const history = useHistory();
   const [isUploading, setIsUpLoading] = useState(false);
   const [title, setTitle] = useState("");
@@ -66,13 +60,13 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           })
           .then(() => {
             toastHandler("success", "記事を更新しました");
-            history.push(`/${user.uid}/articles/${editPostData.postId}`);
+            history.push(`/${currentUser.uid}/articles/${editPostData.postId}`);
           });
       } else {
         await db
           .collection("posts")
           .add({
-            uid: user.uid,
+            uid: currentUser.uid,
             title: title,
             body: text,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -82,14 +76,14 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           })
           .then(() => {
             toastHandler("success", "記事を投稿しました");
-            history.push(`/${user.uid}`);
+            history.push(`/${currentUser.uid}`);
           })
           .catch(() => {
             toastHandler("error", "記事を投稿できませんでした");
           });
       }
     },
-    [history, user, editPostData?.postId, labels]
+    [history, currentUser, editPostData?.postId, labels]
   );
 
   const onClickSave = () => {
@@ -105,12 +99,12 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
         })
         .then(() => {
           toastHandler("success", "下書きに追加しました");
-          history.push(`/${user.uid}/dashboard`);
+          history.push(`/${currentUser.uid}/dashboard`);
         });
     } else {
       db.collection("posts")
         .add({
-          uid: user.uid,
+          uid: currentUser.uid,
           title: title,
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -119,7 +113,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
         })
         .then(() => {
           toastHandler("success", "下書きに追加しました");
-          history.push(`/${user.uid}/dashboard`);
+          history.push(`/${currentUser.uid}/dashboard`);
         })
         .catch(() => {
           toastHandler("error", "記事を投稿できませんでした");
@@ -189,71 +183,24 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
   };
 
   return (
-    <StyledPostArea>
-      <StyledInner>
-        <PostInputArea
-          title={title}
-          text={text}
-          isPreview={isPreview}
-          onChangeTitle={(e) => {
-            setTitle(e.target.value);
-          }}
-          onChangeText={(e) => {
-            setText(e.target.value);
-          }}
-          onChangeLabel={(e) => {
-            const newLabel = e.target.value;
-            if (!checkLabelTextLength(newLabel)) return;
-            setAddLabel(e.target.value);
-          }}
-          addToLabel={addToLabel}
-          removeLabel={removeLabel}
-          addLabel={addLabel}
-          labels={labels}
-        />
-        <PostButtons
-          title={title}
-          text={text}
-          onClickPreview={() => setIsPreview(!isPreview)}
-          sendPost={sendPost}
-          onClickAddImage={onClickAddImage}
-          onClickSave={onClickSave}
-          onMouseEnter={onMouseEnter}
-          isShow={isShow}
-        />
-      </StyledInner>
-      <StyledUploadIcon>
-        {isUploading && <Loading width="40" height="40" />}
-      </StyledUploadIcon>
-    </StyledPostArea>
+    <Presenter
+      title={title}
+      text={text}
+      isPreview={isPreview}
+      isUploading={isUploading}
+      addLabel={addLabel}
+      labels={labels}
+      isShow={isShow}
+      addToLabel={addToLabel}
+      removeLabel={removeLabel}
+      sendPost={sendPost}
+      onClickAddImage={onClickAddImage}
+      onClickSave={onClickSave}
+      onMouseEnter={onMouseEnter}
+      setIsPreview={setIsPreview}
+      setTitle={setTitle}
+      setText={setText}
+      setAddLabel={setAddLabel}
+    />
   );
 };
-
-const StyledPostArea = styled.div`
-  position: relative;
-  background-color: ${COLOR.BACKGROUND};
-  min-height: 100vh;
-`;
-
-const StyledUploadIcon = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-const StyledInner = styled.div`
-  flex: 1;
-  width: 90vw;
-  margin: 0 auto;
-  padding: 40px 0;
-
-  @media ${DEVICE.laptopL} {
-    width: 90vw;
-    max-width: 1440px;
-  }
-
-  @media ${DEVICE.desktop} {
-    max-width: 2000px;
-  }
-`;

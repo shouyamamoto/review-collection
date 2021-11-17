@@ -12,8 +12,8 @@ import { CreatePost } from "./components/pages/CreatePost/CreatePost";
 import { EditPost } from "./components/pages/EditPost/EditPost";
 import { SinglePostPage } from "./components/pages/SinglePostPage/SinglePostPage";
 import { Page404 } from "./components/pages/Page404/Page404";
-import { Header } from "./components/organisms/Header";
-import { Footer } from "./components/organisms/Footer";
+import { Header } from "./components/organisms/Header/Header";
+import { Footer } from "./components/organisms/Footer/Footer";
 import { GlobalStyle } from "./Themes/GlobalStyle";
 
 const App: React.VFC = () => {

@@ -1,26 +1,19 @@
 import { VFC, useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 
-import { selectUser, updateUserProfile } from "../../features/users/userSlice";
-import { db, storage } from "../../libs/firebase";
-import { PrimaryButton } from "../atom/button/PrimaryButton";
-import { IconWithLabel } from "../molecules/IconWithLabel";
-import { InputText } from "../molecules/InputText";
-import { InputWithErrorMessage } from "../molecules/InputWithErrorMessage";
-import { TextAreaWithErrorMessage } from "../molecules/TextAreaWithErrorMessage";
-import { DEVICE } from "../../Themes/Device";
 import {
-  VALIDATIONS,
-  isUserNameValid,
-  isCommentValid,
-  isBlogUrlValid,
-  isValidProfile,
-} from "../../Themes/Validations";
-import { uniqueFileName } from "../../utils/uniqueFileName";
-import { toastHandler } from "../../utils/toast";
-import { resizeFile } from "../../utils/resizeFile";
+  selectUser,
+  updateUserProfile,
+} from "../../../features/users/userSlice";
+import { db, storage } from "../../../libs/firebase";
+
+import { isValidProfile } from "../../../Themes/Validations";
+import { uniqueFileName } from "../../../utils/uniqueFileName";
+import { toastHandler } from "../../../utils/toast";
+import { resizeFile } from "../../../utils/resizeFile";
+
+import { Presenter } from "./Presenter";
 
 type profile = {
   uid: string;
@@ -144,105 +137,23 @@ export const ProfileEditArea: VFC = () => {
   };
 
   return (
-    <StyledEditArea>
-      <StyledIconArea>
-        <IconWithLabel src={avatar} onChange={onChangeIconHandler} />
-      </StyledIconArea>
-
-      <StyledInputArea>
-        <StyledInputWrap>
-          <InputWithErrorMessage
-            placeholder={profile.username}
-            text="ユーザ名"
-            inputValue={username}
-            defaultValue={profile.username}
-            onChange={(e) => onChangeInputState(e, setUsername)}
-            isValid={() => isUserNameValid(username)}
-            errorMessage={VALIDATIONS.username.errorMessage}
-          />
-        </StyledInputWrap>
-
-        <StyledInputWrap>
-          <TextAreaWithErrorMessage
-            placeholder={profile.comment}
-            text="自己紹介"
-            inputValue={comment}
-            onChange={(e) => onChangeInputState(e, setComment)}
-            isValid={() => isCommentValid(comment)}
-            errorMessage={VALIDATIONS.comment.errorMessage}
-          />
-        </StyledInputWrap>
-
-        <StyledInputWrap>
-          <InputText
-            placeholder={profile.githubName}
-            text="GitHubユーザ名"
-            inputValue={githubName}
-            onChange={(e) => onChangeInputState(e, setGithubName)}
-            defaultValue={profile.githubName}
-          />
-        </StyledInputWrap>
-
-        <StyledInputWrap>
-          <InputText
-            placeholder={profile.twitterName}
-            text="Twitterユーザ名"
-            inputValue={twitterName}
-            onChange={(e) => onChangeInputState(e, setTwitterName)}
-            defaultValue={profile.twitterName}
-          />
-        </StyledInputWrap>
-
-        <StyledInputWrap>
-          <InputWithErrorMessage
-            placeholder={profile.blogUrl}
-            text="自分のサイト名"
-            inputValue={blogUrl}
-            defaultValue={profile.blogUrl}
-            onChange={(e) => onChangeInputState(e, setBlogUrl)}
-            isValid={() => isBlogUrlValid(blogUrl)}
-            errorMessage={VALIDATIONS.blogUrl.errorMessage}
-          />
-        </StyledInputWrap>
-        <StyledButtonArea>
-          <PrimaryButton onClick={onUpdate} disabled={!isSend}>
-            更新する
-          </PrimaryButton>
-        </StyledButtonArea>
-      </StyledInputArea>
-    </StyledEditArea>
+    <Presenter
+      avatar={avatar}
+      profile={profile}
+      username={username}
+      githubName={githubName}
+      twitterName={twitterName}
+      blogUrl={blogUrl}
+      comment={comment}
+      setUsername={setUsername}
+      setComment={setComment}
+      setGithubName={setGithubName}
+      setTwitterName={setTwitterName}
+      setBlogUrl={setBlogUrl}
+      isSend={isSend}
+      onChangeInputState={onChangeInputState}
+      onChangeIconHandler={onChangeIconHandler}
+      onUpdate={onUpdate}
+    />
   );
 };
-
-const StyledEditArea = styled.div`
-  @media ${DEVICE.laptop} {
-    display: flex;
-    justify-content: space-around;
-    width: 70%;
-    margin: 0 auto;
-    max-width: ${DEVICE.laptop};
-  }
-`;
-
-const StyledInputArea = styled.div`
-  flex-basis: 50%;
-  flex-shrink: 1;
-  flex-grow: 2;
-  max-width: 800px;
-  margin: 0 auto;
-`;
-
-const StyledIconArea = styled.div`
-  flex-basis: 20%;
-  flex-shrink: 1;
-  flex-grow: 1;
-`;
-
-const StyledButtonArea = styled.div`
-  margin-top: 40px;
-  text-align: center;
-`;
-
-const StyledInputWrap = styled.div`
-  margin-bottom: 14px;
-`;

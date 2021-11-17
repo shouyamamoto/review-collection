@@ -2,7 +2,7 @@ import { VFC } from "react";
 import { Toaster } from "react-hot-toast";
 import { Redirect } from "react-router";
 
-import { ProfileEditArea } from "../../organisms/ProfileEditArea";
+import { ProfileEditArea } from "../../organisms/ProfileEditArea/ProfileEditArea";
 
 import { StyledProfileEditArea } from "./Styles";
 

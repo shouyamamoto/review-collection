@@ -1,14 +1,19 @@
 import { VFC } from "react";
-import styled from "styled-components";
 import { TwitterShareButton, TwitterIcon } from "react-share";
 
-import { index as Typography } from "../atom/typography/index";
-import { SidebarLabels } from "../molecules/SidebarLabels";
-import { SidebarUserProfile } from "../molecules/SidebarUserProfile";
-import { DEVICE } from "../../Themes/Device";
-import noLike from "../../images/no-like.png";
-import LikedIcon from "../../images/liked.png";
-import { COLOR } from "../../Themes/Color";
+import { index as Typography } from "../../atom/typography/index";
+import { SidebarLabels } from "../../molecules/SidebarLabels";
+import { SidebarUserProfile } from "../../molecules/SidebarUserProfile";
+import noLike from "../../../images/no-like.png";
+import LikedIcon from "../../../images/liked.png";
+import { COLOR } from "../../../Themes/Color";
+
+import {
+  StyledSidebar,
+  StyledSidebarButtons,
+  StyledLikeButton,
+  StyledLikeIconWrap,
+} from "./Styles";
 
 type Props = {
   author: {
@@ -35,7 +40,7 @@ type Props = {
   };
 };
 
-export const Sidebar: VFC<Props> = ({
+export const Presenter: VFC<Props> = ({
   author,
   currentUserId,
   postId,
@@ -81,50 +86,3 @@ export const Sidebar: VFC<Props> = ({
     </StyledSidebar>
   );
 };
-
-const StyledSidebar = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 14px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  @media ${DEVICE.tabletL} {
-    padding: 0;
-  }
-  @media ${DEVICE.laptop} {
-    position: sticky;
-    height: 100vh;
-    top: 60px;
-  }
-`;
-
-const StyledSidebarButtons = styled.div`
-  width: 10%;
-  border-radius: 10px;
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 20px 0;
-  box-sizing: border-box;
-  text-align: center;
-`;
-
-const StyledLikeButton = styled.img`
-  width: 40px;
-  height: 40px;
-  max-width: 40px;
-  max-height: 40px;
-  margin: 0 auto;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const StyledLikeIconWrap = styled.div`
-  display: grid;
-  gap: 2px;
-`;
