@@ -23,9 +23,11 @@ export const ArticlesDashboard = () => {
   const history = useHistory();
   const [currentNum, setCurrentNum] = useState(0);
   const [posts, setPosts] = useState<PostType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getPosts();
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -104,6 +106,7 @@ export const ArticlesDashboard = () => {
       changeActive={changeActive}
       onClickDelete={onClickDelete}
       onClickEdit={onClickEdit}
+      isLoading={isLoading}
     />
   );
 };

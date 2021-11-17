@@ -67,7 +67,6 @@ export const PostButtons: VFC<Props> = ({
 const StyledButtonWrap = styled.div`
   position: fixed;
   bottom: 20px;
-  right: 10%;
   display: flex;
   justify-content: flex-end;
   gap: 0 20px;

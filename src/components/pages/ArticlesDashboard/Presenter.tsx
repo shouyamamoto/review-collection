@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import { index as Link } from "../../atom/link";
+import { index as LoadingIcon } from "../../atom/loading/index";
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
 import { Tabs } from "../../molecules/Tabs";
 import { ArticleDashboard as Articles } from "../../organisms/ArticleDashboard/ArticleDashboard";
@@ -27,6 +28,7 @@ type Props = {
   };
   userId: string;
   currentNum: number;
+  isLoading: boolean;
   posts: {
     id: string;
     uid: string;
@@ -49,7 +51,12 @@ export const Presenter: VFC<Props> = ({
   changeActive,
   onClickDelete,
   onClickEdit,
+  isLoading,
 }) => {
+  if (isLoading) {
+    return <LoadingIcon width="40" height="40" />;
+  }
+
   if (currentUser.uid !== userId) {
     return <Redirect to="/" />;
   }
