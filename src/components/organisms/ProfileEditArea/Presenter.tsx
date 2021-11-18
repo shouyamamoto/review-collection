@@ -1,10 +1,10 @@
 import { VFC } from "react";
 
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
-import { IconWithLabel } from "../../molecules/IconWithLabel";
-import { InputText } from "../../molecules/InputText";
-import { InputWithErrorMessage } from "../../molecules/InputWithErrorMessage";
-import { TextAreaWithErrorMessage } from "../../molecules/TextAreaWithErrorMessage";
+import { IconWithLabel } from "../../molecules/IconWithLabel/IconWithLabel";
+import { InputText } from "../../molecules/InputText/InputText";
+import { InputWithErrorMessage } from "../../molecules/InputWithErrorMessage/InputWithErrorMessage";
+import { TextAreaWithErrorMessage } from "../../molecules/TextAreaWithErrorMessage/TextAreaWithErrorMessage";
 
 import {
   VALIDATIONS,

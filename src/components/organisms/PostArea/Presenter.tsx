@@ -1,7 +1,7 @@
 import { VFC } from "react";
 import { index as Loading } from "../../atom/loading/index";
-import { PostButtons } from "../../molecules/PostButtons";
-import { PostInputArea } from "../../molecules/PostInputArea";
+import { PostButtons } from "../../molecules/PostButtons/PostButtons";
+import { PostInputArea } from "../../molecules/PostInputArea/PostInputArea";
 import { checkLabelTextLength } from "../../../Themes/Validations";
 
 import { StyledPostArea, StyledUploadIcon, StyledInner } from "./Styles";

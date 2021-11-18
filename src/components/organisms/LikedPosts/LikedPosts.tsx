@@ -1,7 +1,7 @@
 import { VFC, useState, useEffect } from "react";
 
 import { index as LoadingIcon } from "../../atom/loading/index";
-import { Article } from "../../molecules/Article";
+import { Article } from "../../molecules/Article/Article";
 import { db } from "../../../libs/firebase";
 
 import { StyledLikedPost } from "./Styles";

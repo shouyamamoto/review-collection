@@ -3,7 +3,7 @@ import { VFC } from "react";
 import { index as Link } from "../../atom/link";
 import { index as Title } from "../../atom/title/index";
 import { index as Copy } from "../../atom/copywrite/index";
-import { LogoWithTypography } from "../../molecules/LogoWithTypography";
+import { LogoWithTypography } from "../../molecules/LogoWithTypography/LogoWithTypography";
 
 import { StyledFooter, StyledFooterInner, StyledUl, StyledLi } from "./Styles";
 

@@ -1,12 +1,11 @@
 import { VFC } from "react";
-import { ErrorMsg } from "../atom/text/ErrorMsg";
-import { InputText } from "../molecules/InputText";
+import { ErrorMsg } from "../../atom/text/ErrorMsg";
+import { InputTextArea } from "../../molecules/InputTextArea/InputTextArea";
 
 type Props = {
   placeholder: string;
   text: string;
   inputValue: string;
-  defaultValue: string;
   onChange: (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -16,22 +15,20 @@ type Props = {
   errorMessage: string;
 };
 
-export const InputWithErrorMessage: VFC<Props> = ({
+export const TextAreaWithErrorMessage: VFC<Props> = ({
   placeholder,
   text,
   inputValue,
-  defaultValue,
   onChange,
   isValid,
   errorMessage,
 }) => {
   return (
     <>
-      <InputText
+      <InputTextArea
         placeholder={placeholder}
         text={text}
         inputValue={inputValue}
-        defaultValue={defaultValue}
         onChange={onChange}
       />
       <ErrorMsg isValid={isValid}>{errorMessage}</ErrorMsg>

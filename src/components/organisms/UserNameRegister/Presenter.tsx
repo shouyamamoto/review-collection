@@ -3,7 +3,7 @@ import { VFC } from "react";
 import { index as Logo } from "../../atom/logo/index";
 import { RegisterButton } from "../../atom/button/RegisterButton";
 import { ErrorMsg } from "../../atom/text/ErrorMsg";
-import { InputText } from "../../molecules/InputText";
+import { InputText } from "../../molecules/InputText/InputText";
 import { VALIDATIONS } from "../../../Themes/Validations";
 
 import {

@@ -1,11 +1,13 @@
 import { memo, VFC } from "react";
-import styled from "styled-components";
 import MediaQuery from "react-responsive";
-import { index as Link } from "../atom/link";
-import { DEVICE } from "../../Themes/Device";
-import { index as Icon } from "../atom/icon/index";
-import { PrimaryButton } from "../atom/button/PrimaryButton";
-import { IconMenu } from "../molecules/IconMenu";
+
+import { index as Link } from "../../atom/link";
+import { DEVICE } from "../../../Themes/Device";
+import { index as Icon } from "../../atom/icon/index";
+import { PrimaryButton } from "../../atom/button/PrimaryButton";
+import { IconMenu } from "../../molecules/IconMenu/IconMenu";
+
+import { StyledIconArea } from "./Styles";
 
 type Props = {
   user: {
@@ -39,14 +41,3 @@ export const IconWithPostButton: VFC<Props> = memo(
     );
   }
 );
-
-const StyledIconArea = styled.div`
-  position: relative;
-
-  @media ${DEVICE.tabletL} {
-    width: 220px;
-    display: grid;
-    grid-template-columns: auto auto;
-    align-items: center;
-  }
-`;

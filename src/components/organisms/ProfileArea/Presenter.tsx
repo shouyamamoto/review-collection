@@ -1,7 +1,7 @@
 import { VFC } from "react";
 
 import { index as Typography } from "../../atom/typography/index";
-import { SocialIcons } from "../../molecules/SocialIcons";
+import { SocialIcons } from "../../molecules/SocialIcons/SocialIcons";
 
 import { StyledProfileDesc, StyledName } from "./Styles";
 

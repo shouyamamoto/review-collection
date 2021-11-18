@@ -6,7 +6,7 @@ import { Auth } from "../Auth/Auth";
 import logo from "../../../images/logo.svg";
 
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
-import { IconWithPostButton } from "../../molecules/IconWithPostButton";
+import { IconWithPostButton } from "../../molecules/IconWithPostButton/IconWithPostButton";
 import { index as Link } from "../../atom/link";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 

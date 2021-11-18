@@ -1,8 +1,9 @@
 import { VFC } from "react";
-import styled from "styled-components";
 
-import { index as Icon } from "../atom/icon/index";
-import { index as Typography } from "../atom/typography/index";
+import { index as Icon } from "../../atom/icon/index";
+import { index as Typography } from "../../atom/typography/index";
+
+import { StyledIconWithName } from "./Styles";
 
 type Props = {
   src: string;
@@ -26,9 +27,3 @@ export const IconWithName: VFC<Props> = ({
     </StyledIconWithName>
   );
 };
-
-const StyledIconWithName = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 14px;
-`;

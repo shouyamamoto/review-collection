@@ -4,7 +4,7 @@ import { format } from "date-fns";
 
 import { index as Typography } from "../../atom/typography/index";
 import { index as Title } from "../../atom/title/index";
-import { IconWithName } from "../../molecules/IconWithName";
+import { IconWithName } from "../../molecules/IconWithName/IconWithName";
 import { db } from "../../../libs/firebase";
 
 import { useCurrentUser } from "../../../hooks/useCurrentUser";

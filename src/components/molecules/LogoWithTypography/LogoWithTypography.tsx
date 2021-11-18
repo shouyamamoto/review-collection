@@ -1,9 +1,10 @@
 import { VFC } from "react";
-import styled from "styled-components";
 
-import { COLOR } from "../../Themes/Color";
-import { index as Typography } from "../atom/typography/index";
-import { index as Logo } from "../atom/logo/index";
+import { index as Typography } from "../../atom/typography/index";
+import { index as Logo } from "../../atom/logo/index";
+import { COLOR } from "../../../Themes/Color";
+
+import { StyledLogoContainer } from "./Styles";
 
 export const LogoWithTypography: VFC = () => {
   return (
@@ -15,9 +16,3 @@ export const LogoWithTypography: VFC = () => {
     </StyledLogoContainer>
   );
 };
-
-const StyledLogoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
