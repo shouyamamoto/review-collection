@@ -4,16 +4,16 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { db, auth } from "./libs/firebase";
 import { login, logout } from "./features/users/userSlice";
-import { Home } from "./components/pages/Home";
-import { Profile } from "./components/pages/Profile";
-import { ProfileEdit } from "./components/pages/ProfileEdit";
-import { CreatePost } from "./components/pages/CreatePost";
-import { EditPost } from "./components/pages/EditPost";
-import { SinglePostPage } from "./components/pages/SinglePostPage";
-import { ArticlesDashboard } from "./components/pages/ArticlesDashboard";
-import { Page404 } from "./components/pages/Page404";
-import { Header } from "./components/organisms/Header";
-import { Footer } from "./components/organisms/Footer";
+import { Home } from "./components/pages/Home/Home";
+import { Profile } from "./components/pages/Profile/Profile";
+import { ProfileEdit } from "./components/pages/ProfileEdit/ProfileEdit";
+import { ArticlesDashboard } from "./components/pages/ArticlesDashboard/ArticlesDashboard";
+import { CreatePost } from "./components/pages/CreatePost/CreatePost";
+import { EditPost } from "./components/pages/EditPost/EditPost";
+import { SinglePostPage } from "./components/pages/SinglePostPage/SinglePostPage";
+import { Page404 } from "./components/pages/Page404/Page404";
+import { Header } from "./components/organisms/Header/Header";
+import { Footer } from "./components/organisms/Footer/Footer";
 import { GlobalStyle } from "./Themes/GlobalStyle";
 
 const App: React.VFC = () => {
