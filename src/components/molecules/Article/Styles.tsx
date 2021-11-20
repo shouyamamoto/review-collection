@@ -67,4 +67,8 @@ export const StyledLabel = styled.li`
   color: ${COLOR.BLACK};
   padding: 4px;
   border-radius: 4px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;

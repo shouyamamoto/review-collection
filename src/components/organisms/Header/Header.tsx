@@ -8,6 +8,7 @@ import logo from "../../../images/logo.svg";
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
 import { IconWithPostButton } from "../../molecules/IconWithPostButton/IconWithPostButton";
 import { index as Link } from "../../atom/link";
+import { SearchInputForm } from "../../molecules/SearchInputForm/SearchInputForm";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 
 import { StyledHeaderInner, StyledLogo } from "./Styles";
@@ -15,6 +16,7 @@ import { StyledHeaderInner, StyledLogo } from "./Styles";
 export const Header: VFC = memo(() => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [search, setSearch] = useState<string>("");
   const history = useHistory();
   const location = useLocation();
   const { currentUser } = useCurrentUser();
@@ -24,6 +26,11 @@ export const Header: VFC = memo(() => {
     await auth.signOut();
     history.push("/");
   }, [history]);
+
+  const onClickSearch = () => {
+    history.push(`/topics?search=${search}`);
+    setSearch("");
+  };
 
   const onClickMenuHandler = () => setIsOpenMenu(!isOpenMenu);
   const onClickCloseMenu = () => setIsOpenMenu(false);
@@ -36,6 +43,11 @@ export const Header: VFC = memo(() => {
           <Link to="/">
             <StyledLogo src={logo} alt="" onClick={onClickCloseMenu} />
           </Link>
+          <SearchInputForm
+            inputValue={search}
+            onChange={setSearch}
+            onClickSearch={onClickSearch}
+          />
           {currentUser.uid ? (
             <IconWithPostButton
               user={currentUser}

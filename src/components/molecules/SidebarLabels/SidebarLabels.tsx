@@ -1,4 +1,5 @@
 import { VFC } from "react";
+import { useHistory } from "react-router-dom";
 
 import { index as Typography } from "../../atom/typography/index";
 
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export const SidebarLabels: VFC<Props> = ({ labels }) => {
+  const history = useHistory();
   return (
     <>
       {labels.length > 0 && (
@@ -18,7 +20,12 @@ export const SidebarLabels: VFC<Props> = ({ labels }) => {
           </Typography>
           <StyledLabels>
             {labels.map((label, index) => (
-              <StyledLabel key={index}>{label}</StyledLabel>
+              <StyledLabel
+                key={index}
+                onClick={() => history.push(`/topics?search=${label}`)}
+              >
+                {label}
+              </StyledLabel>
             ))}
           </StyledLabels>
         </StyledSidebarLabels>

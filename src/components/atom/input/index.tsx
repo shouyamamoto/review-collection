@@ -28,7 +28,7 @@ export const index: VFC<Props> = ({
 const StyledInput = styled.input`
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 24%);
-  padding: 10px 20px;
+  padding: 10px 16px;
   display: block;
   width: 100%;
   font-size: 16px;

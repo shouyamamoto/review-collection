@@ -1,5 +1,6 @@
 import { VFC } from "react";
 import { format } from "date-fns";
+import { useHistory } from "react-router-dom";
 
 import { index as Icon } from "../../atom/icon";
 import { index as Link } from "../../atom/link";
@@ -35,6 +36,8 @@ export const Article: VFC<Props> = ({
   likedUsers,
   labels,
 }) => {
+  const history = useHistory();
+
   return (
     <StyledArticle>
       <Link to={`/${uid}/articles/${postId}`}>
@@ -42,7 +45,16 @@ export const Article: VFC<Props> = ({
       </Link>
       <StyledLabels>
         {labels.map((label, index) => (
-          <>{index < 2 && <StyledLabel key={index}>{label}</StyledLabel>} </>
+          <>
+            {index < 2 && (
+              <StyledLabel
+                key={index}
+                onClick={() => history.push(`/topics?search=${label}`)}
+              >
+                {label}
+              </StyledLabel>
+            )}{" "}
+          </>
         ))}
       </StyledLabels>
       <StyledIconWithName>
