@@ -12,7 +12,7 @@ export const StyledTextAreaWrap = styled.div`
 
   @media ${DEVICE.laptopL} {
     justify-content: space-between;
-    max-width: 1200px;
+    max-width: 86vw;
   }
   @media ${DEVICE.desktop} {
     max-width: 1800px;
