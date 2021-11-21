@@ -23,7 +23,7 @@ export const Head: VFC<Props> = ({ title, postId }) => {
       {postId && (
         <meta
           property="og:url"
-          content={`https://review-collection.web.app/articles/${postId}`}
+          content={`https://review-collection-8edce.web.app/articles/${postId}`}
         />
       )}
       {postId ? (
@@ -36,7 +36,7 @@ export const Head: VFC<Props> = ({ title, postId }) => {
       <meta property="og:site_name" content="Review Collection" />
       <meta
         property="og:image"
-        content="https://review-collection.web.app/images/ogp.png"
+        content="https://review-collection-8edce.web.app/images/ogp.png"
       />
       {/* OGP ここまで */}
     </Helmet>
