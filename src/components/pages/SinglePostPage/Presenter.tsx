@@ -10,6 +10,7 @@ import { Sidebar } from "../../organisms/Sidebar/Sidebar";
 import { CommentInputArea } from "../../organisms/CommentInputArea/CommentInputArea";
 import { CommentOutputArea } from "../../organisms/CommentOutputArea/CommentOutputArea";
 import { Page404 } from "../Page404/Page404";
+import { Head } from "../../Head";
 
 import {
   StyledSinglePostPage,
@@ -96,47 +97,50 @@ export const Presenter: VFC<Props> = ({
     return <Page404 />;
   }
   return (
-    <StyledSinglePostPage>
-      <StyledTitleWrap>
-        <StyledTitleInner>
-          <Title headline="h1">{post.title}</Title>
-          <StyledTimestamp>
-            {format(post.timestamp, "yyyy-MM-dd")} に公開
-          </StyledTimestamp>
-        </StyledTitleInner>
-      </StyledTitleWrap>
-      <StyledSinglePostPageInner>
-        <StyledMarkdownContainer ref={element}>
-          <StyledReactMarkdown
-            remarkPlugins={[gfm]}
-            children={post.body}
-            components={{ code: CodeBlock }}
-            className="preview"
-          />
-        </StyledMarkdownContainer>
-        <Sidebar
-          author={author}
-          currentUserId={currentUser.uid}
-          postId={postId}
-          location={location.pathname}
-          likedPosts={currentUser.likedPosts}
-          labels={post.labels}
-          onClickLike={onClickLike}
-          countLikes={count}
-          onMouseEnter={onMouseEnter}
-          isShow={isShow}
-        />
-        <StyledCommentArea>
-          <CommentOutputArea postId={postId} comments={comments} />
-          <CommentInputArea
-            uid={currentUser.uid}
+    <>
+      <Head title={post.title} postId={post.postId} />
+      <StyledSinglePostPage>
+        <StyledTitleWrap>
+          <StyledTitleInner>
+            <Title headline="h1">{post.title}</Title>
+            <StyledTimestamp>
+              {format(post.timestamp, "yyyy-MM-dd")} に公開
+            </StyledTimestamp>
+          </StyledTitleInner>
+        </StyledTitleWrap>
+        <StyledSinglePostPageInner>
+          <StyledMarkdownContainer ref={element}>
+            <StyledReactMarkdown
+              remarkPlugins={[gfm]}
+              children={post.body}
+              components={{ code: CodeBlock }}
+              className="preview"
+            />
+          </StyledMarkdownContainer>
+          <Sidebar
+            author={author}
+            currentUserId={currentUser.uid}
             postId={postId}
-            avatar={currentUser.avatar}
-            username={currentUser.username}
+            location={location.pathname}
+            likedPosts={currentUser.likedPosts}
+            labels={post.labels}
+            onClickLike={onClickLike}
+            countLikes={count}
+            onMouseEnter={onMouseEnter}
+            isShow={isShow}
           />
-        </StyledCommentArea>
-      </StyledSinglePostPageInner>
-      <Toaster position="bottom-right" reverseOrder={false} />
-    </StyledSinglePostPage>
+          <StyledCommentArea>
+            <CommentOutputArea postId={postId} comments={comments} />
+            <CommentInputArea
+              uid={currentUser.uid}
+              postId={postId}
+              avatar={currentUser.avatar}
+              username={currentUser.username}
+            />
+          </StyledCommentArea>
+        </StyledSinglePostPageInner>
+        <Toaster position="bottom-right" reverseOrder={false} />
+      </StyledSinglePostPage>
+    </>
   );
 };

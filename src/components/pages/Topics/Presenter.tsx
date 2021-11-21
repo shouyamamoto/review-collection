@@ -3,6 +3,9 @@ import { VFC } from "react";
 import { index as Title } from "../../atom/title/index";
 import { Article } from "../../molecules/Article/Article";
 import { index as LoadingIcon } from "../../atom/loading/index";
+import { index as Typography } from "../../atom/typography/index";
+
+import { Head } from "../../Head";
 
 import {
   StyledTopicsPosts,
@@ -46,30 +49,35 @@ export const Presenter: VFC<Props> = ({
   }
 
   return (
-    <StyledTopicsPosts>
-      <StyledTopicsPostsInner>
-        <Title headline="h1">"{query.get("search")}"の検索結果</Title>
-        <StyledPostsArea>
+    <>
+      <Head title={`${query.get("search")}の検索結果`} />
+      <StyledTopicsPosts>
+        <StyledTopicsPostsInner>
+          <Title headline="h1">"{query.get("search")}"の検索結果</Title>
           {searchPosts.length > 0 ? (
-            searchPosts.map((post) => (
-              <Article
-                key={post.postId}
-                postId={post.postId}
-                uid={post.uid}
-                title={post.title}
-                body={post.body}
-                timestamp={post.timestamp}
-                likedUsers={post.likedUsers}
-                labels={post.labels}
-                username={extraUser(post.uid)!.username}
-                avatar={extraUser(post.uid)!.avatar}
-              />
-            ))
+            <StyledPostsArea>
+              {searchPosts.map((post) => (
+                <Article
+                  key={post.postId}
+                  postId={post.postId}
+                  uid={post.uid}
+                  title={post.title}
+                  body={post.body}
+                  timestamp={post.timestamp}
+                  likedUsers={post.likedUsers}
+                  labels={post.labels}
+                  username={extraUser(post.uid)!.username}
+                  avatar={extraUser(post.uid)!.avatar}
+                />
+              ))}
+            </StyledPostsArea>
           ) : (
-            <p>"{query.get("search")}"に関する記事は見つかりませんでした。</p>
+            <Typography size="16" margin="20px 0px 0px 0px ">
+              "{query.get("search")}"に関する記事は見つかりませんでした。
+            </Typography>
           )}
-        </StyledPostsArea>
-      </StyledTopicsPostsInner>
-    </StyledTopicsPosts>
+        </StyledTopicsPostsInner>
+      </StyledTopicsPosts>
+    </>
   );
 };

@@ -3,6 +3,8 @@ import { Toaster } from "react-hot-toast";
 
 import { PostArea } from "../../organisms/PostArea/PostArea";
 
+import { Head } from "../../Head";
+
 type Props = {
   editPostData: {
     postId: string;
@@ -14,9 +16,12 @@ type Props = {
 
 export const Presenter: VFC<Props> = ({ editPostData }) => {
   return (
-    <main>
-      <PostArea editPostData={editPostData} />
-      <Toaster position="bottom-right" reverseOrder={false} />
-    </main>
+    <>
+      <Head title="記事編集中" />
+      <main>
+        <PostArea editPostData={editPostData} />
+        <Toaster position="bottom-right" reverseOrder={false} />
+      </main>
+    </>
   );
 };
