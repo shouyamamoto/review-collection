@@ -3,6 +3,7 @@ import { VFC } from "react";
 import { index as Title } from "../../atom/title/index";
 import { Article } from "../../molecules/Article/Article";
 import { index as LoadingIcon } from "../../atom/loading/index";
+import { index as Typography } from "../../atom/typography/index";
 
 import { Head } from "../../Head";
 
@@ -53,9 +54,9 @@ export const Presenter: VFC<Props> = ({
       <StyledTopicsPosts>
         <StyledTopicsPostsInner>
           <Title headline="h1">"{query.get("search")}"の検索結果</Title>
-          <StyledPostsArea>
-            {searchPosts.length > 0 ? (
-              searchPosts.map((post) => (
+          {searchPosts.length > 0 ? (
+            <StyledPostsArea>
+              {searchPosts.map((post) => (
                 <Article
                   key={post.postId}
                   postId={post.postId}
@@ -68,11 +69,13 @@ export const Presenter: VFC<Props> = ({
                   username={extraUser(post.uid)!.username}
                   avatar={extraUser(post.uid)!.avatar}
                 />
-              ))
-            ) : (
-              <p>"{query.get("search")}"に関する記事は見つかりませんでした。</p>
-            )}
-          </StyledPostsArea>
+              ))}
+            </StyledPostsArea>
+          ) : (
+            <Typography size="16" margin="20px 0px 0px 0px ">
+              "{query.get("search")}"に関する記事は見つかりませんでした。
+            </Typography>
+          )}
         </StyledTopicsPostsInner>
       </StyledTopicsPosts>
     </>
