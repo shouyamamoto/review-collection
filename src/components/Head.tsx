@@ -34,10 +34,6 @@ export const Head: VFC<Props> = ({ title, postId }) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={title} />
       <meta property="og:site_name" content="Review Collection" />
-      <meta
-        property="og:image"
-        content="https://review-collection-8edce.web.app/images/ogp.png"
-      />
       {/* OGP ここまで */}
     </Helmet>
   );
