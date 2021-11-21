@@ -16,6 +16,7 @@ import { StyledHeaderInner, StyledLogo } from "./Styles";
 export const Header: VFC = memo(() => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
   const [search, setSearch] = useState<string>("");
   const history = useHistory();
   const location = useLocation();
@@ -35,6 +36,7 @@ export const Header: VFC = memo(() => {
   const onClickMenuHandler = () => setIsOpenMenu(!isOpenMenu);
   const onClickCloseMenu = () => setIsOpenMenu(false);
   const onClickModalHandler = () => setIsOpenModal(!isOpenModal);
+  const onClickOpenSearch = () => setIsOpenSearch(!isOpenSearch);
 
   return (
     <>
@@ -43,17 +45,13 @@ export const Header: VFC = memo(() => {
           <Link to="/">
             <StyledLogo src={logo} alt="" onClick={onClickCloseMenu} />
           </Link>
-          <SearchInputForm
-            inputValue={search}
-            onChange={setSearch}
-            onClickSearch={onClickSearch}
-          />
           {currentUser.uid ? (
             <IconWithPostButton
               user={currentUser}
               isOpenMenu={isOpenMenu}
               onClick={onClickMenuHandler}
               onClose={onClickCloseMenu}
+              onClickOpenSearch={onClickOpenSearch}
               signOut={signOut}
               pathname={location.pathname}
             />
@@ -61,6 +59,13 @@ export const Header: VFC = memo(() => {
             <PrimaryButton onClick={onClickModalHandler}>Sign In</PrimaryButton>
           )}
         </StyledHeaderInner>
+        <SearchInputForm
+          isOpen={isOpenSearch}
+          inputValue={search}
+          onChange={setSearch}
+          onClickSearch={onClickSearch}
+          onClickOpenSearch={onClickOpenSearch}
+        />
       </header>
       {isOpenModal && <Auth modalHandler={onClickModalHandler} />}
     </>

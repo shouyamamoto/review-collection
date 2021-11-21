@@ -16,14 +16,23 @@ type Props = {
     avatar: string;
   };
   isOpenMenu: boolean;
-  onClick?: () => void;
+  onClick: () => void;
   onClose?: () => void;
+  onClickOpenSearch: () => void;
   signOut?: () => void;
-  pathname?: string;
+  pathname: string;
 };
 
 export const IconWithPostButton: VFC<Props> = memo(
-  ({ user, isOpenMenu, onClick, onClose, signOut, pathname }) => {
+  ({
+    user,
+    isOpenMenu,
+    onClick,
+    onClose,
+    onClickOpenSearch,
+    signOut,
+    pathname,
+  }) => {
     return (
       <StyledIconArea>
         <Icon src={user.avatar} width="50" height="50" onClick={onClick} />
@@ -35,7 +44,13 @@ export const IconWithPostButton: VFC<Props> = memo(
           )}
         </MediaQuery>
         {isOpenMenu && (
-          <IconMenu user={user} onClick={onClick} signOut={signOut} />
+          <IconMenu
+            user={user}
+            onClick={onClick}
+            signOut={signOut}
+            onClickOpenSearch={onClickOpenSearch}
+            pathname={pathname}
+          />
         )}
       </StyledIconArea>
     );

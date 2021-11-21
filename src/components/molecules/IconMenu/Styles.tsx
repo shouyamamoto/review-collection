@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FiLogOut, FiUserCheck } from "react-icons/fi";
+import { FiLogOut, FiUserCheck, FiSearch } from "react-icons/fi";
 import { BsPencil } from "react-icons/bs";
 import { GrNotes } from "react-icons/gr";
 import styled from "styled-components";
@@ -54,6 +54,9 @@ export const StyledBsPencil = styled(BsPencil)`
   padding-right: 10px;
 `;
 export const StyledGrNotes = styled(GrNotes)`
+  padding-right: 10px;
+`;
+export const StyledFiSearch = styled(FiSearch)`
   padding-right: 10px;
 `;
 

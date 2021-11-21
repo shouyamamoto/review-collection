@@ -8,6 +8,7 @@ import {
   StyledBsPencil,
   StyledGrNotes,
   StyledProfileLink,
+  StyledFiSearch,
 } from "./Styles";
 
 type Props = {
@@ -15,36 +16,70 @@ type Props = {
     uid: string;
     username: string;
   };
-  onClick?: () => void;
+  onClick: () => void;
   signOut?: () => void;
+  onClickOpenSearch: () => void;
+  pathname: string;
 };
 
-export const IconMenu: VFC<Props> = ({ user, onClick, signOut }) => {
+export const IconMenu: VFC<Props> = ({
+  user,
+  onClick,
+  onClickOpenSearch,
+  signOut,
+  pathname,
+}) => {
+  const menuItems = [
+    {
+      to: "/articles/new",
+      icon: <StyledBsPencil />,
+      text: "記事を投稿する",
+    },
+    {
+      to: `/${user.uid}/dashboard`,
+      icon: <StyledGrNotes />,
+      text: "記事の管理",
+    },
+    {
+      to: pathname,
+      icon: <StyledFiSearch />,
+      text: "記事を検索する",
+    },
+    {
+      to: `/${user.uid}/profile/settings`,
+      icon: <StyledUserEditIcon />,
+      text: "プロフィール編集",
+    },
+  ];
+
   return (
     <StyledMenu>
+      {/* ユーザのプロフィール */}
       <StyledMenuItem onClick={onClick}>
         <StyledProfileLink
           to={`/${user.uid}`}
         >{`@ ${user.username}`}</StyledProfileLink>
       </StyledMenuItem>
-      <StyledMenuItem onClick={onClick}>
-        <StyledProfileLink to={`/articles/new`}>
-          <StyledBsPencil />
-          記事を投稿する
-        </StyledProfileLink>
-      </StyledMenuItem>
-      <StyledMenuItem onClick={onClick}>
-        <StyledProfileLink to={`/${user.uid}/dashboard`}>
-          <StyledGrNotes />
-          記事の管理
-        </StyledProfileLink>
-      </StyledMenuItem>
-      <StyledMenuItem onClick={onClick}>
-        <StyledProfileLink to={`/${user.uid}/profile/settings`}>
-          <StyledUserEditIcon />
-          プロフィール編集
-        </StyledProfileLink>
-      </StyledMenuItem>
+      {/* 投稿や管理などのアクション */}
+      {menuItems.map((item) => (
+        <StyledMenuItem
+          key={item.text}
+          onClick={
+            item.text === "記事を検索する"
+              ? () => {
+                  onClick();
+                  onClickOpenSearch();
+                }
+              : onClick
+          }
+        >
+          <StyledProfileLink to={item.to}>
+            {item.icon}
+            {item.text}
+          </StyledProfileLink>
+        </StyledMenuItem>
+      ))}
+      {/* ログアウト */}
       <StyledMenuItem onClick={signOut}>
         <StyledLogoutIcon />
         ログアウト
