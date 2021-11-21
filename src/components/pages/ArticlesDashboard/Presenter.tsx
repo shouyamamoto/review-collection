@@ -9,6 +9,9 @@ import { Tabs } from "../../molecules/Tabs/Tabs";
 import { ArticleDashboard as Articles } from "../../organisms/ArticleDashboard/ArticleDashboard";
 import NonePosts from "../../../images/no-post.svg";
 import { TAB_LIST } from "../../../Themes/TabLists";
+
+import { Head } from "../../Head";
+
 import {
   StyledArticleDashboard,
   StyledUserPostNone,
@@ -63,6 +66,7 @@ export const Presenter: VFC<Props> = ({
 
   return (
     <>
+      <Head title="記事の管理" />
       {currentUser!.uid === userId &&
         (posts[0] ? (
           <StyledArticleDashboard>

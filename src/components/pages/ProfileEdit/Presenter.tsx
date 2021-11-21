@@ -4,6 +4,8 @@ import { Redirect } from "react-router";
 
 import { ProfileEditArea } from "../../organisms/ProfileEditArea/ProfileEditArea";
 
+import { Head } from "../../Head";
+
 import { StyledProfileEditArea } from "./Styles";
 
 type Props = {
@@ -26,9 +28,12 @@ export const Presenter: VFC<Props> = ({ currentUser, userId }) => {
   }
 
   return (
-    <StyledProfileEditArea>
-      <ProfileEditArea />
-      <Toaster position="bottom-right" reverseOrder={false} />
-    </StyledProfileEditArea>
+    <>
+      <Head title="プロフィール設定" />
+      <StyledProfileEditArea>
+        <ProfileEditArea />
+        <Toaster position="bottom-right" reverseOrder={false} />
+      </StyledProfileEditArea>
+    </>
   );
 };

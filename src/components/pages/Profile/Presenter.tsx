@@ -9,6 +9,8 @@ import { ProfileArea } from "../../organisms/ProfileArea/ProfileArea";
 import { LikedPosts } from "../../organisms/LikedPosts/LikedPosts";
 import { Page404 } from "../../pages/Page404/Page404";
 
+import { Head } from "../../Head";
+
 import {
   StyledProfileNav,
   StyledLink,
@@ -78,57 +80,60 @@ export const Presenter: VFC<Props> = ({
     return <Page404 />;
   }
   return (
-    <main>
-      <StyledProfile>
-        <StyledProfileInner>
-          <Icon src={user.avatar} width="120" height="120" />
-          <ProfileArea
-            username={user.username}
-            comment={user.comment}
-            githubName={user.githubName}
-            twitterName={user.twitterName}
-            blogUrl={user.blogUrl}
-            onMouseEnter={onMouseEnter}
-            isShow={isShow}
-          />
-        </StyledProfileInner>
-      </StyledProfile>
+    <>
+      <Head title={user.username} />
+      <main>
+        <StyledProfile>
+          <StyledProfileInner>
+            <Icon src={user.avatar} width="120" height="120" />
+            <ProfileArea
+              username={user.username}
+              comment={user.comment}
+              githubName={user.githubName}
+              twitterName={user.twitterName}
+              blogUrl={user.blogUrl}
+              onMouseEnter={onMouseEnter}
+              isShow={isShow}
+            />
+          </StyledProfileInner>
+        </StyledProfile>
 
-      <StyledProfileNav>
-        {tabList.map((tab, index) => (
-          <StyledLink
-            key={tab.to}
-            to={tab.to}
-            isActive={currentNum === index}
-            onClick={() => changeActive(index)}
-          >
-            {tab.name === "Articles" && tab.name}
-            {tab.name === "Likes" && currentUser.uid === user.uid && tab.name}
-          </StyledLink>
-        ))}
-      </StyledProfileNav>
+        <StyledProfileNav>
+          {tabList.map((tab, index) => (
+            <StyledLink
+              key={tab.to}
+              to={tab.to}
+              isActive={currentNum === index}
+              onClick={() => changeActive(index)}
+            >
+              {tab.name === "Articles" && tab.name}
+              {tab.name === "Likes" && currentUser.uid === user.uid && tab.name}
+            </StyledLink>
+          ))}
+        </StyledProfileNav>
 
-      <StyledPosts>
-        <StyledPostInner>
-          {query.get("contents") === "likes" ? (
-            <>
-              <Title headline="h2">Likes</Title>
-              <LikedPosts likedPosts={user.likedPosts} />
-            </>
-          ) : (
-            <>
-              <Title headline="h2">Articles</Title>
-              <UserPost
-                uid={user.uid}
-                username={user.username}
-                avatar={user.avatar}
-              />
-            </>
-          )}
-        </StyledPostInner>
-      </StyledPosts>
+        <StyledPosts>
+          <StyledPostInner>
+            {query.get("contents") === "likes" ? (
+              <>
+                <Title headline="h2">Likes</Title>
+                <LikedPosts likedPosts={user.likedPosts} />
+              </>
+            ) : (
+              <>
+                <Title headline="h2">Articles</Title>
+                <UserPost
+                  uid={user.uid}
+                  username={user.username}
+                  avatar={user.avatar}
+                />
+              </>
+            )}
+          </StyledPostInner>
+        </StyledPosts>
 
-      <Toaster position="bottom-right" reverseOrder={false} />
-    </main>
+        <Toaster position="bottom-right" reverseOrder={false} />
+      </main>
+    </>
   );
 };
