@@ -30,7 +30,12 @@ export const SearchInputForm: VFC<Props> = ({
           }
         }}
       />
-      <StyledFiSearch onClick={onClickSearch} />
+      <StyledFiSearch
+        onClick={() => {
+          onClickSearch();
+          onClickOpenSearch();
+        }}
+      />
     </StyledSearchInputForm>
   );
 };

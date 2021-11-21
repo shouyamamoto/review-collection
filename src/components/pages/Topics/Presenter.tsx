@@ -53,27 +53,35 @@ export const Presenter: VFC<Props> = ({
       <Head title={`${query.get("search")}の検索結果`} />
       <StyledTopicsPosts>
         <StyledTopicsPostsInner>
-          <Title headline="h1">"{query.get("search")}"の検索結果</Title>
-          {searchPosts.length > 0 ? (
-            <StyledPostsArea>
-              {searchPosts.map((post) => (
-                <Article
-                  key={post.postId}
-                  postId={post.postId}
-                  uid={post.uid}
-                  title={post.title}
-                  body={post.body}
-                  timestamp={post.timestamp}
-                  likedUsers={post.likedUsers}
-                  labels={post.labels}
-                  username={extraUser(post.uid)!.username}
-                  avatar={extraUser(post.uid)!.avatar}
-                />
-              ))}
-            </StyledPostsArea>
+          {query.get("search") ? (
+            <>
+              <Title headline="h1">"{query.get("search")}"の検索結果</Title>
+              {searchPosts.length > 0 ? (
+                <StyledPostsArea>
+                  {searchPosts.map((post) => (
+                    <Article
+                      key={post.postId}
+                      postId={post.postId}
+                      uid={post.uid}
+                      title={post.title}
+                      body={post.body}
+                      timestamp={post.timestamp}
+                      likedUsers={post.likedUsers}
+                      labels={post.labels}
+                      username={extraUser(post.uid)!.username}
+                      avatar={extraUser(post.uid)!.avatar}
+                    />
+                  ))}
+                </StyledPostsArea>
+              ) : (
+                <Typography size="16" margin="20px 0px 0px 0px ">
+                  "{query.get("search")}"に関する記事は見つかりませんでした。
+                </Typography>
+              )}
+            </>
           ) : (
             <Typography size="16" margin="20px 0px 0px 0px ">
-              "{query.get("search")}"に関する記事は見つかりませんでした。
+              検索したいTopicsを入力してください
             </Typography>
           )}
         </StyledTopicsPostsInner>
