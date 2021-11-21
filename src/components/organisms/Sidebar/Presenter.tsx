@@ -68,7 +68,9 @@ export const Presenter: VFC<Props> = ({
       />
       {currentUserId !== "" && (
         <StyledSidebarButtons>
-          <TwitterShareButton url={location}>
+          <TwitterShareButton
+            url={`https://review-collection-8edce.web.app/${location}`}
+          >
             <TwitterIcon size="40" round />
           </TwitterShareButton>
           <StyledLikeIconWrap>
