@@ -22,7 +22,7 @@ export const Footer: VFC = () => {
               <Link to="/about">About</Link>
             </StyledLi>
             <StyledLi>
-              <Link to="/FHDXGhKCaOWFFvIujnZBRoH67EL2/articles/jnhS3cUadhxLLnDCLmJI">
+              <Link to="/FHDXGhKCaOWFFvIujnZBRoH67EL2/articles/elzM6mxGabV8URq8lDoe">
                 記事の書き方
               </Link>
             </StyledLi>
