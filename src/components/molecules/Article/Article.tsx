@@ -26,6 +26,8 @@ type Props = {
   labels: string[];
 };
 
+const ShowLabelLength = 2;
+
 export const Article: VFC<Props> = ({
   postId,
   uid,
@@ -46,14 +48,14 @@ export const Article: VFC<Props> = ({
       <StyledLabels>
         {labels.map((label, index) => (
           <>
-            {index < 2 && (
+            {index < ShowLabelLength && (
               <StyledLabel
                 key={index}
                 onClick={() => history.push(`/topics?search=${label}`)}
               >
                 {label}
               </StyledLabel>
-            )}{" "}
+            )}
           </>
         ))}
       </StyledLabels>
