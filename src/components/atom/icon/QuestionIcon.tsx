@@ -13,7 +13,7 @@ type Props = {
 export const QuestionIcon: VFC<Props> = ({ isShow, onMouseEnter }) => {
   return (
     <StyledAnchor
-      href="https://github.com/shouyamamoto/review-collection/#review-collection"
+      href="https://review-collection-8edce.web.app/FHDXGhKCaOWFFvIujnZBRoH67EL2/articles/elzM6mxGabV8URq8lDoe"
       target="_blank"
       rel="noreferrer"
       onMouseEnter={() => onMouseEnter("writing")}
