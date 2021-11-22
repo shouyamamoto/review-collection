@@ -131,12 +131,14 @@ export const Presenter: VFC<Props> = ({
           />
           <StyledCommentArea>
             <CommentOutputArea postId={postId} comments={comments} />
-            <CommentInputArea
-              uid={currentUser.uid}
-              postId={postId}
-              avatar={currentUser.avatar}
-              username={currentUser.username}
-            />
+            {currentUser.uid !== "" && (
+              <CommentInputArea
+                uid={currentUser.uid}
+                postId={postId}
+                avatar={currentUser.avatar}
+                username={currentUser.username}
+              />
+            )}
           </StyledCommentArea>
         </StyledSinglePostPageInner>
         <Toaster position="bottom-right" reverseOrder={false} />
