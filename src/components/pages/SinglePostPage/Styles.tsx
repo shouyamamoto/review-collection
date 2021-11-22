@@ -42,6 +42,7 @@ export const StyledMarkdownContainer = styled.div`
 
   @media ${DEVICE.tabletL} {
     padding: 0;
+    min-width: 600px;
   }
 `;
 
