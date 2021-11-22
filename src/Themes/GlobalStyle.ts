@@ -9,6 +9,9 @@ export const GlobalStyle = createGlobalStyle`
   margin: 0;
   list-style: none;
 } 
+body {
+  font-family: "ヒラギノ角ゴ Pro","ヒラギノ角ゴ","メイリオ","ＭＳ Ｐゴシック",system-ui,sans-serif;
+}
 html, body {
   height: 100%;
 }
