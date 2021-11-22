@@ -22,12 +22,13 @@ export const StyledArticleDashboard = styled.main`
 export const StyledUserPostNone = styled.div`
   width: 100%;
   margin: 0 auto;
+  padding-bottom: 40px;
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 16px 10px;
 
   @media ${DEVICE.mobileM} {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   @media ${DEVICE.laptop} {
@@ -44,8 +45,16 @@ export const StyledPostPrompt = styled.div`
   justify-items: center;
   align-items: center;
   display: grid;
+  grid-gap: 24px;
 
   @media ${DEVICE.laptop} {
     grid-gap: 40px;
   }
+`;
+
+export const StyledUserPostNoneImg = styled.img`
+  display: block;
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
 `;

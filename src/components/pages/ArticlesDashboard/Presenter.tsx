@@ -16,6 +16,7 @@ import {
   StyledArticleDashboard,
   StyledUserPostNone,
   StyledPostPrompt,
+  StyledUserPostNoneImg,
 } from "./Styles";
 
 type Props = {
@@ -85,7 +86,7 @@ export const Presenter: VFC<Props> = ({
           </StyledArticleDashboard>
         ) : (
           <StyledUserPostNone>
-            <img src={NonePosts} alt="" width="400" />
+            <StyledUserPostNoneImg src={NonePosts} alt="" width="400" />
             <StyledPostPrompt>
               まだ投稿がありません。
               <br />
