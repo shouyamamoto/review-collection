@@ -109,6 +109,7 @@ export const PostArea: VFC<Props> = ({ editPostData }) => {
           body: text,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           status: "draft",
+          likedUsers: [],
           labels: labels,
         })
         .then(() => {
