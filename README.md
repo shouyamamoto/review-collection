@@ -89,10 +89,22 @@ https://user-images.githubusercontent.com/59443014/142793246-c700aa6a-7266-4d64-
 
 https://user-images.githubusercontent.com/59443014/142793742-19fc28f0-8207-4a24-8871-32a3cf2fcde3.mov
 
-2. 画像の圧縮機能
+2. 画像の圧縮機能、ファイル名をユニークなものにする機能
 
 - firestore の無料枠が 5GB の制限があるため
 - 記事表示時の読み込み速度の高速化
+- Firebase では、同一ファイル名のものがあると、既存のファイルを新規のファイルで上書きしてしまうため、画像アップロード時にファイル名がユニークなものにする必要があったため
+
+```js
+export const uniqueFileName = (file: File) => {
+  const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const N = 16;
+  const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+    .map((n) => S[n % S.length])
+    .join("");
+  return randomChar + "_" + file.name;
+};
+```
 
 3. 記事投稿を Markdown 形式にした
 
