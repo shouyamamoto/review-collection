@@ -51,7 +51,7 @@ describe("Disabled is enabled, do nothing", () => {
   it("RegisterButton does nothing when disabled", () => {
     const isUserNameValid = jest.fn();
     const onClick = jest.fn()
-    render(<RegisterButton onClick={onClick} isUserNameValid={isUserNameValid}>Register</RegisterButton>);
+    render(<RegisterButton onClick={onClick} isUserNameValid={isUserNameValid} disabled>Register</RegisterButton>);
     userEvent.click(screen.getByTestId("registerButton"));
     expect(onClick).toHaveBeenCalledTimes(0);
   })
