@@ -14,20 +14,18 @@ describe("Rendering-buttons", () => {
     userEvent.click(screen.getByTestId("primaryButton"));
     expect(screen.getByText("PrimaryButton")).toBeTruthy();
     expect(screen.queryByText("PrimaryButtonn")).toBeNull();
-    expect(onClick).toHaveBeenCalledTimes(1);
     expect(screen.getByTestId("primaryButton")).toBeTruthy();
+    expect(onClick).toHaveBeenCalledTimes(1);
   })
 
   it("Should render RegisterButton elements correctly", () => {
     const isUserNameValid = jest.fn();
     const onClick = jest.fn()
     render(<RegisterButton onClick={onClick} isUserNameValid={isUserNameValid}>Register</RegisterButton>);
-    screen.debug();
     userEvent.click(screen.getByTestId("registerButton"));
     expect(screen.getByTestId("registerButton")).toHaveProperty("disabled");
     expect(screen.getByText("Register")).toBeTruthy();
     expect(screen.queryByText("Registerrrrrr")).toBeNull();
-    // expect(onClick).toHaveBeenCalled();
     expect(screen.getByTestId("registerButton")).toBeTruthy();
   })
 
@@ -37,7 +35,24 @@ describe("Rendering-buttons", () => {
     userEvent.click(screen.getByTestId("signInButton"));
     expect(screen.getByText("SignInButton")).toBeTruthy();
     expect(screen.queryByText("SignInButtonn")).toBeNull();
-    expect(onClick).toHaveBeenCalledTimes(1);
     expect(screen.getByTestId("signInButton")).toBeTruthy();
+    expect(onClick).toHaveBeenCalledTimes(1);
+  })
+})
+
+describe("Disabled is enabled, do nothing", () => {
+  it("PrimaryButton does nothing when disabled", () => {
+    const onClick = jest.fn();
+    render(<PrimaryButton onClick={onClick} disabled>PrimaryButton</PrimaryButton>);
+    userEvent.click(screen.getByTestId("primaryButton"));
+    expect(onClick).toHaveBeenCalledTimes(0);
+  })
+
+  it("RegisterButton does nothing when disabled", () => {
+    const isUserNameValid = jest.fn();
+    const onClick = jest.fn()
+    render(<RegisterButton onClick={onClick} isUserNameValid={isUserNameValid}>Register</RegisterButton>);
+    userEvent.click(screen.getByTestId("registerButton"));
+    expect(onClick).toHaveBeenCalledTimes(0);
   })
 })
