@@ -9,7 +9,7 @@ type Props = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const index: VFC<Props> = ({
+export const Index: VFC<Props> = ({
   placeholder,
   inputValue,
   defaultValue,
