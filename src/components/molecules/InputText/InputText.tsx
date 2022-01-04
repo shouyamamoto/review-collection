@@ -1,5 +1,5 @@
 import { VFC, memo } from "react";
-import { index as Label } from "../../atom/label/index";
+import { Index as Label } from "../../atom/label/index";
 import { Index as Input } from "../../atom/input/index";
 
 type Props = {
