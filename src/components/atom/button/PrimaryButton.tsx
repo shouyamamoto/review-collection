@@ -13,7 +13,12 @@ type Props = {
 export const PrimaryButton: VFC<Props> = memo(
   ({ onClick, disabled, children, type }) => {
     return (
-      <StyledBtn onClick={onClick} disabled={disabled} type={type}>
+      <StyledBtn
+        onClick={onClick}
+        disabled={disabled}
+        type={type}
+        data-testid="primaryButton"
+      >
         {children}
       </StyledBtn>
     );

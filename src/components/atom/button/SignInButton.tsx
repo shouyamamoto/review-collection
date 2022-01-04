@@ -9,7 +9,11 @@ type Props = {
 };
 
 export const SignInButton: VFC<Props> = ({ children, onClick }) => {
-  return <StyledSingInButton onClick={onClick}>{children}</StyledSingInButton>;
+  return (
+    <StyledSingInButton onClick={onClick} data-testid="signInButton">
+      {children}
+    </StyledSingInButton>
+  );
 };
 
 const StyledSingInButton = styled(StyledButton)`

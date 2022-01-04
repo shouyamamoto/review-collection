@@ -22,6 +22,7 @@ export const RegisterButton: VFC<Props> = ({
       type={type}
       onClick={onClick}
       disabled={!isUserNameValid()}
+      data-testid="registerButton"
     >
       {children}
     </StyledRegisterButton>
