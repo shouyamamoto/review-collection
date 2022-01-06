@@ -1,6 +1,6 @@
 import { VFC } from "react";
 
-import { index as Link } from "../../atom/link";
+import { Index as Link } from "../../atom/link";
 import { index as Title } from "../../atom/title/index";
 import { Index as Copy } from "../../atom/copywrite/index";
 import { LogoWithTypography } from "../../molecules/LogoWithTypography/LogoWithTypography";

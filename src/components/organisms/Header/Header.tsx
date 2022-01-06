@@ -7,7 +7,7 @@ import logo from "../../../images/logo.svg";
 
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
 import { IconWithPostButton } from "../../molecules/IconWithPostButton/IconWithPostButton";
-import { index as Link } from "../../atom/link";
+import { Index as Link } from "../../atom/link";
 import { SearchInputForm } from "../../molecules/SearchInputForm/SearchInputForm";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 

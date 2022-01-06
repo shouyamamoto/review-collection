@@ -1,7 +1,7 @@
 import { memo, VFC } from "react";
 import MediaQuery from "react-responsive";
 
-import { index as Link } from "../../atom/link";
+import { Index as Link } from "../../atom/link";
 import { DEVICE } from "../../../Themes/Device";
 import { index as Icon } from "../../atom/icon/index";
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
