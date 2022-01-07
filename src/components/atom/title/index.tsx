@@ -4,11 +4,11 @@ import { COLOR } from "../../../Themes/Color";
 import { DEVICE } from "../../../Themes/Device";
 
 type Props = {
-  headline: string;
+  headline: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   children: React.ReactNode;
 };
 
-export const index: VFC<Props> = ({ headline, children }) => {
+export const Index: VFC<Props> = ({ headline = "h1", children }) => {
   const showHead = () => {
     switch (headline) {
       case "h1":

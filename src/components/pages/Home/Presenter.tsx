@@ -2,7 +2,7 @@ import { VFC } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { Toaster } from "react-hot-toast";
 
-import { index as Title } from "../../atom/title/index";
+import { Index as Title } from "../../atom/title/index";
 import { index as LoadingIcon } from "../../atom/loading/index";
 import { UserNameRegister } from "../../organisms/UserNameRegister/UserNameRegister";
 import { Article } from "../../molecules/Article/Article";
