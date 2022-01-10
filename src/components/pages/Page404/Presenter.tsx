@@ -1,7 +1,7 @@
 import { VFC } from "react";
 
 import Error404 from "../../../images/404.svg";
-import { index as Typography } from "../../atom/typography/index";
+import { Index as Typography } from "../../atom/typography/index";
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
 
 import { Head } from "../../Head";

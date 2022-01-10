@@ -1,6 +1,6 @@
 import { VFC } from "react";
 
-import { index as Typography } from "../../atom/typography/index";
+import { Index as Typography } from "../../atom/typography/index";
 import { index as Logo } from "../../atom/logo/index";
 import { COLOR } from "../../../Themes/Color";
 

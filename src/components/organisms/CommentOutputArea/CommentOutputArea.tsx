@@ -2,7 +2,7 @@ import { VFC, memo } from "react";
 
 import { format } from "date-fns";
 
-import { index as Typography } from "../../atom/typography/index";
+import { Index as Typography } from "../../atom/typography/index";
 import { Index as Title } from "../../atom/title/index";
 import { IconWithName } from "../../molecules/IconWithName/IconWithName";
 import { db } from "../../../libs/firebase";
