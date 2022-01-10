@@ -7,7 +7,7 @@ type Props = {
   children: string;
 };
 
-export const index: VFC<Props> = ({ children }) => {
+export const Index: VFC<Props> = ({ children }) => {
   return <StyledCopy>{children}</StyledCopy>;
 };
 

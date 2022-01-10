@@ -1,6 +1,6 @@
 import { VFC } from "react";
 
-import { index as Typography } from "../../atom/typography/index";
+import { Index as Typography } from "../../atom/typography/index";
 import LikedIcon from "../../../images/liked.png";
 
 import {

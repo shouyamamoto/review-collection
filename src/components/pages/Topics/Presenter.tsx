@@ -1,9 +1,9 @@
 import { VFC } from "react";
 
-import { index as Title } from "../../atom/title/index";
+import { Index as Title } from "../../atom/title/index";
 import { Article } from "../../molecules/Article/Article";
 import { index as LoadingIcon } from "../../atom/loading/index";
-import { index as Typography } from "../../atom/typography/index";
+import { Index as Typography } from "../../atom/typography/index";
 
 import { Head } from "../../Head";
 

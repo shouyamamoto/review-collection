@@ -1,5 +1,6 @@
 import React, { VFC } from "react";
 import styled from "styled-components";
+import { COLOR } from "../../../Themes/Color";
 
 type Props = {
   size: string;
@@ -16,11 +17,11 @@ type TypoProps = {
   color?: string;
 };
 
-export const index: VFC<Props> = ({
-  size,
-  weight,
-  margin,
-  color,
+export const Index: VFC<Props> = ({
+  size = "16px",
+  weight = "normal",
+  margin = "none",
+  color = `${COLOR.BLACK}`,
   children,
 }) => {
   return (

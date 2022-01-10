@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { format } from "date-fns";
 
 import { index as CodeBlock } from "../../atom/code/index";
-import { index as Title } from "../../atom/title/index";
+import { Index as Title } from "../../atom/title/index";
 import { index as Loading } from "../../atom/loading/index";
 import { Sidebar } from "../../organisms/Sidebar/Sidebar";
 import { CommentInputArea } from "../../organisms/CommentInputArea/CommentInputArea";

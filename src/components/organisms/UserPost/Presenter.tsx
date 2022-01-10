@@ -2,7 +2,7 @@ import { VFC } from "react";
 
 import { index as LoadingIcon } from "../../atom/loading/index";
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
-import { index as Link } from "../../atom/link";
+import { Index as Link } from "../../atom/link";
 import { Article } from "../../molecules/Article/Article";
 import NonePosts from "../../../images/no-post.svg";
 

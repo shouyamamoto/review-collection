@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const index: VFC<Props> = ({ to, children }) => {
+export const Index: VFC<Props> = ({ to, children }) => {
   return <StyledLink to={to}>{children}</StyledLink>;
 };
 

@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 
 import { index as LoadingIcon } from "../../atom/loading/index";
 import { index as Icon } from "../../atom/icon/index";
-import { index as Title } from "../../atom/title/index";
+import { Index as Title } from "../../atom/title/index";
 import { UserPost } from "../../organisms/UserPost/UserPost";
 import { ProfileArea } from "../../organisms/ProfileArea/ProfileArea";
 import { LikedPosts } from "../../organisms/LikedPosts/LikedPosts";

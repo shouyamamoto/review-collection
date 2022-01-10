@@ -1,8 +1,8 @@
 import { VFC } from "react";
 
 import { index as Icon } from "../../atom/icon/index";
-import { index as Typography } from "../../atom/typography";
-import { index as Link } from "../../atom/link/index";
+import { Index as Typography } from "../../atom/typography";
+import { Index as Link } from "../../atom/link/index";
 import { SocialIcons } from "../SocialIcons/SocialIcons";
 
 import { StyledSidebarUserProfile, StyledSidebarAuthor } from "./Styles";

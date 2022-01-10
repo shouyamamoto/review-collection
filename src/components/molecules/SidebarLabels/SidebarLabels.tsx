@@ -1,7 +1,7 @@
 import { VFC } from "react";
 import { useHistory } from "react-router-dom";
 
-import { index as Typography } from "../../atom/typography/index";
+import { Index as Typography } from "../../atom/typography/index";
 
 import { StyledSidebarLabels, StyledLabels, StyledLabel } from "./Styles";
 

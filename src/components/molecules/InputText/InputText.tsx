@@ -1,6 +1,6 @@
 import { VFC, memo } from "react";
-import { index as Label } from "../../atom/label/index";
-import { index as Input } from "../../atom/input/index";
+import { Index as Label } from "../../atom/label/index";
+import { Index as Input } from "../../atom/input/index";
 
 type Props = {
   placeholder?: string;

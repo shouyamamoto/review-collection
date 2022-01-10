@@ -1,7 +1,7 @@
 import { VFC } from "react";
 import { TwitterShareButton, TwitterIcon } from "react-share";
 
-import { index as Typography } from "../../atom/typography/index";
+import { Index as Typography } from "../../atom/typography/index";
 import { SidebarLabels } from "../../molecules/SidebarLabels/SidebarLabels";
 import { SidebarUserProfile } from "../../molecules/SidebarUserProfile/SidebarUserProfile";
 import noLike from "../../../images/no-like.png";

@@ -6,7 +6,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const index: VFC<Props> = memo(({ children }) => {
+export const Index: VFC<Props> = memo(({ children }) => {
   return <StyledLabel>{children}</StyledLabel>;
 });
 

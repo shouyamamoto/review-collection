@@ -2,7 +2,7 @@ import { VFC } from "react";
 import { Redirect } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import { index as Link } from "../../atom/link";
+import { Index as Link } from "../../atom/link";
 import { index as LoadingIcon } from "../../atom/loading/index";
 import { PrimaryButton } from "../../atom/button/PrimaryButton";
 import { Tabs } from "../../molecules/Tabs/Tabs";

@@ -1,7 +1,7 @@
 import { VFC } from "react";
 import { format } from "date-fns";
 
-import { index as Link } from "../../atom/link/index";
+import { Index as Link } from "../../atom/link/index";
 
 import {
   StyledArticleDashboard,

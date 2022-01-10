@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
 
 import { index as Icon } from "../../atom/icon";
-import { index as Link } from "../../atom/link";
+import { Index as Link } from "../../atom/link";
 import { NameWithTimestamp } from "../NameWithTimestamp/NameWithTimestamp";
 
 import {
