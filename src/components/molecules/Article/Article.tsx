@@ -50,7 +50,7 @@ export const Article: VFC<Props> = ({
           <>
             {index < ShowLabelLength && (
               <StyledLabel
-                key={index}
+                key={label}
                 onClick={() => history.push(`/topics?search=${label}`)}
               >
                 {label}
