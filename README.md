@@ -40,8 +40,8 @@ Google または Github アカウントでログインを行います。
 - Redux Toolkit 1.5.1
 - firebase 8.10.0  
   authentication, Firestore, Storage, Hosting
-- Jest
-- React-Testing-Library
+- Jest(Unitテスト)
+- React-Testing-Library(Unitテスト)
 
 ## 機能一覧
 
@@ -50,7 +50,7 @@ Google または Github アカウントでログインを行います。
 - 記事検索機能
 - いいね機能
 - コメント機能
-- 無限スクロール
+- Topページ無限スクロール（18件取得）
 
 ## 使用ライブラリ
 
